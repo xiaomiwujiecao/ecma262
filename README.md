@@ -1,33 +1,77 @@
 
-ECMAScript
+ECMAScript 中文
 ====
 
-## This repo
+## 关于该仓库
 
-This repository contains the source for the current draft of ECMA-262,
-the ECMAScript® Language Specification.
+该仓库包含[ECMAScript®语言规范](https://github.com/tc39/ecma262)当前草案(包含stage 2 - stage 4)的中文翻译，你可以在一下网站进行浏览。
+- [英文](https://tc39.github.io/ecma262/)
+- 中文
 
-This source is processed to obtain a human-readable version,
-which you can view [here](https://tc39.github.io/ecma262/).
+## 贡献
 
-## Current Proposals
+### 角色
+- 项目维护者 负责对翻译分支，校对分支，cn分支的管理。
+- 校对者 负责指出新翻译内容中错译、漏译、标点符号错误、错别字、大小写、拼写错误、单复数、动词时态、数字错误等错误
+- 翻译参与者 从[projects](/projects)中选择自己希望翻译的内容在本地进行翻译，具体翻译流程可查看**翻译流程**
+- 审校者 负责对翻译内容的语句润色，通顺，专业性等工作
 
-Proposals follow [the TC39 process](https://tc39.github.io/process-document/) and are tracked in the [proposals repository](https://github.com/tc39/proposals).
+### 分支管理
 
-* [Finished Proposals](https://github.com/tc39/proposals/blob/master/finished-proposals.md)
-* [Active Proposals](https://github.com/tc39/proposals)
-* [Stage 0 Proposals](https://github.com/tc39/proposals/blob/master/stage-0-proposals.md)
-* [Inactive Proposals](https://github.com/tc39/proposals/blob/master/inactive-proposals.md)
+- [translated](/tree/translated) 翻译分支。对于该分支下被合并的内容将永远存在，除非被新内容覆盖。
+- [proofred](/tree/proofred) 校对分支(使用该分支是因为提交在该分支上可能被`reset`)。
+- [checking](/tree/checking) 审校分支。
+- [cn](/tree/cn) 发布分支。使用工具进行自动部署
 
-### Contributing New Proposals
+### 翻译流程
 
-Please see [Contributing to ECMAScript](/CONTRIBUTING.md) for the most up-to-date information on contributing proposals to this standard.
+- 翻译参与者克隆此仓库`translated`分支。
+  - 翻译参与者请使用`projects-[PROJECTID]`在`cn`文件夹下新建文件夹，英文原文使用`en.html`为文件名，中文译文使用`cn.html`为文件名
+  - 翻译完成后
+    - 使用`cn.html`替换`spec.html`文件中相应的英文原文，并保证`npm run build`顺利通过，并检查内容与期待结果一样
+    - 丢弃`spec.html`文件
+    - 提交翻译内容**最好是多个提交先在本地合并为一个提交**
+- 翻译参与者将翻译内容推送到自己的公开仓库。
+- 翻译参与者发送邮件或使用`github`的`pull request`通知维护者，请求拉取自己的更新。
+- 维护者在自己本地的仓库中，进行`translated`， `proofred`分支管理。
+  - 翻译参与者应该关注相应`issue`，直到提交被拒绝或合并，对于被拒绝的提交请修改后提交新的`pull request`。
 
-## Developing the Specification
+### 合并流程
 
-After cloning, do `npm install` to set up your environment. You can then do `npm run build` to build the spec or `npm run watch` to set up a continuous build. The results will appear in the `out` directory, which you can use `npm run clean` to delete.
+- 接受`pull request` **项维护者者**
+  - 在本地对新的`pull request`进行`translated`分支处理
+    - **项目维护者**从翻译参与者提交的`pull request`中合并翻译内容，并保证可以成功`build`
+      - 通过
+        - 合并到`translated`分支
+        - 合并到`proofred`分支，并复制`projects-[PROJECTID]`文件夹到`proofred`
+        - 创建讨论`issue`(可使用对照工具进行在线浏览)，进入校对状态
+      - 失败 拒绝合并
 
-## Community
+- 校对 **任何人**
+  - 任何人可对翻译内容在`校对 issue`中进行讨论，在最迟3天内应被关闭(**项目维护者**)
+  - `issue`正常关闭表示该提交通过
+  - 否则应该对合并的提交进行`reset`
 
-* [Es-discuss mailing list](https://esdiscuss.org): Mailing list for ECMAScript discussions
-* IRC: #tc39 on Freenode ([instructions](https://freenode.net/kb/answer/chat))
+- 审校 **审校负责人**
+  - 可能邀请大神对翻译内容进行审校，这将是本次提交的最后检查，提交内容可能在该阶段进行一些专业性的修改，和语句上的润色
+  - 由通过对比`proofred`与`checking`分支，每次从`proofred`分支`cherry-pick`第一个不同的提交版本进行合并
+  - 复制对应提交的`projects-[PROJECTID]`下的内容到`checking`文件夹，进行审校
+  - 使用审校内容的译文替换`spec.html`中对应的部分。
+  - 提交`proofred`分支，审校团队进行讨论修改，确认无误表示完成审校流程。
+  - 完成审校后通知**项维护者者**或者**审校负责人**进行合并到`cn`分支
+  - 提交审校完成，进入下一轮审校流程
+
+- 发布
+  - 使用工具在每次`cn`分支的修改后对该分支进行部署
+
+- 追踪`tc39` **项维护者者**
+  - 在`master`分支跟踪`tc39/master`分支
+  - 使用`diff`检出修改内容
+  - 构建任务
+  - 重复整个流程
+
+> 可能具体合并流程还会修改，但是对于翻译阶段不受影响
+
+### 中英文对照工具
+
+预设中的工具，可提供在线中英文对照，主要作用为在校对和审校流程中使用，以方便浏览和对照。
