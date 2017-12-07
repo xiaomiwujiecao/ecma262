@@ -36,10 +36,10 @@ ECMAScript 中文
 ### 翻译流程
 
 - 翻译参与者`fork`此仓库到个人仓库，在本地检出`translated`分支。
-  - 在`issues`列表中选择`label`为`待翻译`的`issue`
-  - 翻译参与者请使用`issues-[ISSUE ID]`作为文件夹在`translated`文件夹下新建文件夹，从项目根目录中的`spec.html`中复制对应`issue`的英文原文使用`en.html`为文件名，译者翻译中文译文使用`cn.html`为文件名
+  - 在`issues`列表中选择`label`为[`待翻译`](https://github.com/docschina/ecma262/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3A%E5%BE%85%E7%BF%BB%E8%AF%91)的`issue`，确认认领翻译任务并通知(@)**项维护者者**(修改`label`为`翻译中`)
+  - 翻译参与者请在`translated`文件夹的`issues-[ISSUE ID].html`文件中进行对原文进行翻译。（**为了方便校对时使用github进行校对**）
   - 翻译完成后
-    - 使用`cn.html`替换`spec.html`文件中相应的英文原文，并保证`npm run build`顺利通过，并检查内容与期待结果一样
+    - 使用`issues-[ISSUE ID]`替换`spec.html`文件中相应的英文原文，并保证`npm run build`顺利通过，并检查内容与期待结果一样
     - 丢弃`spec.html`文件更改内容
     - 提交翻译内容（**最好是多个提交先在本地合并为一个提交**），建议`commit message`为**translated：[LN - LN] issue #ISSUE ID**(为了审校时方便替换)
 - 翻译参与者将翻译内容推送到自己的公开仓库。
