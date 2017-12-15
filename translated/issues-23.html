@@ -1,0 +1,956 @@
+  <emu-clause id="sec-built-in-exotic-object-internal-methods-and-slots">
+    <h1>Built-in Exotic Object Internal Methods and Slots</h1>
+    <p>This specification defines several kinds of built-in exotic objects. These objects generally behave similar to ordinary objects except for a few specific situations. The following exotic objects use the ordinary object internal methods except where it is explicitly specified otherwise below:</p>
+
+    <!-- es6num="9.4.1" -->
+    <emu-clause id="sec-bound-function-exotic-objects">
+      <h1>Bound Function Exotic Objects</h1>
+      <p>A <dfn>bound function</dfn> is an exotic object that wraps another function object. A bound function is callable (it has a [[Call]] internal method and may have a [[Construct]] internal method). Calling a bound function generally results in a call of its wrapped function.</p>
+      <p>Bound function objects do not have the internal slots of ECMAScript function objects defined in <emu-xref href="#table-27"></emu-xref>. Instead they have the internal slots defined in <emu-xref href="#table-28"></emu-xref>.</p>
+      <emu-table id="table-28" caption="Internal Slots of Bound Function Exotic Objects">
+        <table>
+          <tbody>
+          <tr>
+            <th>
+              Internal Slot
+            </th>
+            <th>
+              Type
+            </th>
+            <th>
+              Description
+            </th>
+          </tr>
+          <tr>
+            <td>
+              [[BoundTargetFunction]]
+            </td>
+            <td>
+              Callable Object
+            </td>
+            <td>
+              The wrapped function object.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              [[BoundThis]]
+            </td>
+            <td>
+              Any
+            </td>
+            <td>
+              The value that is always passed as the *this* value when calling the wrapped function.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              [[BoundArguments]]
+            </td>
+            <td>
+              List of Any
+            </td>
+            <td>
+              A list of values whose elements are used as the first arguments to any call to the wrapped function.
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </emu-table>
+      <p>Bound function objects provide all of the essential internal methods as specified in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>. However, they use the following definitions for the essential internal methods of function objects.</p>
+
+      <!-- es6num="9.4.1.1" -->
+      <emu-clause id="sec-bound-function-exotic-objects-call-thisargument-argumentslist">
+        <h1>[[Call]] ( _thisArgument_, _argumentsList_ )</h1>
+        <p>When the [[Call]] internal method of a bound function exotic object, _F_, which was created using the bind function is called with parameters _thisArgument_ and _argumentsList_, a List of ECMAScript language values, the following steps are taken:</p>
+        <emu-alg>
+          1. Let _target_ be _F_.[[BoundTargetFunction]].
+          1. Let _boundThis_ be _F_.[[BoundThis]].
+          1. Let _boundArgs_ be _F_.[[BoundArguments]].
+          1. Let _args_ be a new list containing the same values as the list _boundArgs_ in the same order followed by the same values as the list _argumentsList_ in the same order.
+          1. Return ? Call(_target_, _boundThis_, _args_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.1.2" -->
+      <emu-clause id="sec-bound-function-exotic-objects-construct-argumentslist-newtarget">
+        <h1>[[Construct]] ( _argumentsList_, _newTarget_ )</h1>
+        <p>When the [[Construct]] internal method of a bound function exotic object, _F_ that was created using the bind function is called with a list of arguments _argumentsList_ and _newTarget_, the following steps are taken:</p>
+        <emu-alg>
+          1. Let _target_ be _F_.[[BoundTargetFunction]].
+          1. Assert: IsConstructor(_target_) is *true*.
+          1. Let _boundArgs_ be _F_.[[BoundArguments]].
+          1. Let _args_ be a new list containing the same values as the list _boundArgs_ in the same order followed by the same values as the list _argumentsList_ in the same order.
+          1. If SameValue(_F_, _newTarget_) is *true*, set _newTarget_ to _target_.
+          1. Return ? Construct(_target_, _args_, _newTarget_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.1.3" -->
+      <emu-clause id="sec-boundfunctioncreate" aoid="BoundFunctionCreate">
+        <h1>BoundFunctionCreate ( _targetFunction_, _boundThis_, _boundArgs_ )</h1>
+        <p>The abstract operation BoundFunctionCreate with arguments _targetFunction_, _boundThis_ and _boundArgs_ is used to specify the creation of new Bound Function exotic objects. It performs the following steps:</p>
+        <emu-alg>
+          1. Assert: Type(_targetFunction_) is Object.
+          1. Let _proto_ be ? _targetFunction_.[[GetPrototypeOf]]().
+          1. Let _obj_ be a newly created object.
+          1. Set _obj_'s essential internal methods to the default ordinary object definitions specified in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>.
+          1. Set _obj_.[[Call]] as described in <emu-xref href="#sec-bound-function-exotic-objects-call-thisargument-argumentslist"></emu-xref>.
+          1. If IsConstructor(_targetFunction_) is *true*, then
+            1. Set _obj_.[[Construct]] as described in <emu-xref href="#sec-bound-function-exotic-objects-construct-argumentslist-newtarget"></emu-xref>.
+          1. Set _obj_.[[Prototype]] to _proto_.
+          1. Set _obj_.[[Extensible]] to *true*.
+          1. Set _obj_.[[BoundTargetFunction]] to _targetFunction_.
+          1. Set _obj_.[[BoundThis]] to _boundThis_.
+          1. Set _obj_.[[BoundArguments]] to _boundArgs_.
+          1. Return _obj_.
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="9.4.2" -->
+    <emu-clause id="sec-array-exotic-objects">
+      <h1>Array Exotic Objects</h1>
+      <p>An <em>Array object</em> is an exotic object that gives special treatment to array index property keys (see <emu-xref href="#sec-object-type"></emu-xref>). A property whose property name is an array index is also called an <em>element</em>. Every Array object has a `length` property whose value is always a nonnegative integer less than 2<sup>32</sup>. The value of the `length` property is numerically greater than the name of every own property whose name is an array index; whenever an own property of an Array object is created or changed, other properties are adjusted as necessary to maintain this invariant. Specifically, whenever an own property is added whose name is an array index, the value of the `length` property is changed, if necessary, to be one more than the numeric value of that array index; and whenever the value of the `length` property is changed, every own property whose name is an array index whose value is not smaller than the new length is deleted. This constraint applies only to own properties of an Array object and is unaffected by `length` or array index properties that may be inherited from its prototypes.</p>
+      <emu-note>
+        <p>A String property name _P_ is an <em>array index</em> if and only if ToString(ToUint32(_P_)) is equal to _P_ and ToUint32(_P_) is not equal to <emu-eqn>2<sup>32</sup>-1</emu-eqn>.</p>
+      </emu-note>
+      <p>Array exotic objects always have a non-configurable property named `"length"`.</p>
+      <p>Array exotic objects provide an alternative definition for the [[DefineOwnProperty]] internal method. Except for that internal method, Array exotic objects provide all of the other essential internal methods as specified in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>.</p>
+
+      <!-- es6num="9.4.2.1" -->
+      <emu-clause id="sec-array-exotic-objects-defineownproperty-p-desc">
+        <h1>[[DefineOwnProperty]] ( _P_, _Desc_ )</h1>
+        <p>When the [[DefineOwnProperty]] internal method of an Array exotic object _A_ is called with property key _P_, and Property Descriptor _Desc_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: IsPropertyKey(_P_) is *true*.
+          1. If _P_ is `"length"`, then
+            1. Return ? ArraySetLength(_A_, _Desc_).
+          1. Else if _P_ is an array index, then
+            1. Let _oldLenDesc_ be OrdinaryGetOwnProperty(_A_, `"length"`).
+            1. Assert: _oldLenDesc_ will never be *undefined* or an accessor descriptor because Array objects are created with a length data property that cannot be deleted or reconfigured.
+            1. Let _oldLen_ be _oldLenDesc_.[[Value]].
+            1. Let _index_ be ! ToUint32(_P_).
+            1. If _index_ &ge; _oldLen_ and _oldLenDesc_.[[Writable]] is *false*, return *false*.
+            1. Let _succeeded_ be ! OrdinaryDefineOwnProperty(_A_, _P_, _Desc_).
+            1. If _succeeded_ is *false*, return *false*.
+            1. If _index_ &ge; _oldLen_, then
+              1. Set _oldLenDesc_.[[Value]] to _index_ + 1.
+              1. Let _succeeded_ be OrdinaryDefineOwnProperty(_A_, `"length"`, _oldLenDesc_).
+              1. Assert: _succeeded_ is *true*.
+            1. Return *true*.
+          1. Return OrdinaryDefineOwnProperty(_A_, _P_, _Desc_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.2.2" -->
+      <emu-clause id="sec-arraycreate" aoid="ArrayCreate">
+        <h1>ArrayCreate ( _length_ [ , _proto_ ] )</h1>
+        <p>The abstract operation ArrayCreate with argument _length_ (either 0 or a positive integer) and optional argument _proto_ is used to specify the creation of new Array exotic objects. It performs the following steps:</p>
+        <emu-alg>
+          1. Assert: _length_ is an integer Number &ge; 0.
+          1. If _length_ is *-0*, set _length_ to *+0*.
+          1. If _length_&gt;2<sup>32</sup>-1, throw a *RangeError* exception.
+          1. If _proto_ is not present, set _proto_ to the intrinsic object %ArrayPrototype%.
+          1. Let _A_ be a newly created Array exotic object.
+          1. Set _A_'s essential internal methods except for [[DefineOwnProperty]] to the default ordinary object definitions specified in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>.
+          1. Set _A_.[[DefineOwnProperty]] as specified in <emu-xref href="#sec-array-exotic-objects-defineownproperty-p-desc"></emu-xref>.
+          1. Set _A_.[[Prototype]] to _proto_.
+          1. Set _A_.[[Extensible]] to *true*.
+          1. Perform ! OrdinaryDefineOwnProperty(_A_, `"length"`, PropertyDescriptor{[[Value]]: _length_, [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *false*}).
+          1. Return _A_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.2.3" -->
+      <emu-clause id="sec-arrayspeciescreate" aoid="ArraySpeciesCreate">
+        <h1>ArraySpeciesCreate ( _originalArray_, _length_ )</h1>
+        <p>The abstract operation ArraySpeciesCreate with arguments _originalArray_ and _length_ is used to specify the creation of a new Array object using a constructor function that is derived from _originalArray_. It performs the following steps:</p>
+        <emu-alg>
+          1. Assert: _length_ is an integer Number &ge; 0.
+          1. If _length_ is *-0*, set _length_ to *+0*.
+          1. Let _isArray_ be ? IsArray(_originalArray_).
+          1. If _isArray_ is *false*, return ? ArrayCreate(_length_).
+          1. Let _C_ be ? Get(_originalArray_, `"constructor"`).
+          1. If IsConstructor(_C_) is *true*, then
+            1. Let _thisRealm_ be the current Realm Record.
+            1. Let _realmC_ be ? GetFunctionRealm(_C_).
+            1. If _thisRealm_ and _realmC_ are not the same Realm Record, then
+              1. If SameValue(_C_, _realmC_.[[Intrinsics]].[[%Array%]]) is *true*, set _C_ to *undefined*.
+          1. If Type(_C_) is Object, then
+            1. Set _C_ to ? Get(_C_, @@species).
+            1. If _C_ is *null*, set _C_ to *undefined*.
+          1. If _C_ is *undefined*, return ? ArrayCreate(_length_).
+          1. If IsConstructor(_C_) is *false*, throw a *TypeError* exception.
+          1. Return ? Construct(_C_, &laquo; _length_ &raquo;).
+        </emu-alg>
+        <emu-note>
+          <p>If _originalArray_ was created using the standard built-in Array constructor for a realm that is not the realm of the running execution context, then a new Array is created using the realm of the running execution context. This maintains compatibility with Web browsers that have historically had that behaviour for the Array.prototype methods that now are defined using ArraySpeciesCreate.</p>
+        </emu-note>
+      </emu-clause>
+
+      <!-- es6num="9.4.2.4" -->
+      <emu-clause id="sec-arraysetlength" aoid="ArraySetLength">
+        <h1>ArraySetLength ( _A_, _Desc_ )</h1>
+        <p>When the abstract operation ArraySetLength is called with an Array exotic object _A_, and Property Descriptor _Desc_, the following steps are taken:</p>
+        <emu-alg>
+          1. If _Desc_.[[Value]] is absent, then
+            1. Return OrdinaryDefineOwnProperty(_A_, `"length"`, _Desc_).
+          1. Let _newLenDesc_ be a copy of _Desc_.
+          1. Let _newLen_ be ? ToUint32(_Desc_.[[Value]]).
+          1. Let _numberLen_ be ? ToNumber(_Desc_.[[Value]]).
+          1. If _newLen_ &ne; _numberLen_, throw a *RangeError* exception.
+          1. Set _newLenDesc_.[[Value]] to _newLen_.
+          1. Let _oldLenDesc_ be OrdinaryGetOwnProperty(_A_, `"length"`).
+          1. Assert: _oldLenDesc_ will never be *undefined* or an accessor descriptor because Array objects are created with a length data property that cannot be deleted or reconfigured.
+          1. Let _oldLen_ be _oldLenDesc_.[[Value]].
+          1. If _newLen_ &ge; _oldLen_, then
+            1. Return OrdinaryDefineOwnProperty(_A_, `"length"`, _newLenDesc_).
+          1. If _oldLenDesc_.[[Writable]] is *false*, return *false*.
+          1. If _newLenDesc_.[[Writable]] is absent or has the value *true*, let _newWritable_ be *true*.
+          1. Else,
+            1. Need to defer setting the [[Writable]] attribute to *false* in case any elements cannot be deleted.
+            1. Let _newWritable_ be *false*.
+            1. Set _newLenDesc_.[[Writable]] to *true*.
+          1. Let _succeeded_ be ! OrdinaryDefineOwnProperty(_A_, `"length"`, _newLenDesc_).
+          1. If _succeeded_ is *false*, return *false*.
+          1. Repeat, while _newLen_ &lt; _oldLen_,
+            1. Set _oldLen_ to _oldLen_ - 1.
+            1. Let _deleteSucceeded_ be ! _A_.[[Delete]](! ToString(_oldLen_)).
+            1. If _deleteSucceeded_ is *false*, then
+              1. Set _newLenDesc_.[[Value]] to _oldLen_ + 1.
+              1. If _newWritable_ is *false*, set _newLenDesc_.[[Writable]] to *false*.
+              1. Let _succeeded_ be ! OrdinaryDefineOwnProperty(_A_, `"length"`, _newLenDesc_).
+              1. Return *false*.
+          1. If _newWritable_ is *false*, then
+            1. Return OrdinaryDefineOwnProperty(_A_, `"length"`, PropertyDescriptor{[[Writable]]: *false*}). This call will always return *true*.
+          1. Return *true*.
+        </emu-alg>
+        <emu-note>
+          <p>In steps 3 and 4, if _Desc_.[[Value]] is an object then its `valueOf` method is called twice. This is legacy behaviour that was specified with this effect starting with the 2<sup>nd</sup> Edition of this specification.</p>
+        </emu-note>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="9.4.3" -->
+    <emu-clause id="sec-string-exotic-objects">
+      <h1>String Exotic Objects</h1>
+      <p>A <em>String object</em> is an exotic object that encapsulates a String value and exposes virtual integer indexed data properties corresponding to the individual code unit elements of the String value. String exotic objects always have a data property named `"length"` whose value is the number of code unit elements in the encapsulated String value. Both the code unit data properties and the `"length"` property are non-writable and non-configurable.</p>
+      <p>String exotic objects have the same internal slots as ordinary objects. They also have a [[StringData]] internal slot.</p>
+      <p>String exotic objects provide alternative definitions for the following internal methods. All of the other String exotic object essential internal methods that are not defined below are as specified in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>.</p>
+
+      <!-- es6num="9.4.3.1" -->
+      <emu-clause id="sec-string-exotic-objects-getownproperty-p">
+        <h1>[[GetOwnProperty]] ( _P_ )</h1>
+        <p>When the [[GetOwnProperty]] internal method of a String exotic object _S_ is called with property key _P_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: IsPropertyKey(_P_) is *true*.
+          1. Let _desc_ be OrdinaryGetOwnProperty(_S_, _P_).
+          1. If _desc_ is not *undefined*, return _desc_.
+          1. Return ! StringGetOwnProperty(_S_, _P_).
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-string-exotic-objects-defineownproperty-p-desc">
+        <h1>[[DefineOwnProperty]] ( _P_, _Desc_ )</h1>
+        <p>When the [[DefineOwnProperty]] internal method of a String exotic object _S_ is called with property key _P_, and Property Descriptor _Desc_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: IsPropertyKey(_P_) is *true*.
+          1. Let _stringDesc_ be ! StringGetOwnProperty(_S_, _P_).
+          1. If _stringDesc_ is not *undefined*, then
+            1. Let _extensible_ be _S_.[[Extensible]].
+            1. Return ! IsCompatiblePropertyDescriptor(_extensible_, _Desc_, _stringDesc_).
+          1. Return ! OrdinaryDefineOwnProperty(_S_, _P_, _Desc_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.3.3" -->
+      <emu-clause id="sec-string-exotic-objects-ownpropertykeys">
+        <h1>[[OwnPropertyKeys]] ( )</h1>
+        <p>When the [[OwnPropertyKeys]] internal method of a String exotic object _O_ is called, the following steps are taken:</p>
+        <emu-alg>
+          1. Let _keys_ be a new empty List.
+          1. Let _str_ be the String value of _O_.[[StringData]].
+          1. Let _len_ be the length of _str_.
+          1. For each integer _i_ starting with 0 such that _i_ &lt; _len_, in ascending order, do
+            1. Add ! ToString(_i_) as the last element of _keys_.
+          1. For each own property key _P_ of _O_ such that _P_ is an integer index and ToInteger(_P_) &ge; _len_, in ascending numeric index order, do
+            1. Add _P_ as the last element of _keys_.
+          1. For each own property key _P_ of _O_ such that Type(_P_) is String and _P_ is not an integer index, in ascending chronological order of property creation, do
+            1. Add _P_ as the last element of _keys_.
+          1. For each own property key _P_ of _O_ such that Type(_P_) is Symbol, in ascending chronological order of property creation, do
+            1. Add _P_ as the last element of _keys_.
+          1. Return _keys_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.3.4" -->
+      <emu-clause id="sec-stringcreate" aoid="StringCreate">
+        <h1>StringCreate ( _value_, _prototype_ )</h1>
+        <p>The abstract operation StringCreate with arguments _value_ and _prototype_ is used to specify the creation of new String exotic objects. It performs the following steps:</p>
+        <emu-alg>
+          1. Assert: Type(_value_) is String.
+          1. Let _S_ be a newly created String exotic object.
+          1. Set _S_.[[StringData]] to _value_.
+          1. Set _S_'s essential internal methods to the default ordinary object definitions specified in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>.
+          1. Set _S_.[[GetOwnProperty]] as specified in <emu-xref href="#sec-string-exotic-objects-getownproperty-p"></emu-xref>.
+          1. Set _S_.[[DefineOwnProperty]] as specified in <emu-xref href="#sec-string-exotic-objects-defineownproperty-p-desc"></emu-xref>.
+          1. Set _S_.[[OwnPropertyKeys]] as specified in <emu-xref href="#sec-string-exotic-objects-ownpropertykeys"></emu-xref>.
+          1. Set _S_.[[Prototype]] to _prototype_.
+          1. Set _S_.[[Extensible]] to *true*.
+          1. Let _length_ be the number of code unit elements in _value_.
+          1. Perform ! DefinePropertyOrThrow(_S_, `"length"`, PropertyDescriptor{[[Value]]: _length_, [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *false* }).
+          1. Return _S_.
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-stringgetownproperty" aoid="StringGetOwnProperty">
+        <h1>StringGetOwnProperty ( _S_, _P_ )</h1>
+        <p>The abstract operation StringGetOwnProperty called with arguments _S_ and _P_ performs the following steps:</p>
+        <emu-alg>
+          1. Assert: _S_ is an Object that has a [[StringData]] internal slot.
+          1. Assert: IsPropertyKey(_P_) is *true*.
+          1. If Type(_P_) is not String, return *undefined*.
+          1. Let _index_ be ! CanonicalNumericIndexString(_P_).
+          1. If _index_ is *undefined*, return *undefined*.
+          1. If IsInteger(_index_) is *false*, return *undefined*.
+          1. If _index_ = *-0*, return *undefined*.
+          1. Let _str_ be the String value of _S_.[[StringData]].
+          1. Let _len_ be the length of _str_.
+          1. If _index_ &lt; 0 or _len_ &le; _index_, return *undefined*.
+          1. Let _resultStr_ be the String value of length 1, containing one code unit from _str_, specifically the code unit at index _index_.
+          1. Return a PropertyDescriptor{[[Value]]: _resultStr_, [[Writable]]: *false*, [[Enumerable]]: *true*, [[Configurable]]: *false*}.
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="9.4.4" -->
+    <emu-clause id="sec-arguments-exotic-objects">
+      <h1>Arguments Exotic Objects</h1>
+      <p>Most ECMAScript functions make an arguments object available to their code. Depending upon the characteristics of the function definition, its arguments object is either an ordinary object or an <em>arguments exotic object</em>. An arguments exotic object is an exotic object whose array index properties map to the formal parameters bindings of an invocation of its associated ECMAScript function.</p>
+      <p>Arguments exotic objects have the same internal slots as ordinary objects. They also have a [[ParameterMap]] internal slot. Ordinary arguments objects also have a [[ParameterMap]] internal slot whose value is always undefined. For ordinary argument objects the [[ParameterMap]] internal slot is only used by `Object.prototype.toString` (<emu-xref href="#sec-object.prototype.tostring"></emu-xref>) to identify them as such.</p>
+      <p>Arguments exotic objects provide alternative definitions for the following internal methods. All of the other arguments exotic object essential internal methods that are not defined below are as specified in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref></p>
+      <emu-note>
+        <p>The integer indexed data properties of an arguments exotic object whose numeric name values are less than the number of formal parameters of the corresponding function object initially share their values with the corresponding argument bindings in the function's execution context. This means that changing the property changes the corresponding value of the argument binding and vice-versa. This correspondence is broken if such a property is deleted and then redefined or if the property is changed into an accessor property. If the arguments object is an ordinary object, the values of its properties are simply a copy of the arguments passed to the function and there is no dynamic linkage between the property values and the formal parameter values.</p>
+      </emu-note>
+      <emu-note>
+        <p>The ParameterMap object and its property values are used as a device for specifying the arguments object correspondence to argument bindings. The ParameterMap object and the objects that are the values of its properties are not directly observable from ECMAScript code. An ECMAScript implementation does not need to actually create or use such objects to implement the specified semantics.</p>
+      </emu-note>
+      <emu-note>
+        <p>Ordinary arguments objects define a non-configurable accessor property named `"callee"` which throws a *TypeError* exception on access. The `"callee"` property has a more specific meaning for arguments exotic objects, which are created only for some class of non-strict functions. The definition of this property in the ordinary variant exists to ensure that it is not defined in any other manner by conforming ECMAScript implementations.</p>
+      </emu-note>
+      <emu-note>
+        <p>ECMAScript implementations of arguments exotic objects have historically contained an accessor property named `"caller"`. Prior to ECMAScript 2017, this specification included the definition of a throwing `"caller"` property on ordinary arguments objects. Since implementations do not contain this extension any longer, ECMAScript 2017 dropped the requirement for a throwing `"caller"` accessor.</p>
+      </emu-note>
+
+      <!-- es6num="9.4.4.1" -->
+      <emu-clause id="sec-arguments-exotic-objects-getownproperty-p">
+        <h1>[[GetOwnProperty]] ( _P_ )</h1>
+        <p>The [[GetOwnProperty]] internal method of an arguments exotic object when called with a property key _P_ performs the following steps:</p>
+        <emu-alg>
+          1. Let _args_ be the arguments object.
+          1. Let _desc_ be OrdinaryGetOwnProperty(_args_, _P_).
+          1. If _desc_ is *undefined*, return _desc_.
+          1. Let _map_ be _args_.[[ParameterMap]].
+          1. Let _isMapped_ be ! HasOwnProperty(_map_, _P_).
+          1. If _isMapped_ is *true*, then
+            1. Set _desc_.[[Value]] to Get(_map_, _P_).
+          1. Return _desc_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.4.2" -->
+      <emu-clause id="sec-arguments-exotic-objects-defineownproperty-p-desc">
+        <h1>[[DefineOwnProperty]] ( _P_, _Desc_ )</h1>
+        <p>The [[DefineOwnProperty]] internal method of an arguments exotic object when called with a property key _P_ and Property Descriptor _Desc_ performs the following steps:</p>
+        <emu-alg>
+          1. Let _args_ be the arguments object.
+          1. Let _map_ be _args_.[[ParameterMap]].
+          1. Let _isMapped_ be HasOwnProperty(_map_, _P_).
+          1. Let _newArgDesc_ be _Desc_.
+          1. If _isMapped_ is *true* and IsDataDescriptor(_Desc_) is *true*, then
+            1. If _Desc_.[[Value]] is not present and _Desc_.[[Writable]] is present and its value is *false*, then
+              1. Set _newArgDesc_ to a copy of _Desc_.
+              1. Set _newArgDesc_.[[Value]] to Get(_map_, _P_).
+          1. Let _allowed_ be ? OrdinaryDefineOwnProperty(_args_, _P_, _newArgDesc_).
+          1. If _allowed_ is *false*, return *false*.
+          1. If _isMapped_ is *true*, then
+            1. If IsAccessorDescriptor(_Desc_) is *true*, then
+              1. Call _map_.[[Delete]](_P_).
+            1. Else,
+              1. If _Desc_.[[Value]] is present, then
+                1. Let _setStatus_ be Set(_map_, _P_, _Desc_.[[Value]], *false*).
+                1. Assert: _setStatus_ is *true* because formal parameters mapped by argument objects are always writable.
+              1. If _Desc_.[[Writable]] is present and its value is *false*, then
+                1. Call _map_.[[Delete]](_P_).
+          1. Return *true*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.4.3" -->
+      <emu-clause id="sec-arguments-exotic-objects-get-p-receiver">
+        <h1>[[Get]] ( _P_, _Receiver_ )</h1>
+        <p>The [[Get]] internal method of an arguments exotic object when called with a property key _P_ and ECMAScript language value _Receiver_ performs the following steps:</p>
+        <emu-alg>
+          1. Let _args_ be the arguments object.
+          1. Let _map_ be _args_.[[ParameterMap]].
+          1. Let _isMapped_ be ! HasOwnProperty(_map_, _P_).
+          1. If _isMapped_ is *false*, then
+            1. Return ? OrdinaryGet(_args_, _P_, _Receiver_).
+          1. Else _map_ contains a formal parameter mapping for _P_,
+            1. Return Get(_map_, _P_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.4.4" -->
+      <emu-clause id="sec-arguments-exotic-objects-set-p-v-receiver">
+        <h1>[[Set]] ( _P_, _V_, _Receiver_ )</h1>
+        <p>The [[Set]] internal method of an arguments exotic object when called with property key _P_, value _V_, and ECMAScript language value _Receiver_ performs the following steps:</p>
+        <emu-alg>
+          1. Let _args_ be the arguments object.
+          1. If SameValue(_args_, _Receiver_) is *false*, then
+            1. Let _isMapped_ be *false*.
+          1. Else,
+            1. Let _map_ be _args_.[[ParameterMap]].
+            1. Let _isMapped_ be ! HasOwnProperty(_map_, _P_).
+          1. If _isMapped_ is *true*, then
+            1. Let _setStatus_ be Set(_map_, _P_, _V_, *false*).
+            1. Assert: _setStatus_ is *true* because formal parameters mapped by argument objects are always writable.
+          1. Return ? OrdinarySet(_args_, _P_, _V_, _Receiver_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.4.5" -->
+      <emu-clause id="sec-arguments-exotic-objects-delete-p">
+        <h1>[[Delete]] ( _P_ )</h1>
+        <p>The [[Delete]] internal method of an arguments exotic object when called with a property key _P_ performs the following steps:</p>
+        <emu-alg>
+          1. Let _args_ be the arguments object.
+          1. Let _map_ be _args_.[[ParameterMap]].
+          1. Let _isMapped_ be ! HasOwnProperty(_map_, _P_).
+          1. Let _result_ be ? OrdinaryDelete(_args_, _P_).
+          1. If _result_ is *true* and _isMapped_ is *true*, then
+            1. Call _map_.[[Delete]](_P_).
+          1. Return _result_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.4.6" -->
+      <emu-clause id="sec-createunmappedargumentsobject" aoid="CreateUnmappedArgumentsObject">
+        <h1>CreateUnmappedArgumentsObject ( _argumentsList_ )</h1>
+        <p>The abstract operation CreateUnmappedArgumentsObject called with an argument _argumentsList_ performs the following steps:</p>
+        <emu-alg>
+          1. Let _len_ be the number of elements in _argumentsList_.
+          1. Let _obj_ be ObjectCreate(%ObjectPrototype%, &laquo; [[ParameterMap]] &raquo;).
+          1. Set _obj_.[[ParameterMap]] to *undefined*.
+          1. Perform DefinePropertyOrThrow(_obj_, `"length"`, PropertyDescriptor{[[Value]]: _len_, [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *true*}).
+          1. Let _index_ be 0.
+          1. Repeat, while _index_ &lt; _len_,
+            1. Let _val_ be _argumentsList_[_index_].
+            1. Perform CreateDataProperty(_obj_, ! ToString(_index_), _val_).
+            1. Let _index_ be _index_ + 1.
+          1. Perform ! DefinePropertyOrThrow(_obj_, @@iterator, PropertyDescriptor {[[Value]]: %ArrayProto_values%, [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *true*}).
+          1. Perform ! DefinePropertyOrThrow(_obj_, `"callee"`, PropertyDescriptor {[[Get]]: %ThrowTypeError%, [[Set]]: %ThrowTypeError%, [[Enumerable]]: *false*, [[Configurable]]: *false*}).
+          1. Return _obj_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.4.7" -->
+      <emu-clause id="sec-createmappedargumentsobject" aoid="CreateMappedArgumentsObject">
+        <h1>CreateMappedArgumentsObject ( _func_, _formals_, _argumentsList_, _env_ )</h1>
+        <p>The abstract operation CreateMappedArgumentsObject is called with object _func_, Parse Node _formals_, List _argumentsList_, and Environment Record _env_. The following steps are performed:</p>
+        <emu-alg>
+          1. Assert: _formals_ does not contain a rest parameter, any binding patterns, or any initializers. It may contain duplicate identifiers.
+          1. Let _len_ be the number of elements in _argumentsList_.
+          1. Let _obj_ be a newly created arguments exotic object with a [[ParameterMap]] internal slot.
+          1. Set _obj_.[[GetOwnProperty]] as specified in <emu-xref href="#sec-arguments-exotic-objects-getownproperty-p"></emu-xref>.
+          1. Set _obj_.[[DefineOwnProperty]] as specified in <emu-xref href="#sec-arguments-exotic-objects-defineownproperty-p-desc"></emu-xref>.
+          1. Set _obj_.[[Get]] as specified in <emu-xref href="#sec-arguments-exotic-objects-get-p-receiver"></emu-xref>.
+          1. Set _obj_.[[Set]] as specified in <emu-xref href="#sec-arguments-exotic-objects-set-p-v-receiver"></emu-xref>.
+          1. Set _obj_.[[Delete]] as specified in <emu-xref href="#sec-arguments-exotic-objects-delete-p"></emu-xref>.
+          1. Set the remainder of _obj_'s essential internal methods to the default ordinary object definitions specified in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>.
+          1. Set _obj_.[[Prototype]] to %ObjectPrototype%.
+          1. Set _obj_.[[Extensible]] to *true*.
+          1. Let _map_ be ObjectCreate(*null*).
+          1. Set _obj_.[[ParameterMap]] to _map_.
+          1. Let _parameterNames_ be the BoundNames of _formals_.
+          1. Let _numberOfParameters_ be the number of elements in _parameterNames_.
+          1. Let _index_ be 0.
+          1. Repeat, while _index_ &lt; _len_,
+            1. Let _val_ be _argumentsList_[_index_].
+            1. Perform CreateDataProperty(_obj_, ! ToString(_index_), _val_).
+            1. Let _index_ be _index_ + 1.
+          1. Perform DefinePropertyOrThrow(_obj_, `"length"`, PropertyDescriptor{[[Value]]: _len_, [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *true*}).
+          1. Let _mappedNames_ be a new empty List.
+          1. Let _index_ be _numberOfParameters_ - 1.
+          1. Repeat, while _index_ &ge; 0,
+            1. Let _name_ be _parameterNames_[_index_].
+            1. If _name_ is not an element of _mappedNames_, then
+              1. Add _name_ as an element of the list _mappedNames_.
+              1. If _index_ &lt; _len_, then
+                1. Let _g_ be MakeArgGetter(_name_, _env_).
+                1. Let _p_ be MakeArgSetter(_name_, _env_).
+                1. Perform _map_.[[DefineOwnProperty]](! ToString(_index_), PropertyDescriptor{[[Set]]: _p_, [[Get]]: _g_, [[Enumerable]]: *false*, [[Configurable]]: *true*}).
+            1. Let _index_ be _index_ - 1.
+          1. Perform ! DefinePropertyOrThrow(_obj_, @@iterator, PropertyDescriptor {[[Value]]: %ArrayProto_values%, [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *true*}).
+          1. Perform ! DefinePropertyOrThrow(_obj_, `"callee"`, PropertyDescriptor {[[Value]]: _func_, [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *true*}).
+          1. Return _obj_.
+        </emu-alg>
+
+        <!-- es6num="9.4.4.7.1" -->
+        <emu-clause id="sec-makearggetter" aoid="MakeArgGetter">
+          <h1>MakeArgGetter ( _name_, _env_ )</h1>
+          <p>The abstract operation MakeArgGetter called with String _name_ and Environment Record _env_ creates a built-in function object that when executed returns the value bound for _name_ in _env_. It performs the following steps:</p>
+          <emu-alg>
+            1. Let _realm_ be the current Realm Record.
+            1. Let _steps_ be the steps of an ArgGetter function as specified below.
+            1. Let _getter_ be CreateBuiltinFunction(_realm_, _steps_, %FunctionPrototype%, &laquo; [[Name]], [[Env]] &raquo;).
+            1. Set _getter_.[[Name]] to _name_.
+            1. Set _getter_.[[Env]] to _env_.
+            1. Return _getter_.
+          </emu-alg>
+          <p>An ArgGetter function is an anonymous built-in function with [[Name]] and [[Env]] internal slots. When an ArgGetter function _f_ that expects no arguments is called it performs the following steps:</p>
+          <emu-alg>
+            1. Let _name_ be _f_.[[Name]].
+            1. Let _env_ be _f_.[[Env]].
+            1. Return _env_.GetBindingValue(_name_, *false*).
+          </emu-alg>
+          <emu-note>
+            <p>ArgGetter functions are never directly accessible to ECMAScript code.</p>
+          </emu-note>
+        </emu-clause>
+
+        <!-- es6num="9.4.4.7.2" -->
+        <emu-clause id="sec-makeargsetter" aoid="MakeArgSetter">
+          <h1>MakeArgSetter ( _name_, _env_ )</h1>
+          <p>The abstract operation MakeArgSetter called with String _name_ and Environment Record _env_ creates a built-in function object that when executed sets the value bound for _name_ in _env_. It performs the following steps:</p>
+          <emu-alg>
+            1. Let _realm_ be the current Realm Record.
+            1. Let _steps_ be the steps of an ArgSetter function as specified below.
+            1. Let _setter_ be CreateBuiltinFunction(_realm_, _steps_, %FunctionPrototype%, &laquo; [[Name]], [[Env]] &raquo;).
+            1. Set _setter_.[[Name]] to _name_.
+            1. Set _setter_.[[Env]] to _env_.
+            1. Return _setter_.
+          </emu-alg>
+          <p>An ArgSetter function is an anonymous built-in function with [[Name]] and [[Env]] internal slots. When an ArgSetter function _f_ is called with argument _value_ it performs the following steps:</p>
+          <emu-alg>
+            1. Let _name_ be _f_.[[Name]].
+            1. Let _env_ be _f_.[[Env]].
+            1. Return _env_.SetMutableBinding(_name_, _value_, *false*).
+          </emu-alg>
+          <emu-note>
+            <p>ArgSetter functions are never directly accessible to ECMAScript code.</p>
+          </emu-note>
+        </emu-clause>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="9.4.5" -->
+    <emu-clause id="sec-integer-indexed-exotic-objects">
+      <h1>Integer Indexed Exotic Objects</h1>
+      <p>An <em>Integer Indexed object</em> is an exotic object that performs special handling of integer index property keys.</p>
+      <p>Integer Indexed exotic objects have the same internal slots as ordinary objects and additionally [[ViewedArrayBuffer]], [[ArrayLength]], [[ByteOffset]], and [[TypedArrayName]] internal slots.</p>
+      <p>Integer Indexed exotic objects provide alternative definitions for the following internal methods. All of the other Integer Indexed exotic object essential internal methods that are not defined below are as specified in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>.</p>
+
+      <!-- es6num="9.4.5.1" -->
+      <emu-clause id="sec-integer-indexed-exotic-objects-getownproperty-p">
+        <h1>[[GetOwnProperty]] ( _P_ )</h1>
+        <p>When the [[GetOwnProperty]] internal method of an Integer Indexed exotic object _O_ is called with property key _P_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: IsPropertyKey(_P_) is *true*.
+          1. Assert: _O_ is an Object that has a [[ViewedArrayBuffer]] internal slot.
+          1. If Type(_P_) is String, then
+            1. Let _numericIndex_ be ! CanonicalNumericIndexString(_P_).
+            1. If _numericIndex_ is not *undefined*, then
+              1. Let _value_ be ? IntegerIndexedElementGet(_O_, _numericIndex_).
+              1. If _value_ is *undefined*, return *undefined*.
+              1. Return a PropertyDescriptor{[[Value]]: _value_, [[Writable]]: *true*, [[Enumerable]]: *true*, [[Configurable]]: *false*}.
+          1. Return OrdinaryGetOwnProperty(_O_, _P_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.5.2" -->
+      <emu-clause id="sec-integer-indexed-exotic-objects-hasproperty-p">
+        <h1>[[HasProperty]]( _P_ )</h1>
+        <p>When the [[HasProperty]] internal method of an Integer Indexed exotic object _O_ is called with property key _P_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: IsPropertyKey(_P_) is *true*.
+          1. Assert: _O_ is an Object that has a [[ViewedArrayBuffer]] internal slot.
+          1. If Type(_P_) is String, then
+            1. Let _numericIndex_ be ! CanonicalNumericIndexString(_P_).
+            1. If _numericIndex_ is not *undefined*, then
+              1. Let _buffer_ be _O_.[[ViewedArrayBuffer]].
+              1. If IsDetachedBuffer(_buffer_) is *true*, throw a *TypeError* exception.
+              1. If IsInteger(_numericIndex_) is *false*, return *false*.
+              1. If _numericIndex_ = *-0*, return *false*.
+              1. If _numericIndex_ &lt; 0, return *false*.
+              1. If _numericIndex_ &ge; _O_.[[ArrayLength]], return *false*.
+              1. Return *true*.
+          1. Return ? OrdinaryHasProperty(_O_, _P_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.5.3" -->
+      <emu-clause id="sec-integer-indexed-exotic-objects-defineownproperty-p-desc">
+        <h1>[[DefineOwnProperty]] ( _P_, _Desc_ )</h1>
+        <p>When the [[DefineOwnProperty]] internal method of an Integer Indexed exotic object _O_ is called with property key _P_, and Property Descriptor _Desc_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: IsPropertyKey(_P_) is *true*.
+          1. Assert: _O_ is an Object that has a [[ViewedArrayBuffer]] internal slot.
+          1. If Type(_P_) is String, then
+            1. Let _numericIndex_ be ! CanonicalNumericIndexString(_P_).
+            1. If _numericIndex_ is not *undefined*, then
+              1. If IsInteger(_numericIndex_) is *false*, return *false*.
+              1. If _numericIndex_ = *-0*, return *false*.
+              1. If _numericIndex_ &lt; 0, return *false*.
+              1. Let _length_ be _O_.[[ArrayLength]].
+              1. If _numericIndex_ &ge; _length_, return *false*.
+              1. If IsAccessorDescriptor(_Desc_) is *true*, return *false*.
+              1. If _Desc_ has a [[Configurable]] field and if _Desc_.[[Configurable]] is *true*, return *false*.
+              1. If _Desc_ has an [[Enumerable]] field and if _Desc_.[[Enumerable]] is *false*, return *false*.
+              1. If _Desc_ has a [[Writable]] field and if _Desc_.[[Writable]] is *false*, return *false*.
+              1. If _Desc_ has a [[Value]] field, then
+                1. Let _value_ be _Desc_.[[Value]].
+                1. Return ? IntegerIndexedElementSet(_O_, _numericIndex_, _value_).
+              1. Return *true*.
+          1. Return ! OrdinaryDefineOwnProperty(_O_, _P_, _Desc_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.5.4" -->
+      <emu-clause id="sec-integer-indexed-exotic-objects-get-p-receiver">
+        <h1>[[Get]] ( _P_, _Receiver_ )</h1>
+        <p>When the [[Get]] internal method of an Integer Indexed exotic object _O_ is called with property key _P_ and ECMAScript language value _Receiver_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: IsPropertyKey(_P_) is *true*.
+          1. If Type(_P_) is String, then
+            1. Let _numericIndex_ be ! CanonicalNumericIndexString(_P_).
+            1. If _numericIndex_ is not *undefined*, then
+              1. Return ? IntegerIndexedElementGet(_O_, _numericIndex_).
+          1. Return ? OrdinaryGet(_O_, _P_, _Receiver_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.5.5" -->
+      <emu-clause id="sec-integer-indexed-exotic-objects-set-p-v-receiver">
+        <h1>[[Set]] ( _P_, _V_, _Receiver_ )</h1>
+        <p>When the [[Set]] internal method of an Integer Indexed exotic object _O_ is called with property key _P_, value _V_, and ECMAScript language value _Receiver_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: IsPropertyKey(_P_) is *true*.
+          1. If Type(_P_) is String, then
+            1. Let _numericIndex_ be ! CanonicalNumericIndexString(_P_).
+            1. If _numericIndex_ is not *undefined*, then
+              1. Return ? IntegerIndexedElementSet(_O_, _numericIndex_, _V_).
+          1. Return ? OrdinarySet(_O_, _P_, _V_, _Receiver_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.5.6" -->
+      <emu-clause id="sec-integer-indexed-exotic-objects-ownpropertykeys">
+        <h1>[[OwnPropertyKeys]] ( )</h1>
+        <p>When the [[OwnPropertyKeys]] internal method of an Integer Indexed exotic object _O_ is called, the following steps are taken:</p>
+        <emu-alg>
+          1. Let _keys_ be a new empty List.
+          1. Assert: _O_ is an Object that has [[ViewedArrayBuffer]], [[ArrayLength]], [[ByteOffset]], and [[TypedArrayName]] internal slots.
+          1. Let _len_ be _O_.[[ArrayLength]].
+          1. For each integer _i_ starting with 0 such that _i_ &lt; _len_, in ascending order, do
+            1. Add ! ToString(_i_) as the last element of _keys_.
+          1. For each own property key _P_ of _O_ such that Type(_P_) is String and _P_ is not an integer index, in ascending chronological order of property creation, do
+            1. Add _P_ as the last element of _keys_.
+          1. For each own property key _P_ of _O_ such that Type(_P_) is Symbol, in ascending chronological order of property creation, do
+            1. Add _P_ as the last element of _keys_.
+          1. Return _keys_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.5.7" -->
+      <emu-clause id="sec-integerindexedobjectcreate" aoid="IntegerIndexedObjectCreate">
+        <h1>IntegerIndexedObjectCreate ( _prototype_, _internalSlotsList_ )</h1>
+        <p>The abstract operation IntegerIndexedObjectCreate with arguments _prototype_ and _internalSlotsList_ is used to specify the creation of new Integer Indexed exotic objects. The argument _internalSlotsList_ is a List of the names of additional internal slots that must be defined as part of the object. IntegerIndexedObjectCreate performs the following steps:</p>
+        <emu-alg>
+          1. Assert: _internalSlotsList_ contains the names [[ViewedArrayBuffer]], [[ArrayLength]], [[ByteOffset]], and [[TypedArrayName]].
+          1. Let _A_ be a newly created object with an internal slot for each name in _internalSlotsList_.
+          1. Set _A_'s essential internal methods to the default ordinary object definitions specified in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>.
+          1. Set _A_.[[GetOwnProperty]] as specified in <emu-xref href="#sec-integer-indexed-exotic-objects-getownproperty-p"></emu-xref>.
+          1. Set _A_.[[HasProperty]] as specified in <emu-xref href="#sec-integer-indexed-exotic-objects-hasproperty-p"></emu-xref>.
+          1. Set _A_.[[DefineOwnProperty]] as specified in <emu-xref href="#sec-integer-indexed-exotic-objects-defineownproperty-p-desc"></emu-xref>.
+          1. Set _A_.[[Get]] as specified in <emu-xref href="#sec-integer-indexed-exotic-objects-get-p-receiver"></emu-xref>.
+          1. Set _A_.[[Set]] as specified in <emu-xref href="#sec-integer-indexed-exotic-objects-set-p-v-receiver"></emu-xref>.
+          1. Set _A_.[[OwnPropertyKeys]] as specified in <emu-xref href="#sec-integer-indexed-exotic-objects-ownpropertykeys"></emu-xref>.
+          1. Set _A_.[[Prototype]] to _prototype_.
+          1. Set _A_.[[Extensible]] to *true*.
+          1. Return _A_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.5.8" -->
+      <emu-clause id="sec-integerindexedelementget" aoid="IntegerIndexedElementGet">
+        <h1>IntegerIndexedElementGet ( _O_, _index_ )</h1>
+        <p>The abstract operation IntegerIndexedElementGet with arguments _O_ and _index_ performs the following steps:</p>
+        <emu-alg>
+          1. Assert: Type(_index_) is Number.
+          1. Assert: _O_ is an Object that has [[ViewedArrayBuffer]], [[ArrayLength]], [[ByteOffset]], and [[TypedArrayName]] internal slots.
+          1. Let _buffer_ be _O_.[[ViewedArrayBuffer]].
+          1. If IsDetachedBuffer(_buffer_) is *true*, throw a *TypeError* exception.
+          1. If IsInteger(_index_) is *false*, return *undefined*.
+          1. If _index_ = *-0*, return *undefined*.
+          1. Let _length_ be _O_.[[ArrayLength]].
+          1. If _index_ &lt; 0 or _index_ &ge; _length_, return *undefined*.
+          1. Let _offset_ be _O_.[[ByteOffset]].
+          1. Let _arrayTypeName_ be the String value of _O_.[[TypedArrayName]].
+          1. Let _elementSize_ be the Number value of the Element Size value specified in <emu-xref href="#table-49"></emu-xref> for _arrayTypeName_.
+          1. Let _indexedPosition_ be (_index_ &times; _elementSize_) + _offset_.
+          1. Let _elementType_ be the String value of the Element Type value in <emu-xref href="#table-49"></emu-xref> for _arrayTypeName_.
+          1. Return GetValueFromBuffer(_buffer_, _indexedPosition_, _elementType_, *true*, `"Unordered"`).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.5.9" -->
+      <emu-clause id="sec-integerindexedelementset" aoid="IntegerIndexedElementSet">
+        <h1>IntegerIndexedElementSet ( _O_, _index_, _value_ )</h1>
+        <p>The abstract operation IntegerIndexedElementSet with arguments _O_, _index_, and _value_ performs the following steps:</p>
+        <emu-alg>
+          1. Assert: Type(_index_) is Number.
+          1. Assert: _O_ is an Object that has [[ViewedArrayBuffer]], [[ArrayLength]], [[ByteOffset]], and [[TypedArrayName]] internal slots.
+          1. Let _numValue_ be ? ToNumber(_value_).
+          1. Let _buffer_ be _O_.[[ViewedArrayBuffer]].
+          1. If IsDetachedBuffer(_buffer_) is *true*, throw a *TypeError* exception.
+          1. If IsInteger(_index_) is *false*, return *false*.
+          1. If _index_ = *-0*, return *false*.
+          1. Let _length_ be _O_.[[ArrayLength]].
+          1. If _index_ &lt; 0 or _index_ &ge; _length_, return *false*.
+          1. Let _offset_ be _O_.[[ByteOffset]].
+          1. Let _arrayTypeName_ be the String value of _O_.[[TypedArrayName]].
+          1. Let _elementSize_ be the Number value of the Element Size value specified in <emu-xref href="#table-49"></emu-xref> for _arrayTypeName_.
+          1. Let _indexedPosition_ be (_index_ &times; _elementSize_) + _offset_.
+          1. Let _elementType_ be the String value of the Element Type value in <emu-xref href="#table-49"></emu-xref> for _arrayTypeName_.
+          1. Perform SetValueInBuffer(_buffer_, _indexedPosition_, _elementType_, _numValue_, *true*, `"Unordered"`).
+          1. Return *true*.
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="9.4.6" -->
+    <emu-clause id="sec-module-namespace-exotic-objects">
+      <h1>Module Namespace Exotic Objects</h1>
+      <p>A <em>module namespace object</em> is an exotic object that exposes the bindings exported from an ECMAScript |Module| (See <emu-xref href="#sec-exports"></emu-xref>). There is a one-to-one correspondence between the String-keyed own properties of a module namespace exotic object and the binding names exported by the |Module|. The exported bindings include any bindings that are indirectly exported using `export *` export items. Each String-valued own property key is the StringValue of the corresponding exported binding name. These are the only String-keyed properties of a module namespace exotic object. Each such property has the attributes { [[Writable]]: *true*, [[Enumerable]]: *true*, [[Configurable]]: *false* }. Module namespace objects are not extensible.</p>
+      <p>Module namespace objects have the internal slots defined in <emu-xref href="#table-29"></emu-xref>.</p>
+      <emu-table id="table-29" caption="Internal Slots of Module Namespace Exotic Objects">
+        <table>
+          <tbody>
+          <tr>
+            <th>
+              Internal Slot
+            </th>
+            <th>
+              Type
+            </th>
+            <th>
+              Description
+            </th>
+          </tr>
+          <tr>
+            <td>
+              [[Module]]
+            </td>
+            <td>
+              Module Record
+            </td>
+            <td>
+              The Module Record whose exports this namespace exposes.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              [[Exports]]
+            </td>
+            <td>
+              List of String
+            </td>
+            <td>
+              A List containing the String values of the exported names exposed as own properties of this object. The list is ordered as if an Array of those String values had been sorted using `Array.prototype.sort` using *undefined* as _comparefn_.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              [[Prototype]]
+            </td>
+            <td>
+              Null
+            </td>
+            <td>
+              This slot always contains the value *null* (see <emu-xref href="#sec-module-namespace-exotic-objects-setprototypeof-v"></emu-xref>).
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </emu-table>
+      <p>Module namespace exotic objects provide alternative definitions for all of the internal methods except [[GetPrototypeOf]], which behaves as defined in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots-getprototypeof"></emu-xref>.</p>
+
+      <!-- es6num="9.4.6.2" -->
+      <emu-clause id="sec-module-namespace-exotic-objects-setprototypeof-v">
+        <h1>[[SetPrototypeOf]] ( _V_ )</h1>
+        <p>When the [[SetPrototypeOf]] internal method of a module namespace exotic object _O_ is called with argument _V_, the following steps are taken:</p>
+        <emu-alg>
+          1. Return ? SetImmutablePrototype(_O_, _V_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.6.3" -->
+      <emu-clause id="sec-module-namespace-exotic-objects-isextensible">
+        <h1>[[IsExtensible]] ( )</h1>
+        <p>When the [[IsExtensible]] internal method of a module namespace exotic object _O_ is called, the following steps are taken:</p>
+        <emu-alg>
+          1. Return *false*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.6.4" -->
+      <emu-clause id="sec-module-namespace-exotic-objects-preventextensions">
+        <h1>[[PreventExtensions]] ( )</h1>
+        <p>When the [[PreventExtensions]] internal method of a module namespace exotic object _O_ is called, the following steps are taken:</p>
+        <emu-alg>
+          1. Return *true*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.6.5" -->
+      <emu-clause id="sec-module-namespace-exotic-objects-getownproperty-p">
+        <h1>[[GetOwnProperty]] ( _P_ )</h1>
+        <p>When the [[GetOwnProperty]] internal method of a module namespace exotic object _O_ is called with property key _P_, the following steps are taken:</p>
+        <emu-alg>
+          1. If Type(_P_) is Symbol, return OrdinaryGetOwnProperty(_O_, _P_).
+          1. Let _exports_ be _O_.[[Exports]].
+          1. If _P_ is not an element of _exports_, return *undefined*.
+          1. Let _value_ be ? _O_.[[Get]](_P_, _O_).
+          1. Return PropertyDescriptor{[[Value]]: _value_, [[Writable]]: *true*, [[Enumerable]]: *true*, [[Configurable]]: *false* }.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.6.6" -->
+      <emu-clause id="sec-module-namespace-exotic-objects-defineownproperty-p-desc">
+        <h1>[[DefineOwnProperty]] ( _P_, _Desc_ )</h1>
+        <p>When the [[DefineOwnProperty]] internal method of a module namespace exotic object _O_ is called with property key _P_ and Property Descriptor _Desc_, the following steps are taken:</p>
+        <emu-alg>
+          1. Return *false*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.6.7" -->
+      <emu-clause id="sec-module-namespace-exotic-objects-hasproperty-p">
+        <h1>[[HasProperty]] ( _P_ )</h1>
+        <p>When the [[HasProperty]] internal method of a module namespace exotic object _O_ is called with property key _P_, the following steps are taken:</p>
+        <emu-alg>
+          1. If Type(_P_) is Symbol, return OrdinaryHasProperty(_O_, _P_).
+          1. Let _exports_ be _O_.[[Exports]].
+          1. If _P_ is an element of _exports_, return *true*.
+          1. Return *false*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.6.8" -->
+      <emu-clause id="sec-module-namespace-exotic-objects-get-p-receiver">
+        <h1>[[Get]] ( _P_, _Receiver_ )</h1>
+        <p>When the [[Get]] internal method of a module namespace exotic object _O_ is called with property key _P_ and ECMAScript language value _Receiver_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: IsPropertyKey(_P_) is *true*.
+          1. If Type(_P_) is Symbol, then
+            1. Return ? OrdinaryGet(_O_, _P_, _Receiver_).
+          1. Let _exports_ be _O_.[[Exports]].
+          1. If _P_ is not an element of _exports_, return *undefined*.
+          1. Let _m_ be _O_.[[Module]].
+          1. Let _binding_ be ! _m_.ResolveExport(_P_, &laquo; &raquo;).
+          1. Assert: _binding_ is a ResolvedBinding Record.
+          1. Let _targetModule_ be _binding_.[[Module]].
+          1. Assert: _targetModule_ is not *undefined*.
+          1. Let _targetEnv_ be _targetModule_.[[Environment]].
+          1. If _targetEnv_ is *undefined*, throw a *ReferenceError* exception.
+          1. Let _targetEnvRec_ be _targetEnv_'s EnvironmentRecord.
+          1. Return ? _targetEnvRec_.GetBindingValue(_binding_.[[BindingName]], *true*).
+        </emu-alg>
+        <emu-note>
+          <p>ResolveExport is idempotent and side-effect free. An implementation might choose to pre-compute or cache the ResolveExport results for the [[Exports]] of each module namespace exotic object.</p>
+        </emu-note>
+      </emu-clause>
+
+      <!-- es6num="9.4.6.9" -->
+      <emu-clause id="sec-module-namespace-exotic-objects-set-p-v-receiver">
+        <h1>[[Set]] ( _P_, _V_, _Receiver_ )</h1>
+        <p>When the [[Set]] internal method of a module namespace exotic object _O_ is called with property key _P_, value _V_, and ECMAScript language value _Receiver_, the following steps are taken:</p>
+        <emu-alg>
+          1. Return *false*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.6.10" -->
+      <emu-clause id="sec-module-namespace-exotic-objects-delete-p">
+        <h1>[[Delete]] ( _P_ )</h1>
+        <p>When the [[Delete]] internal method of a module namespace exotic object _O_ is called with property key _P_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: IsPropertyKey(_P_) is *true*.
+          1. If Type(_P_) is Symbol, then
+            1. Return ? OrdinaryDelete(_O_, _P_).
+          1. Let _exports_ be _O_.[[Exports]].
+          1. If _P_ is an element of _exports_, return *false*.
+          1. Return *true*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.6.12" -->
+      <emu-clause id="sec-module-namespace-exotic-objects-ownpropertykeys">
+        <h1>[[OwnPropertyKeys]] ( )</h1>
+        <p>When the [[OwnPropertyKeys]] internal method of a module namespace exotic object _O_ is called, the following steps are taken:</p>
+        <emu-alg>
+          1. Let _exports_ be a copy of _O_.[[Exports]].
+          1. Let _symbolKeys_ be ! OrdinaryOwnPropertyKeys(_O_).
+          1. Append all the entries of _symbolKeys_ to the end of _exports_.
+          1. Return _exports_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="9.4.6.13" -->
+      <emu-clause id="sec-modulenamespacecreate" aoid="ModuleNamespaceCreate">
+        <h1>ModuleNamespaceCreate ( _module_, _exports_ )</h1>
+        <p>The abstract operation ModuleNamespaceCreate with arguments _module_, and _exports_ is used to specify the creation of new module namespace exotic objects. It performs the following steps:</p>
+        <emu-alg>
+          1. Assert: _module_ is a Module Record.
+          1. Assert: _module_.[[Namespace]] is *undefined*.
+          1. Assert: _exports_ is a List of String values.
+          1. Let _M_ be a newly created object.
+          1. Set _M_'s essential internal methods to the definitions specified in <emu-xref href="#sec-module-namespace-exotic-objects"></emu-xref>.
+          1. Set _M_.[[Module]] to _module_.
+          1. Let _sortedExports_ be a new List containing the same values as the list _exports_ where the values are ordered as if an Array of the same values had been sorted using `Array.prototype.sort` using *undefined* as _comparefn_.
+          1. Set _M_.[[Exports]] to _sortedExports_.
+          1. Create own properties of _M_ corresponding to the definitions in <emu-xref href="#sec-module-namespace-objects"></emu-xref>.
+          1. Set _module_.[[Namespace]] to _M_.
+          1. Return _M_.
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <emu-clause id="sec-immutable-prototype-exotic-objects">
+      <h1>Immutable Prototype Exotic Objects</h1>
+      <p>An <dfn>immutable prototype exotic object</dfn> is an exotic object that has a [[Prototype]] internal slot that will not change once it is initialized.</p>
+
+      <p>Immutable prototype exotic objects have the same internal slots as ordinary objects. They are exotic only in the following internal methods. All other internal methods of immutable prototype exotic objects that are not explicitly defined below are instead defined as in <a href="#sec-ordinary-object-internal-methods-and-internal-slots">ordinary objects.</a></p>
+
+      <emu-clause id="sec-immutable-prototype-exotic-objects-setprototypeof-v">
+        <h1>[[SetPrototypeOf]] ( _V_ )</h1>
+        <p>When the [[SetPrototypeOf]] internal method of an immutable prototype exotic object _O_ is called with argument _V_, the following steps are taken:</p>
+        <emu-alg>
+          1. Return ? SetImmutablePrototype(_O_, _V_).
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-set-immutable-prototype" aoid="SetImmutablePrototype">
+        <h1>SetImmutablePrototype ( _O_, _V_ )</h1>
+        <p>When the SetImmutablePrototype abstract operation is called with arguments _O_ and _V_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: Either Type(_V_) is Object or Type(_V_) is Null.
+          1. Let _current_ be ? _O_.[[GetPrototypeOf]]().
+          1. If SameValue(_V_, _current_) is *true*, return *true*.
+          1. Return *false*.
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+  </emu-clause>
