@@ -68,6 +68,22 @@ ECMAScript 中文
 对于审校完成并被 merge 的 pull request，相应的 issue 将关闭并处于已发布状态，相应已发布 issue 可以在 projects 已发布列中查看。
 
 被 merge 的审校 pull request 内容将被合并到 cn 分支的 `spec.html` 中，并被发布。
+## 关于 label
+
+以下是关于常用一些 label 的使用和含义。
+
+issues:
+  - `待翻译` 表示该 issue id 对应在 translated 目录下的文件无人进行翻译，可以认领
+  - `翻译中` 表示该 issue id 对应在 translated 目录下的文件有人正在翻译
+  - `校对中` 表示该 issue id 对应在 translated 目录下的文件已提交 pull request
+  - `审校中` 表示该 issue id 对应在 translated 目录下的文件已完成翻译工作
+  - `已发布` 表示该 issue id 对应在 translated 目录下的文件已可以在网页中查看
+  - 其他
+
+Pull requests:
+  - `待校对` 表示该 pull request 目前无人进行校对，可认领校对
+  - `校对中` 表示该 pull request 目前有人正在进行校，可就 reviewer 的意见进行讨论
+  - `拒绝校对 + 原因` 表示该 pull request 由于某些原因不能进入校对流程，需要翻译者根据原因作出相应修改，这样的 pull request 在一定时间内不进行修改将被关闭
 
 ## 联系我们
 
