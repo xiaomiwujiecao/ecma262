@@ -12,6 +12,8 @@ ECMAScript 中文
 - **LN** 表示文档行号
 - **issues** 表示github的issues菜单
 - **pull request** 表示github的pull request功能
+- 排版规范我们遵从 [中文文案排版指北](https://github.com/mzlogin/chinese-copywriting-guidelines/blob/Simplified/README.md)，不规范的翻译 reviewer 有义务让翻译者重译
+
 ## 贡献
 
 欢迎小伙伴们参与 ECMAScript 规范的翻译，你可以选择参与翻译，校对，审校中自己喜欢的部分贡献自己的一份热情。让我们一起为 ECMAScript 社区贡献自己的一份力。
