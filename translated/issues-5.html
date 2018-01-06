@@ -1,40 +1,40 @@
 <emu-clause id="sec-web-scripting">
   <h1>Web 脚本</h1>
-  <p>web浏览器提供了客户端计算的ECMAScript宿主环境，如代表windows, menus, pop-ups, dialog boxes, text areas, anchors, frames, history, cookies以及输入输出的实例对象，进一步的，宿主环境提供了脚本代码处理如改变焦点、页面和图片的加载、卸载、错误和中断，选择，表单提交和鼠标交互等等事件的能力。通过HTML中的脚本代码组合用户接口元素，固定及计算文本，图片来显示页面。脚本代码可对用户交互进行响应并且不需要一个主程序。</p>
-  <p>WEB服务器提供一个不同于客户端的如代表请求，客户端，文件等的对象，数据锁定和分享的机制等的服务端计算宿主环境。通过浏览器端脚本及服务端脚本的配合使用，使得基于Web的应用程序通过提供特定的接口在客户端和服务端之间进行分布式计算成为可能。</p>
-  <p>每一种支持ECMAScript的WEB浏览器和服务器都将它们自身的宿主环境作为ECMAScript的补充，以使得ECMAScript的执行环境变得完整。</p>
+  <p>web 浏览器提供用于客户端计算的 ECMAScript 宿主环境，包括如代表窗口，菜单，弹出窗口，对话框，文本域，锚点，框架，历史记录，cookies以及输入/输出的实例对象。此外，宿主环境还提供了脚本代码处理如改变焦点、页面和图片的加载、卸载、错误和中断，选择，表单提交和鼠标交互等等事件的能力。通过 HTML 中的脚本代码组合用户接口元素，固定及计算文本，图片来显示页面。脚本代码可对用户交互进行响应并且不需要一个主程序。</p>
+  <p>WEB 服务器提供一个不同于客户端的如代表请求，客户端，文件等的对象，以及数据锁定和分享的机制。为基于 Web 的应用程序提供一个定制的用户界面，通过浏览器端脚本及服务端脚本的配合使用，可以在客户端和服务端之间进行分布式计算。</p>
+  <p>支持 ECMAScript 的 WEB 浏览器和服务器都将它们自身的宿主环境作为 ECMAScript 的补充，以使得 ECMAScript 的执行环境变得完整。</p>
 </emu-clause>
 
 <!-- es6num="4.2" -->
 <emu-clause id="sec-ecmascript-overview">
   <h1>ECMAScript 概述</h1>
-  <p>以下是ECMAScript&mdash;的非正式概述 —— 描述的只是该语言的一部分。这个概述不是标准的一部分。</p>
-  <p>ECMAScript是基于对象的：基础语言以及主要能力都是通过对象提供，一个ECMAScript程序是一组可通信对象。在ECMAScript中，一个<em>object</em>是零个或多个<em>属性(properties)</em>的的集合。每个属性都有确定其如何被使用的<em>特性attributes</em>， 如当一个属性的Writable特新设置为`false`时，执行任何尝试对该属性分配不同值的的ECMAScript代码都将失败。属性是其他对象，<em><abbr title="primitive values">原始值</abbr></em>，<em><abbr title="function">函数</abbr></em>的容器。原始值是以下内置类型成员之一：<b>Undefined</b>, <b>Null</b>, <b>Boolean</b>, <b>Number</b>, <b>String</b>, and <b>Symbol;</b>一个对象是内置类型<b>Object</b>成员之一，一个函数是一个可调用对象。对象通过属性调用的函数叫做<em><abbr title="method">方法</abbr></em></p>
-  <p>ECMAScript定义了一组<em>内置对象(built-in objects)</em>，从而勾勒出ECMAScript实体的定义。这些内置对象包括<abbr title="global object">全局对象</abbr>；基本的语言运行时语义对象，包括`Object`, `Function`, `Boolean`, `Symbol`；各种`Error`对象；代表和操作的数值对象`Math`,`Number`, `Date`；文本处理对象`String`，`RegExp`；值集合的索引对象`Array`以及九种值具有特定数字数据表示的`Typed Array`；<abbr title="keyed collections">泛型对象</abbr>`Map`, `Set`；支持结构化数据的`JSON`, `ArrayBuffer`, `SharedArrayBuffer`,`DataView`等对象；支持控制抽象的generator函数，`Promise`；以及反射对象Proxy，Reflect。</p>
-  <p>ECMAScript还定义了一组内置<em><abbr title="operators">运算符</abbr></em>。ECMAScript运算符包括各种一元运算，乘法运算符，加法运算符，位移运算符，关系运算符， 等式运算符，二进制运算符，二进制逻辑运算符，赋值运算符和逗号运算符。</p>
-  <p>大型ECMAScript程序通过<em><abbr title="modules">模块</abbr></em>被支持，其允许程序可以被分化为多个语句和定义序列。每个模块明确地标识它所使用的其他模块提供的声明，哪些声明可供其他模块使用。</p>
-  <p>ECMAScript语法有意地类似于Java语法。ECMAScript语法是松散的，使其成为易于使用的脚本语言。例如，一个变量不需要声明其类型，属性也不需要与类型相关联，在调用定义的函数之前不需要以文本方式显示的声明。</p>
+  <p>以下是 ECMAScript&mdash; 的非正式概述 —— 描述的只是该语言的一部分。这个概述不是标准的一部分。</p>
+  <p>ECMAScript 是基于对象的：基础语言以及主要能力都是通过对象提供，一个 ECMAScript 程序是一组可通信对象。在 ECMAScript 中，一个<em>对象</em>是零个或多个<em>属性</em>的的集合。每个属性都有确定其如何被使用的<em>特性</em>， 如当一个属性的 Writable 特性设置为 *false* 时，执行任何尝试对该属性分配不同值的的 ECMAScript 代码都将失败。属性是其他对象，<em><abbr title="primitive values">原始值</abbr></em>，<em><abbr title="function">函数</abbr></em>的容器。原始值是以下内置类型成员之一：<b>Undefined</b>, <b>Null</b>, <b>Boolean</b>, <b>Number</b>, <b>String</b>, and <b>Symbol;</b>一个对象是内置类型 <b>Object</b> 成员之一，一个函数是一个可调用对象。对象通过属性调用的函数叫做<em><abbr title="method">方法</abbr></em></p>
+  <p>ECMAScript 定义了一组<em><abbr title="built-in objects">内置对象</abbr></em>，从而勾勒出 ECMAScript 实体的定义。这些内置对象包括<abbr title="global object">全局对象</abbr>；基本的语言运行时语义对象，包括 `Object`, `Function`, `Boolean`, `Symbol`，各种 `Error` 象；代表和操作的数值对象，包括 `Math`,`Number`, `Date`；文本处理对象，`String`，`RegExp`；索引值集合的 `Array` 对象，以及九种值具有特定数字数据表示的 `Typed Array` 对象；<abbr title="keyed collections">泛型对象</abbr> `Map`, `Set`；支持结构化数据的 `JSON`, `ArrayBuffer`, `SharedArrayBuffer`,`DataView` 等对象；支持控制抽象的 generator 函数，`Promise` 对象；以及反射对象 `Proxy`，`Reflect`。</p>
+  <p>ECMAScript 还定义了一组内置<em><abbr title="operators">运算符</abbr></em>。ECMAScript 运算符包括各种一元运算，乘法运算符，加法运算符，位移运算符，关系运算符，等式运算符，二进制运算符，二进制逻辑运算符，赋值运算符和逗号运算符。</p>
+  <p>大型 ECMAScript 程序通过<em><abbr title="modules">模块</abbr></em>被支持，其允许程序可以被分化为多个语句和定义序列。每个模块明确地标识它所使用的其他模块提供的声明，哪些声明可供其他模块使用。</p>
+  <p>ECMAScript 语法有意地类似于 Java 语法。ECMAScript 语法是松散的，使其能够成为易于使用的脚本语言。例如，一个变量不需要声明其具体类型，也不需要与声明相关联属性类型，在调用定义的函数之前也不需要以文本方式显示的声明。</p>
 
   <!-- es6num="4.2.1" -->
   <emu-clause id="sec-objects">
     <h1>Objects</h1>
-    <p>尽管ECMAScript包含了定义类的语法，但是ECMAScript对象从根本上来说并不是像C++，Smalltalk，Java那样基于类的。相反，对象可以通过各种方式创建，包括字面符号， 或通过<em>构造器(constructors)</em>创建对象然后运行代码初始化其全部或部分属性值，为这些属性分配初始值。每个构造器是一个拥有名为`"prototype"`的属性的函数，此属性用于实现<em><abbr title="prototype-based inheritance">基于原型的继承</abbr></em> 和<em><abbr title="shared properties">共享属性</abbr></em>。构造器通过<b>new</b>表达式创建对象：例如,`new Date(2009,11)`创建一个新Date对象。不使用<b>new</b>调用一个构造器的结果由构造器本身决定。例如，`Date()`产生一个表示当前日期时间的字符串，而不是一个对象。</p>
-    <p>每个由构造器创建的对象，都有一个隐式引用(叫做对象的<em><abbr title="prototype">原型</abbr></em>)链接到构造器的`"prototype"`属性值。再者，一个原型可能有一个<abbr title="non-null">非空</abbr>隐式引用链接到它的原型，以此类推，这叫做<em><abbr title="prototype chain">原型链</abbr></em>。当向对象的一个属性提出引用时，引用会指向原型链中包含此属性名的第一个对象的属性。换句话说，首先检查直接提及的对象的同名属性，如果对象包含同名的属性，引用即指向此属性，如果该对象不包含同名的属性，则下一步检查对象的原型；以此类推。</p>
+    <p>尽管 ECMAScript 包含了定义类的语法，但是 ECMAScript 对象从根本上来说并不是像 C++，Smalltalk，Java 那样基于类的。相反，对象可以通过各种方式创建，包括字面符号，或通过<em><attr title="constructors">构造器</attr></em>创建对象然后运行代码初始化其全部或部分属性值，为这些属性分配初始值。每个构造器是一个拥有名为 `"prototype"` 的属性的函数，此属性用于实现<em><abbr title="prototype-based inheritance">基于原型的继承</abbr></em> 和<em><abbr title="shared properties">共享属性</abbr></em>。构造器通过<b> new </b>表达式创建对象：例如,`new Date(2009,11)` 创建一个新 Date 对象。不使用<b>new</b>调用一个构造器的结果由构造器本身决定。例如，`Date()`产生一个表示当前日期时间的字符串，而不是一个对象。</p>
+    <p>每个由构造器创建的对象，都有一个隐式引用(叫做对象的<em><abbr title="prototype">原型</abbr></em>)链接到构造器的 `"prototype"` 属性值。再者，一个原型可能有一个<abbr title="non-null">非空</abbr>隐式引用链接到它的原型，以此类推，这叫做<em><abbr title="prototype chain">原型链</abbr></em>。当向对象的一个属性提出引用时，引用会指向原型链中包含此属性名的第一个对象的属性。换句话说，首先检查直接提及的对象的同名属性，如果对象包含同名的属性，引用即指向此属性，如果该对象不包含同名的属性，则下一步检查对象的原型；以此类推。</p>
     <emu-figure id="figure-1" caption="Object/Prototype Relationships">
       <object data="img/figure-1.svg" height="354" type="image/svg+xml" width="719"> <img alt="An image of lots of boxes and arrows." height="354" src="img/figure-1.png" width="719"> </object>
     </emu-figure>
-    <p>一般情况下基于类的面向对象语言的实例拥有状态，类拥有方法，并且只能继承结构和行为。在ECMAScript中，对象拥有状态和方法，并且结构，行为，状态全都可继承。</p>
+    <p>一般情况下基于类的面向对象语言的实例拥有状态，类拥有方法，并且只能继承结构和行为。在 ECMAScript 中，对象拥有状态和方法，并且结构，行为，状态全都可继承。</p>
     <p>所有不直接包含特定属性的对象会共享他们原型中包含的此属性及属性值。图 1 说明了这一点：</p>
-    <p><b>CF</b>是一个构造器（也是一个对象）。五个对象已用`new`表达式创建:<b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, <b>cf<sub>5</sub></b>。每个对象都有名为`q1`和`q2`的属性。 虚线表示隐式原型关系；例如：<b>cf<sub>3</sub></b>的原型是 <b>CF<sub>p</sub></b>。 构造器<b>CF</b>自己有名为`P1`和`P2`的两个属性, 这对<b>CF<sub>p</sub></b>,<b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, <b>cf<sub>5</sub></b>是不可见的。<b>CF<sub>p</sub></b>的名为`CFP1`的属性共享给<b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>,<b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, and <b>cf<sub>5</sub></b> ( 没有<b>CF</b>), 以及在<b>CF<sub>p</sub></b>的隐式原型链中找不到任何名为`q1`,`q2`,或`CFP1`的属性。 请注意，<b>CF</b>和<b>CF<sub>p</sub></b>之间没有隐式原型链接。</p>
-    <p>不同于基于类的对象语言，属性可以通过赋值的方式动态添加给对象。也就是说，构造器并不是非要对构造的对象的全部或任何属性命名或赋值。上图中，可以给<b>CF<sub>p</sub></b>添加新属性值的方式为<b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>,and <b>cf<sub>5</sub></b>添加一个新的共享属性。</p>
-    <p>尽管ECMAScript对象本质上不是基于类，但是基于构造函数，原型对象和方法通用模式来实现类似于类的抽象是很方便的。ECMAScript内置对象本身即遵循这样的类模式。从ECMAScript 2015开始，ECMAScript语言包含了类定义语法，允许程序员像内置对象那样简洁的定义对象。</p>
+    <p><b>CF</b> 是一个构造器（也是一个对象）。五个对象已用 `new` 表达式创建: <b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, <b>cf<sub>5</sub></b>。每个对象都有名为 `q1` 和 `q2` 的属性。虚线表示隐式原型关系；例如：<b>cf<sub>3</sub></b> 的原型是 <b>CF<sub>p</sub></b>。构造器 <b>CF</b> 自己有名为 `P1` 和 `P2` 的两个属性, 这对 <b>CF<sub>p</sub></b>,<b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, <b>cf<sub>5</sub></b> 是不可见的。<b>CF<sub>p</sub></b> 的名为 `CFP1` 的属性共享给 <b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>,<b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, 以及 <b>cf<sub>5</sub></b> ( 没有<b>CF</b>), 以及在 <b>CF<sub>p</sub></b> 的隐式原型链中找不到任何名为 `q1`, `q2`,或 `CFP1` 的属性。请注意，<b>CF</b> 和 <b>CF<sub>p</sub></b> 之间没有隐式原型链接。</p>
+    <p>不同于基于类的对象语言，属性可以通过赋值的方式动态添加给对象。也就是说，构造器并不是非要对构造的对象的全部或任何属性命名或赋值。上图中，可以给 <b>CF<sub>p</sub></b> 添加新属性值的方式为 <b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>,and <b>cf<sub>5</sub></b> 添加一个新的共享属性。</p>
+    <p>尽管 ECMAScript 对象本质上不是基于类，但是基于构造函数，原型对象和方法通用模式来实现类似于类的抽象是很方便的。ECMAScript 内置对象本身即遵循这样的类模式。从 ECMAScript 2015 开始，ECMAScript 语言包含了类定义语法，允许程序员像内置对象那样简洁的定义对象。</p>
   </emu-clause>
 
   <!-- es6num="4.2.2" -->
   <emu-clause id="sec-strict-variant-of-ecmascript">
-    <h1>ECMAScript严格变体</h1>
-    <p>ECMAScript语言认可有些用户希望限制使用语言中某些功能的可能性。他们这样做可能是为了安全考虑，避免他们认为是容易出错的功能，获得增强的错误检查，或其他原因。为了支持这种可能性，ECMAScript中定义了语言的严格变体。语言的严格变体，排除了ECMAScript语言的某些特定的语法和语义特征，还修改了某些功能的详细语义。严格变体还指定了必须抛出错误异常报告的额外错误条件，即使在非严格的语言形式下这些条件不属于错误。</p>
-    <p>ECMAScript的严格变体通常被称为语言的<em><abbr title="strict mode">严格模式</abbr></em>。严格模式选择和使用明确地适用于独特ECMAScript代码单元级别的，ECMAScript严格模式语法和语义。由于语法代码单元级别的严格模式被选择，严格模式仅在这个代码单元内施加有局部效果的限制。严格模式不限制或修改任何层面的ECMAScript语义，必须一致地操作跨多个代码单元。一个ECMAScript程序可同时包含严格模式和非严格模式的代码单元。在这种情况下，严格的模式只适用于严格模式代码单元内实际执行的代码。</p>
-    <p>要符合这一规范，ECMAScript的实现必须同时实现未限制的ECMAScript语言和按照这个规范定义的ECMAScript的严格模式变体。此外，实现还必须支持未限制的和严格模式代码单元的在同一个程序中混用。</p>
+    <h1>ECMAScript 严格变体</h1>
+    <p>ECMAScript 语言认可有些用户希望限制使用语言中某些功能的可能性。他们这样做可能是为了安全考虑，避免他们认为是容易出错的功能，获得增强的错误检查，或其他原因。为了支持这种可能性，ECMAScript 中定义了语言的严格变体。语言的严格变体，排除了 ECMAScript 语言的某些特定的语法和语义特征，还修改了某些功能的详细语义。严格变体还指定了必须抛出错误异常报告的额外错误条件，即使在非严格的语言形式下这些条件不属于错误。</p>
+    <p>ECMAScript 的严格变体通常被称为语言的<em><abbr title="strict mode">严格模式</abbr></em>。严格模式选择和使用明确地适用于独特 ECMAScript 代码单元级别的，ECMAScript 严格模式语法和语义。由于语法代码单元级别的严格模式被选择，严格模式仅在这个代码单元内施加有局部效果的限制。严格模式不限制或修改任何层面的 ECMAScript 语义，必须一致地操作跨多个代码单元。一个 ECMAScript 程序可同时包含严格模式和非严格模式的代码单元。在这种情况下，严格的模式只适用于严格模式代码单元内实际执行的代码。</p>
+    <p>要符合这一规范，ECMAScript 的实现必须同时实现未限制的 ECMAScript 语言和按照这个规范定义的 ECMAScript 的严格模式变体。此外，实现还必须支持未限制的和严格模式代码单元的在同一个程序中混用。</p>
   </emu-clause>
 </emu-clause>
