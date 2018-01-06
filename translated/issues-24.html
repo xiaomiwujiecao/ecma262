@@ -1,0 +1,636 @@
+  <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots">
+    <h1>Proxy Object Internal Methods and Internal Slots</h1>
+    <p>A proxy object is an exotic object whose essential internal methods are partially implemented using ECMAScript code. Every proxy objects has an internal slot called [[ProxyHandler]]. The value of [[ProxyHandler]] is an object, called the proxy's <em>handler object</em>, or *null*. Methods (see <emu-xref href="#table-30"></emu-xref>) of a handler object may be used to augment the implementation for one or more of the proxy object's internal methods. Every proxy object also has an internal slot called [[ProxyTarget]] whose value is either an object or the *null* value. This object is called the proxy's <em>target object</em>.</p>
+    <emu-table id="table-30" caption="Proxy Handler Methods">
+      <table>
+        <tbody>
+        <tr>
+          <th>
+            Internal Method
+          </th>
+          <th>
+            Handler Method
+          </th>
+        </tr>
+        <tr>
+          <td>
+            [[GetPrototypeOf]]
+          </td>
+          <td>
+            `getPrototypeOf`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[SetPrototypeOf]]
+          </td>
+          <td>
+            `setPrototypeOf`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[IsExtensible]]
+          </td>
+          <td>
+            `isExtensible`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[PreventExtensions]]
+          </td>
+          <td>
+            `preventExtensions`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[GetOwnProperty]]
+          </td>
+          <td>
+            `getOwnPropertyDescriptor`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[DefineOwnProperty]]
+          </td>
+          <td>
+            `defineProperty`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[HasProperty]]
+          </td>
+          <td>
+            `has`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[Get]]
+          </td>
+          <td>
+            `get`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[Set]]
+          </td>
+          <td>
+            `set`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[Delete]]
+          </td>
+          <td>
+            `deleteProperty`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[OwnPropertyKeys]]
+          </td>
+          <td>
+            `ownKeys`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[Call]]
+          </td>
+          <td>
+            `apply`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[Construct]]
+          </td>
+          <td>
+            `construct`
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </emu-table>
+    <p>When a handler method is called to provide the implementation of a proxy object internal method, the handler method is passed the proxy's target object as a parameter. A proxy's handler object does not necessarily have a method corresponding to every essential internal method. Invoking an internal method on the proxy results in the invocation of the corresponding internal method on the proxy's target object if the handler object does not have a method corresponding to the internal trap.</p>
+    <p>The [[ProxyHandler]] and [[ProxyTarget]] internal slots of a proxy object are always initialized when the object is created and typically may not be modified. Some proxy objects are created in a manner that permits them to be subsequently <em>revoked</em>. When a proxy is revoked, its [[ProxyHandler]] and [[ProxyTarget]] internal slots are set to *null* causing subsequent invocations of internal methods on that proxy object to throw a *TypeError* exception.</p>
+    <p>Because proxy objects permit the implementation of internal methods to be provided by arbitrary ECMAScript code, it is possible to define a proxy object whose handler methods violates the invariants defined in <emu-xref href="#sec-invariants-of-the-essential-internal-methods"></emu-xref>. Some of the internal method invariants defined in <emu-xref href="#sec-invariants-of-the-essential-internal-methods"></emu-xref> are essential integrity invariants. These invariants are explicitly enforced by the proxy object internal methods specified in this section. An ECMAScript implementation must be robust in the presence of all possible invariant violations.</p>
+    <p>In the following algorithm descriptions, assume _O_ is an ECMAScript proxy object, _P_ is a property key value, _V_ is any ECMAScript language value and _Desc_ is a Property Descriptor record.</p>
+
+    <!-- es6num="9.5.1" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-getprototypeof">
+      <h1>[[GetPrototypeOf]] ( )</h1>
+      <p>When the [[GetPrototypeOf]] internal method of a Proxy exotic object _O_ is called, the following steps are taken:</p>
+      <emu-alg>
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"getPrototypeOf"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? _target_.[[GetPrototypeOf]]().
+        1. Let _handlerProto_ be ? Call(_trap_, _handler_, &laquo; _target_ &raquo;).
+        1. If Type(_handlerProto_) is neither Object nor Null, throw a *TypeError* exception.
+        1. Let _extensibleTarget_ be ? IsExtensible(_target_).
+        1. If _extensibleTarget_ is *true*, return _handlerProto_.
+        1. Let _targetProto_ be ? _target_.[[GetPrototypeOf]]().
+        1. If SameValue(_handlerProto_, _targetProto_) is *false*, throw a *TypeError* exception.
+        1. Return _handlerProto_.
+      </emu-alg>
+      <emu-note>
+        <p>[[GetPrototypeOf]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The result of [[GetPrototypeOf]] must be either an Object or *null*.
+          </li>
+          <li>
+            If the target object is not extensible, [[GetPrototypeOf]] applied to the proxy object must return the same value as [[GetPrototypeOf]] applied to the proxy object's target object.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.2" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-setprototypeof-v">
+      <h1>[[SetPrototypeOf]] ( _V_ )</h1>
+      <p>When the [[SetPrototypeOf]] internal method of a Proxy exotic object _O_ is called with argument _V_, the following steps are taken:</p>
+      <emu-alg>
+        1. Assert: Either Type(_V_) is Object or Type(_V_) is Null.
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"setPrototypeOf"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? _target_.[[SetPrototypeOf]](_V_).
+        1. Let _booleanTrapResult_ be ToBoolean(? Call(_trap_, _handler_, &laquo; _target_, _V_ &raquo;)).
+        1. If _booleanTrapResult_ is *false*, return *false*.
+        1. Let _extensibleTarget_ be ? IsExtensible(_target_).
+        1. If _extensibleTarget_ is *true*, return *true*.
+        1. Let _targetProto_ be ? _target_.[[GetPrototypeOf]]().
+        1. If SameValue(_V_, _targetProto_) is *false*, throw a *TypeError* exception.
+        1. Return *true*.
+      </emu-alg>
+      <emu-note>
+        <p>[[SetPrototypeOf]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The result of [[SetPrototypeOf]] is a Boolean value.
+          </li>
+          <li>
+            If the target object is not extensible, the argument value must be the same as the result of [[GetPrototypeOf]] applied to target object.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.3" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-isextensible">
+      <h1>[[IsExtensible]] ( )</h1>
+      <p>When the [[IsExtensible]] internal method of a Proxy exotic object _O_ is called, the following steps are taken:</p>
+      <emu-alg>
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"isExtensible"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? _target_.[[IsExtensible]]().
+        1. Let _booleanTrapResult_ be ToBoolean(? Call(_trap_, _handler_, &laquo; _target_ &raquo;)).
+        1. Let _targetResult_ be ? _target_.[[IsExtensible]]().
+        1. If SameValue(_booleanTrapResult_, _targetResult_) is *false*, throw a *TypeError* exception.
+        1. Return _booleanTrapResult_.
+      </emu-alg>
+      <emu-note>
+        <p>[[IsExtensible]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The result of [[IsExtensible]] is a Boolean value.
+          </li>
+          <li>
+            [[IsExtensible]] applied to the proxy object must return the same value as [[IsExtensible]] applied to the proxy object's target object with the same argument.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.4" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-preventextensions">
+      <h1>[[PreventExtensions]] ( )</h1>
+      <p>When the [[PreventExtensions]] internal method of a Proxy exotic object _O_ is called, the following steps are taken:</p>
+      <emu-alg>
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"preventExtensions"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? _target_.[[PreventExtensions]]().
+        1. Let _booleanTrapResult_ be ToBoolean(? Call(_trap_, _handler_, &laquo; _target_ &raquo;)).
+        1. If _booleanTrapResult_ is *true*, then
+          1. Let _targetIsExtensible_ be ? _target_.[[IsExtensible]]().
+          1. If _targetIsExtensible_ is *true*, throw a *TypeError* exception.
+        1. Return _booleanTrapResult_.
+      </emu-alg>
+      <emu-note>
+        <p>[[PreventExtensions]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The result of [[PreventExtensions]] is a Boolean value.
+          </li>
+          <li>
+            [[PreventExtensions]] applied to the proxy object only returns *true* if [[IsExtensible]] applied to the proxy object's target object is *false*.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.5" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-getownproperty-p">
+      <h1>[[GetOwnProperty]] ( _P_ )</h1>
+      <p>When the [[GetOwnProperty]] internal method of a Proxy exotic object _O_ is called with property key _P_, the following steps are taken:</p>
+      <emu-alg>
+        1. Assert: IsPropertyKey(_P_) is *true*.
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"getOwnPropertyDescriptor"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? _target_.[[GetOwnProperty]](_P_).
+        1. Let _trapResultObj_ be ? Call(_trap_, _handler_, &laquo; _target_, _P_ &raquo;).
+        1. If Type(_trapResultObj_) is neither Object nor Undefined, throw a *TypeError* exception.
+        1. Let _targetDesc_ be ? _target_.[[GetOwnProperty]](_P_).
+        1. If _trapResultObj_ is *undefined*, then
+          1. If _targetDesc_ is *undefined*, return *undefined*.
+          1. If _targetDesc_.[[Configurable]] is *false*, throw a *TypeError* exception.
+          1. Let _extensibleTarget_ be ? IsExtensible(_target_).
+          1. Assert: Type(_extensibleTarget_) is Boolean.
+          1. If _extensibleTarget_ is *false*, throw a *TypeError* exception.
+          1. Return *undefined*.
+        1. Let _extensibleTarget_ be ? IsExtensible(_target_).
+        1. Let _resultDesc_ be ? ToPropertyDescriptor(_trapResultObj_).
+        1. Call CompletePropertyDescriptor(_resultDesc_).
+        1. Let _valid_ be IsCompatiblePropertyDescriptor(_extensibleTarget_, _resultDesc_, _targetDesc_).
+        1. If _valid_ is *false*, throw a *TypeError* exception.
+        1. If _resultDesc_.[[Configurable]] is *false*, then
+          1. If _targetDesc_ is *undefined* or _targetDesc_.[[Configurable]] is *true*, then
+            1. Throw a *TypeError* exception.
+        1. Return _resultDesc_.
+      </emu-alg>
+      <emu-note>
+        <p>[[GetOwnProperty]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The result of [[GetOwnProperty]] must be either an Object or *undefined*.
+          </li>
+          <li>
+            A property cannot be reported as non-existent, if it exists as a non-configurable own property of the target object.
+          </li>
+          <li>
+            A property cannot be reported as non-existent, if it exists as an own property of the target object and the target object is not extensible.
+          </li>
+          <li>
+            A property cannot be reported as existent, if it does not exist as an own property of the target object and the target object is not extensible.
+          </li>
+          <li>
+            A property cannot be reported as non-configurable, if it does not exist as an own property of the target object or if it exists as a configurable own property of the target object.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.6" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-defineownproperty-p-desc">
+      <h1>[[DefineOwnProperty]] ( _P_, _Desc_ )</h1>
+      <p>When the [[DefineOwnProperty]] internal method of a Proxy exotic object _O_ is called with property key _P_ and Property Descriptor _Desc_, the following steps are taken:</p>
+      <emu-alg>
+        1. Assert: IsPropertyKey(_P_) is *true*.
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"defineProperty"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? _target_.[[DefineOwnProperty]](_P_, _Desc_).
+        1. Let _descObj_ be FromPropertyDescriptor(_Desc_).
+        1. Let _booleanTrapResult_ be ToBoolean(? Call(_trap_, _handler_, &laquo; _target_, _P_, _descObj_ &raquo;)).
+        1. If _booleanTrapResult_ is *false*, return *false*.
+        1. Let _targetDesc_ be ? _target_.[[GetOwnProperty]](_P_).
+        1. Let _extensibleTarget_ be ? IsExtensible(_target_).
+        1. If _Desc_ has a [[Configurable]] field and if _Desc_.[[Configurable]] is *false*, then
+          1. Let _settingConfigFalse_ be *true*.
+        1. Else, let _settingConfigFalse_ be *false*.
+        1. If _targetDesc_ is *undefined*, then
+          1. If _extensibleTarget_ is *false*, throw a *TypeError* exception.
+          1. If _settingConfigFalse_ is *true*, throw a *TypeError* exception.
+        1. Else _targetDesc_ is not *undefined*,
+          1. If IsCompatiblePropertyDescriptor(_extensibleTarget_, _Desc_, _targetDesc_) is *false*, throw a *TypeError* exception.
+          1. If _settingConfigFalse_ is *true* and _targetDesc_.[[Configurable]] is *true*, throw a *TypeError* exception.
+        1. Return *true*.
+      </emu-alg>
+      <emu-note>
+        <p>[[DefineOwnProperty]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The result of [[DefineOwnProperty]] is a Boolean value.
+          </li>
+          <li>
+            A property cannot be added, if the target object is not extensible.
+          </li>
+          <li>
+            A property cannot be non-configurable, unless there exists a corresponding non-configurable own property of the target object.
+          </li>
+          <li>
+            If a property has a corresponding target object property then applying the Property Descriptor of the property to the target object using [[DefineOwnProperty]] will not throw an exception.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.7" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-hasproperty-p">
+      <h1>[[HasProperty]] ( _P_ )</h1>
+      <p>When the [[HasProperty]] internal method of a Proxy exotic object _O_ is called with property key _P_, the following steps are taken:</p>
+      <emu-alg>
+        1. Assert: IsPropertyKey(_P_) is *true*.
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"has"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? _target_.[[HasProperty]](_P_).
+        1. Let _booleanTrapResult_ be ToBoolean(? Call(_trap_, _handler_, &laquo; _target_, _P_ &raquo;)).
+        1. If _booleanTrapResult_ is *false*, then
+          1. Let _targetDesc_ be ? _target_.[[GetOwnProperty]](_P_).
+          1. If _targetDesc_ is not *undefined*, then
+            1. If _targetDesc_.[[Configurable]] is *false*, throw a *TypeError* exception.
+            1. Let _extensibleTarget_ be ? IsExtensible(_target_).
+            1. If _extensibleTarget_ is *false*, throw a *TypeError* exception.
+        1. Return _booleanTrapResult_.
+      </emu-alg>
+      <emu-note>
+        <p>[[HasProperty]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The result of [[HasProperty]] is a Boolean value.
+          </li>
+          <li>
+            A property cannot be reported as non-existent, if it exists as a non-configurable own property of the target object.
+          </li>
+          <li>
+            A property cannot be reported as non-existent, if it exists as an own property of the target object and the target object is not extensible.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.8" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-get-p-receiver">
+      <h1>[[Get]] ( _P_, _Receiver_ )</h1>
+      <p>When the [[Get]] internal method of a Proxy exotic object _O_ is called with property key _P_ and ECMAScript language value _Receiver_, the following steps are taken:</p>
+      <emu-alg>
+        1. Assert: IsPropertyKey(_P_) is *true*.
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"get"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? _target_.[[Get]](_P_, _Receiver_).
+        1. Let _trapResult_ be ? Call(_trap_, _handler_, &laquo; _target_, _P_, _Receiver_ &raquo;).
+        1. Let _targetDesc_ be ? _target_.[[GetOwnProperty]](_P_).
+        1. If _targetDesc_ is not *undefined* and _targetDesc_.[[Configurable]] is *false*, then
+          1. If IsDataDescriptor(_targetDesc_) is *true* and _targetDesc_.[[Writable]] is *false*, then
+            1. If SameValue(_trapResult_, _targetDesc_.[[Value]]) is *false*, throw a *TypeError* exception.
+          1. If IsAccessorDescriptor(_targetDesc_) is *true* and _targetDesc_.[[Get]] is *undefined*, then
+            1. If _trapResult_ is not *undefined*, throw a *TypeError* exception.
+        1. Return _trapResult_.
+      </emu-alg>
+      <emu-note>
+        <p>[[Get]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The value reported for a property must be the same as the value of the corresponding target object property if the target object property is a non-writable, non-configurable own data property.
+          </li>
+          <li>
+            The value reported for a property must be *undefined* if the corresponding target object property is a non-configurable own accessor property that has *undefined* as its [[Get]] attribute.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.9" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-set-p-v-receiver">
+      <h1>[[Set]] ( _P_, _V_, _Receiver_ )</h1>
+      <p>When the [[Set]] internal method of a Proxy exotic object _O_ is called with property key _P_, value _V_, and ECMAScript language value _Receiver_, the following steps are taken:</p>
+      <emu-alg>
+        1. Assert: IsPropertyKey(_P_) is *true*.
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"set"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? _target_.[[Set]](_P_, _V_, _Receiver_).
+        1. Let _booleanTrapResult_ be ToBoolean(? Call(_trap_, _handler_, &laquo; _target_, _P_, _V_, _Receiver_ &raquo;)).
+        1. If _booleanTrapResult_ is *false*, return *false*.
+        1. Let _targetDesc_ be ? _target_.[[GetOwnProperty]](_P_).
+        1. If _targetDesc_ is not *undefined* and _targetDesc_.[[Configurable]] is *false*, then
+          1. If IsDataDescriptor(_targetDesc_) is *true* and _targetDesc_.[[Writable]] is *false*, then
+            1. If SameValue(_V_, _targetDesc_.[[Value]]) is *false*, throw a *TypeError* exception.
+          1. If IsAccessorDescriptor(_targetDesc_) is *true*, then
+            1. If _targetDesc_.[[Set]] is *undefined*, throw a *TypeError* exception.
+        1. Return *true*.
+      </emu-alg>
+      <emu-note>
+        <p>[[Set]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The result of [[Set]] is a Boolean value.
+          </li>
+          <li>
+            Cannot change the value of a property to be different from the value of the corresponding target object property if the corresponding target object property is a non-writable, non-configurable own data property.
+          </li>
+          <li>
+            Cannot set the value of a property if the corresponding target object property is a non-configurable own accessor property that has *undefined* as its [[Set]] attribute.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.10" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-delete-p">
+      <h1>[[Delete]] ( _P_ )</h1>
+      <p>When the [[Delete]] internal method of a Proxy exotic object _O_ is called with property key _P_, the following steps are taken:</p>
+      <emu-alg>
+        1. Assert: IsPropertyKey(_P_) is *true*.
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"deleteProperty"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? _target_.[[Delete]](_P_).
+        1. Let _booleanTrapResult_ be ToBoolean(? Call(_trap_, _handler_, &laquo; _target_, _P_ &raquo;)).
+        1. If _booleanTrapResult_ is *false*, return *false*.
+        1. Let _targetDesc_ be ? _target_.[[GetOwnProperty]](_P_).
+        1. If _targetDesc_ is *undefined*, return *true*.
+        1. If _targetDesc_.[[Configurable]] is *false*, throw a *TypeError* exception.
+        1. Return *true*.
+      </emu-alg>
+      <emu-note>
+        <p>[[Delete]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The result of [[Delete]] is a Boolean value.
+          </li>
+          <li>
+            A property cannot be reported as deleted, if it exists as a non-configurable own property of the target object.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.12" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-ownpropertykeys">
+      <h1>[[OwnPropertyKeys]] ( )</h1>
+      <p>When the [[OwnPropertyKeys]] internal method of a Proxy exotic object _O_ is called, the following steps are taken:</p>
+      <emu-alg>
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"ownKeys"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? _target_.[[OwnPropertyKeys]]().
+        1. Let _trapResultArray_ be ? Call(_trap_, _handler_, &laquo; _target_ &raquo;).
+        1. Let _trapResult_ be ? CreateListFromArrayLike(_trapResultArray_, &laquo; String, Symbol &raquo;).
+        1. If _trapResult_ contains any duplicate entries, throw a *TypeError* exception.
+        1. Let _extensibleTarget_ be ? IsExtensible(_target_).
+        1. Let _targetKeys_ be ? _target_.[[OwnPropertyKeys]]().
+        1. Assert: _targetKeys_ is a List containing only String and Symbol values.
+        1. Assert: _targetKeys_ contains no duplicate entries.
+        1. Let _targetConfigurableKeys_ be a new empty List.
+        1. Let _targetNonconfigurableKeys_ be a new empty List.
+        1. For each element _key_ of _targetKeys_, do
+          1. Let _desc_ be ? _target_.[[GetOwnProperty]](_key_).
+          1. If _desc_ is not *undefined* and _desc_.[[Configurable]] is *false*, then
+            1. Append _key_ as an element of _targetNonconfigurableKeys_.
+          1. Else,
+            1. Append _key_ as an element of _targetConfigurableKeys_.
+        1. If _extensibleTarget_ is *true* and _targetNonconfigurableKeys_ is empty, then
+          1. Return _trapResult_.
+        1. Let _uncheckedResultKeys_ be a new List which is a copy of _trapResult_.
+        1. For each _key_ that is an element of _targetNonconfigurableKeys_, do
+          1. If _key_ is not an element of _uncheckedResultKeys_, throw a *TypeError* exception.
+          1. Remove _key_ from _uncheckedResultKeys_.
+        1. If _extensibleTarget_ is *true*, return _trapResult_.
+        1. For each _key_ that is an element of _targetConfigurableKeys_, do
+          1. If _key_ is not an element of _uncheckedResultKeys_, throw a *TypeError* exception.
+          1. Remove _key_ from _uncheckedResultKeys_.
+        1. If _uncheckedResultKeys_ is not empty, throw a *TypeError* exception.
+        1. Return _trapResult_.
+      </emu-alg>
+      <emu-note>
+        <p>[[OwnPropertyKeys]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The result of [[OwnPropertyKeys]] is a List.
+          </li>
+          <li>
+            The returned List contains no duplicate entries.
+          </li>
+          <li>
+            The Type of each result List element is either String or Symbol.
+          </li>
+          <li>
+            The result List must contain the keys of all non-configurable own properties of the target object.
+          </li>
+          <li>
+            If the target object is not extensible, then the result List must contain all the keys of the own properties of the target object and no other values.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.13" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-call-thisargument-argumentslist">
+      <h1>[[Call]] ( _thisArgument_, _argumentsList_ )</h1>
+      <p>The [[Call]] internal method of a Proxy exotic object _O_ is called with parameters _thisArgument_ and _argumentsList_, a List of ECMAScript language values. The following steps are taken:</p>
+      <emu-alg>
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"apply"`).
+        1. If _trap_ is *undefined*, then
+          1. Return ? Call(_target_, _thisArgument_, _argumentsList_).
+        1. Let _argArray_ be CreateArrayFromList(_argumentsList_).
+        1. Return ? Call(_trap_, _handler_, &laquo; _target_, _thisArgument_, _argArray_ &raquo;).
+      </emu-alg>
+      <emu-note>
+        <p>A Proxy exotic object only has a [[Call]] internal method if the initial value of its [[ProxyTarget]] internal slot is an object that has a [[Call]] internal method.</p>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.14" -->
+    <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots-construct-argumentslist-newtarget">
+      <h1>[[Construct]] ( _argumentsList_, _newTarget_ )</h1>
+      <p>The [[Construct]] internal method of a Proxy exotic object _O_ is called with parameters _argumentsList_ which is a possibly empty List of ECMAScript language values and _newTarget_. The following steps are taken:</p>
+      <emu-alg>
+        1. Let _handler_ be _O_.[[ProxyHandler]].
+        1. If _handler_ is *null*, throw a *TypeError* exception.
+        1. Assert: Type(_handler_) is Object.
+        1. Let _target_ be _O_.[[ProxyTarget]].
+        1. Let _trap_ be ? GetMethod(_handler_, `"construct"`).
+        1. If _trap_ is *undefined*, then
+          1. Assert: IsConstructor(_target_) is *true*.
+          1. Return ? Construct(_target_, _argumentsList_, _newTarget_).
+        1. Let _argArray_ be CreateArrayFromList(_argumentsList_).
+        1. Let _newObj_ be ? Call(_trap_, _handler_, &laquo; _target_, _argArray_, _newTarget_ &raquo;).
+        1. If Type(_newObj_) is not Object, throw a *TypeError* exception.
+        1. Return _newObj_.
+      </emu-alg>
+      <emu-note>
+        <p>A Proxy exotic object only has a [[Construct]] internal method if the initial value of its [[ProxyTarget]] internal slot is an object that has a [[Construct]] internal method.</p>
+      </emu-note>
+      <emu-note>
+        <p>[[Construct]] for proxy objects enforces the following invariants:</p>
+        <ul>
+          <li>
+            The result of [[Construct]] must be an Object.
+          </li>
+        </ul>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="9.5.15" -->
+    <emu-clause id="sec-proxycreate" aoid="ProxyCreate">
+      <h1>ProxyCreate ( _target_, _handler_ )</h1>
+      <p>The abstract operation ProxyCreate with arguments _target_ and _handler_ is used to specify the creation of new Proxy exotic objects. It performs the following steps:</p>
+      <emu-alg>
+        1. If Type(_target_) is not Object, throw a *TypeError* exception.
+        1. If _target_ is a Proxy exotic object and _target_.[[ProxyHandler]] is *null*, throw a *TypeError* exception.
+        1. If Type(_handler_) is not Object, throw a *TypeError* exception.
+        1. If _handler_ is a Proxy exotic object and _handler_.[[ProxyHandler]] is *null*, throw a *TypeError* exception.
+        1. Let _P_ be a newly created object.
+        1. Set _P_'s essential internal methods (except for [[Call]] and [[Construct]]) to the definitions specified in <emu-xref href="#sec-proxy-object-internal-methods-and-internal-slots"></emu-xref>.
+        1. If IsCallable(_target_) is *true*, then
+          1. Set _P_.[[Call]] as specified in <emu-xref href="#sec-proxy-object-internal-methods-and-internal-slots-call-thisargument-argumentslist"></emu-xref>.
+          1. If IsConstructor(_target_) is *true*, then
+            1. Set _P_.[[Construct]] as specified in <emu-xref href="#sec-proxy-object-internal-methods-and-internal-slots-construct-argumentslist-newtarget"></emu-xref>.
+        1. Set _P_.[[ProxyTarget]] to _target_.
+        1. Set _P_.[[ProxyHandler]] to _handler_.
+        1. Return _P_.
+      </emu-alg>
+    </emu-clause>
+  </emu-clause>

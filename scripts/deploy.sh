@@ -4,6 +4,12 @@ declare -r PRIVATE_KEY_FILE_NAME='deploy_key'
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+REPO=`git config remote.docschina.url`
+SSH_REPO=${REPO}
+git config --global user.name "Travis CI"
+git config --global user.email "ci@travis-ci.org"
+git remote set-url origin "${SSH_REPO}"
+
 # Decrypt the file containing the private key
 
 openssl aes-256-cbc \

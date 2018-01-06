@@ -1,0 +1,131 @@
+  <emu-clause id="sec-operations-on-iterator-objects">
+    <h1>Operations on Iterator Objects</h1>
+    <p>See Common Iteration Interfaces (<emu-xref href="#sec-iteration"></emu-xref>).</p>
+
+    <!-- es6num="7.4.1" -->
+    <emu-clause id="sec-getiterator" aoid="GetIterator">
+      <h1>GetIterator ( _obj_ [ , _method_ ] )</h1>
+      <p>The abstract operation GetIterator with argument _obj_ and optional argument _method_ performs the following steps:</p>
+      <emu-alg>
+        1. If _method_ is not present, then
+          1. Set _method_ to ? GetMethod(_obj_, @@iterator).
+        1. Let _iterator_ be ? Call(_method_, _obj_).
+        1. If Type(_iterator_) is not Object, throw a *TypeError* exception.
+        1. Let _nextMethod_ be ? GetV(_iterator_, `"next"`).
+        1. Let _iteratorRecord_ be Record {[[Iterator]]: _iterator_, [[NextMethod]]: _nextMethod_, [[Done]]: *false*}.
+        1. Return _iteratorRecord_.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="7.4.2" -->
+    <emu-clause id="sec-iteratornext" aoid="IteratorNext">
+      <h1>IteratorNext ( _iteratorRecord_ [ , _value_ ] )</h1>
+      <p>The abstract operation IteratorNext with argument _iteratorRecord_ and optional argument _value_ performs the following steps:</p>
+      <emu-alg>
+        1. If _value_ is not present, then
+          1. Let _result_ be ? Call(_iteratorRecord_.[[NextMethod]], _iteratorRecord_.[[Iterator]], &laquo; &raquo;).
+        1. Else,
+          1. Let _result_ be ? Call(_iteratorRecord_.[[NextMethod]], _iteratorRecord_.[[Iterator]], &laquo; _value_ &raquo;).
+        1. If Type(_result_) is not Object, throw a *TypeError* exception.
+        1. Return _result_.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="7.4.3" -->
+    <emu-clause id="sec-iteratorcomplete" aoid="IteratorComplete">
+      <h1>IteratorComplete ( _iterResult_ )</h1>
+      <p>The abstract operation IteratorComplete with argument _iterResult_ performs the following steps:</p>
+      <emu-alg>
+        1. Assert: Type(_iterResult_) is Object.
+        1. Return ToBoolean(? Get(_iterResult_, `"done"`)).
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="7.4.4" -->
+    <emu-clause id="sec-iteratorvalue" aoid="IteratorValue">
+      <h1>IteratorValue ( _iterResult_ )</h1>
+      <p>The abstract operation IteratorValue with argument _iterResult_ performs the following steps:</p>
+      <emu-alg>
+        1. Assert: Type(_iterResult_) is Object.
+        1. Return ? Get(_iterResult_, `"value"`).
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="7.4.5" -->
+    <emu-clause id="sec-iteratorstep" aoid="IteratorStep">
+      <h1>IteratorStep ( _iteratorRecord_ )</h1>
+      <p>The abstract operation IteratorStep with argument _iteratorRecord_ requests the next value from _iteratorRecord_.[[Iterator]] by calling _iteratorRecord_.[[NextMethod]] and returns either *false* indicating that the iterator has reached its end or the IteratorResult object if a next value is available. IteratorStep performs the following steps:</p>
+      <emu-alg>
+        1. Let _result_ be ? IteratorNext(_iteratorRecord_).
+        1. Let _done_ be ? IteratorComplete(_result_).
+        1. If _done_ is *true*, return *false*.
+        1. Return _result_.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="7.4.6" -->
+    <emu-clause id="sec-iteratorclose" aoid="IteratorClose">
+      <h1>IteratorClose ( _iteratorRecord_, _completion_ )</h1>
+      <p>The abstract operation IteratorClose with arguments _iteratorRecord_ and _completion_ is used to notify an iterator that it should perform any actions it would normally perform when it has reached its completed state:</p>
+      <emu-alg>
+        1. Assert: Type(_iteratorRecord_.[[Iterator]]) is Object.
+        1. Assert: _completion_ is a Completion Record.
+        1. Let _iterator_ be _iteratorRecord_.[[Iterator]].
+        1. Let _return_ be ? GetMethod(_iterator_, `"return"`).
+        1. If _return_ is *undefined*, return Completion(_completion_).
+        1. Let _innerResult_ be Call(_return_, _iterator_, &laquo; &raquo;).
+        1. If _completion_.[[Type]] is ~throw~, return Completion(_completion_).
+        1. If _innerResult_.[[Type]] is ~throw~, return Completion(_innerResult_).
+        1. If Type(_innerResult_.[[Value]]) is not Object, throw a *TypeError* exception.
+        1. Return Completion(_completion_).
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="7.4.7" -->
+    <emu-clause id="sec-createiterresultobject" aoid="CreateIterResultObject">
+      <h1>CreateIterResultObject ( _value_, _done_ )</h1>
+      <p>The abstract operation CreateIterResultObject with arguments _value_ and _done_ creates an object that supports the IteratorResult interface by performing the following steps:</p>
+      <emu-alg>
+        1. Assert: Type(_done_) is Boolean.
+        1. Let _obj_ be ObjectCreate(%ObjectPrototype%).
+        1. Perform CreateDataProperty(_obj_, `"value"`, _value_).
+        1. Perform CreateDataProperty(_obj_, `"done"`, _done_).
+        1. Return _obj_.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="7.4.8" -->
+    <emu-clause id="sec-createlistiteratorRecord" oldids="sec-createlistiterator" aoid="CreateListIteratorRecord">
+      <h1>CreateListIteratorRecord ( _list_ )</h1>
+      <p>The abstract operation CreateListIteratorRecord with argument _list_ creates an Iterator (<emu-xref href="#sec-iterator-interface"></emu-xref>) object record whose next method returns the successive elements of _list_. It performs the following steps:</p>
+      <emu-alg>
+        1. Let _iterator_ be ObjectCreate(%IteratorPrototype%, &laquo; [[IteratedList]], [[ListIteratorNextIndex]] &raquo;).
+        1. Set _iterator_.[[IteratedList]] to _list_.
+        1. Set _iterator_.[[ListIteratorNextIndex]] to 0.
+        1. Let _next_ be a new built-in function object as defined in ListIterator `next` (<emu-xref href="#sec-listiterator-next"></emu-xref>).
+        1. Return Record { [[Iterator]]: _iterator_, [[NextMethod]]: _next_, [[Done]]: *false* }.
+      </emu-alg>
+      <emu-note>
+        <p>The list iterator object is never directly accessible to ECMAScript code.</p>
+      </emu-note>
+
+      <!-- es6num="7.4.8.1" -->
+      <emu-clause id="sec-listiterator-next">
+        <h1>ListIterator next( )</h1>
+        <p>The ListIterator `next` method is a standard built-in function object (clause <emu-xref href="#sec-ecmascript-standard-built-in-objects"></emu-xref>) that performs the following steps:</p>
+        <emu-alg>
+          1. Let _O_ be the *this* value.
+          1. Assert: Type(_O_) is Object.
+          1. Assert: _O_ has an [[IteratedList]] internal slot.
+          1. Let _list_ be _O_.[[IteratedList]].
+          1. Let _index_ be _O_.[[ListIteratorNextIndex]].
+          1. Let _len_ be the number of elements of _list_.
+          1. If _index_ &ge; _len_, then
+            1. Return CreateIterResultObject(*undefined*, *true*).
+          1. Set _O_.[[ListIteratorNextIndex]] to _index_+1.
+          1. Return CreateIterResultObject(_list_[_index_], *false*).
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+  </emu-clause>
+</emu-clause>

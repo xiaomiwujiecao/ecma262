@@ -1,0 +1,125 @@
+  <emu-clause id="sec-testing-and-comparison-operations">
+    <h1>Testing and Comparison Operations</h1>
+
+    <!-- es6num="7.2.1" -->
+    <emu-clause id="sec-requireobjectcoercible" aoid="RequireObjectCoercible">
+      <h1>RequireObjectCoercible ( _argument_ )</h1>
+      <p>The abstract operation RequireObjectCoercible throws an error if _argument_ is a value that cannot be converted to an Object using ToObject. It is defined by <emu-xref href="#table-14"></emu-xref>:</p>
+      <emu-table id="table-14" caption="RequireObjectCoercible Results">
+        <table>
+          <tbody>
+          <tr>
+            <th>
+              Argument Type
+            </th>
+            <th>
+              Result
+            </th>
+          </tr>
+          <tr>
+            <td>
+              Undefined
+            </td>
+            <td>
+              Throw a *TypeError* exception.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Null
+            </td>
+            <td>
+              Throw a *TypeError* exception.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Boolean
+            </td>
+            <td>
+              Return _argument_.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Number
+            </td>
+            <td>
+              Return _argument_.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              String
+            </td>
+            <td>
+              Return _argument_.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Symbol
+            </td>
+            <td>
+              Return _argument_.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Object
+            </td>
+            <td>
+              Return _argument_.
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </emu-table>
+    </emu-clause>
+
+    <!-- es6num="7.2.2" -->
+    <emu-clause id="sec-isarray" aoid="IsArray">
+      <h1>IsArray ( _argument_ )</h1>
+      <p>The abstract operation IsArray takes one argument _argument_, and performs the following steps:</p>
+      <emu-alg>
+        1. If Type(_argument_) is not Object, return *false*.
+        1. If _argument_ is an Array exotic object, return *true*.
+        1. If _argument_ is a Proxy exotic object, then
+          1. If _argument_.[[ProxyHandler]] is *null*, throw a *TypeError* exception.
+          1. Let _target_ be _argument_.[[ProxyTarget]].
+          1. Return ? IsArray(_target_).
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="7.2.3" -->
+    <emu-clause id="sec-iscallable" aoid="IsCallable">
+      <h1>IsCallable ( _argument_ )</h1>
+      <p>The abstract operation IsCallable determines if _argument_, which must be an ECMAScript language value, is a callable function with a [[Call]] internal method.</p>
+      <emu-alg>
+        1. If Type(_argument_) is not Object, return *false*.
+        1. If _argument_ has a [[Call]] internal method, return *true*.
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="7.2.4" -->
+    <emu-clause id="sec-isconstructor" aoid="IsConstructor">
+      <h1>IsConstructor ( _argument_ )</h1>
+      <p>The abstract operation IsConstructor determines if _argument_, which must be an ECMAScript language value, is a function object with a [[Construct]] internal method.</p>
+      <emu-alg>
+        1. If Type(_argument_) is not Object, return *false*.
+        1. If _argument_ has a [[Construct]] internal method, return *true*.
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="7.2.5" -->
+    <emu-clause id="sec-isextensible-o" aoid="IsExtensible">
+      <h1>IsExtensible ( _O_ )</h1>
+      <p>The abstract operation IsExtensible is used to determine whether additional properties can be added to the object that is _O_. A Boolean value is returned. This abstract operation performs the following steps:</p>
+      <emu-alg>
+        1. Assert: Type(_O_) is Object.
+        1. Return ? _O_.[[IsExtensible]]().
+      </emu-alg>
+    </emu-clause>

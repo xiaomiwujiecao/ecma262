@@ -1,0 +1,473 @@
+  <emu-clause id="sec-ecmascript-specification-types">
+    <h1>ECMAScript Specification Types</h1>
+    <p>A specification type corresponds to meta-values that are used within algorithms to describe the semantics of ECMAScript language constructs and ECMAScript language types. The specification types include Reference, List, Completion, Property Descriptor, Lexical Environment, Environment Record, and Data Block. Specification type values are specification artefacts that do not necessarily correspond to any specific entity within an ECMAScript implementation. Specification type values may be used to describe intermediate results of ECMAScript expression evaluation but such values cannot be stored as properties of objects or values of ECMAScript language variables.</p>
+
+    <!-- es6num="6.2.1" -->
+    <emu-clause id="sec-list-and-record-specification-type">
+      <h1>The List and Record Specification Types</h1>
+      <p>The <dfn>List</dfn> type is used to explain the evaluation of argument lists (see <emu-xref href="#sec-argument-lists"></emu-xref>) in `new` expressions, in function calls, and in other algorithms where a simple ordered list of values is needed. Values of the List type are simply ordered sequences of list elements containing the individual values. These sequences may be of any length. The elements of a list may be randomly accessed using 0-origin indices. For notational convenience an array-like syntax can be used to access List elements. For example, _arguments_[2] is shorthand for saying the 3<sup>rd</sup> element of the List _arguments_.</p>
+      <p>For notational convenience within this specification, a literal syntax can be used to express a new List value. For example, &laquo; 1, 2 &raquo; defines a List value that has two elements each of which is initialized to a specific value. A new empty List can be expressed as &laquo; &raquo;.</p>
+      <p>The <dfn>Record</dfn> type is used to describe data aggregations within the algorithms of this specification. A Record type value consists of one or more named fields. The value of each field is either an ECMAScript value or an abstract value represented by a name associated with the Record type. Field names are always enclosed in double brackets, for example [[Value]].</p>
+      <p>For notational convenience within this specification, an object literal-like syntax can be used to express a Record value. For example, {[[Field1]]: 42, [[Field2]]: *false*, [[Field3]]: ~empty~} defines a Record value that has three fields, each of which is initialized to a specific value. Field name order is not significant. Any fields that are not explicitly listed are considered to be absent.</p>
+      <p>In specification text and algorithms, dot notation may be used to refer to a specific field of a Record value. For example, if R is the record shown in the previous paragraph then R.[[Field2]] is shorthand for &ldquo;the field of R named [[Field2]]&rdquo;.</p>
+      <p>Schema for commonly used Record field combinations may be named, and that name may be used as a prefix to a literal Record value to identify the specific kind of aggregations that is being described. For example: PropertyDescriptor{[[Value]]: 42, [[Writable]]: *false*, [[Configurable]]: *true*}.</p>
+    </emu-clause>
+
+    <emu-clause id="sec-set-and-relation-specification-type">
+      <h1>The Set and Relation Specification Types</h1>
+      <p>The <dfn>Set</dfn> type is used to explain a collection of unordered elements for use in the memory model. Values of the Set type are simple collections of elements, where no element appears more than once. Elements may be added to and removed from Sets. Sets may be unioned, intersected, or subtracted from each other.</p>
+      <p>The <dfn>Relation</dfn> type is used to explain constraints on Sets. Values of the Relation type are Sets of ordered pairs of values from its value domain. For example, a Relation on events is a set of ordered pairs of events. For a Relation _R_ and two values _a_ and _b_ in the value domain of _R_, _a_ _R_ _b_ is shorthand for saying the ordered pair (_a_, _b_) is a member of _R_. A Relation is least with respect to some conditions when it is the smallest Relation that satisfies those conditions.</p>
+      <p>A <dfn>strict partial order</dfn> is a Relation value _R_ that satisfies the following.</p>
+      <ul>
+        <li>
+          <p>For all _a_, _b_, and _c_ in _R_'s domain:</p>
+          <ul>
+            <li>It is not the case that _a_ _R_ _a_, and</li>
+            <li>If _a_ _R_ _b_ and _b_ _R_ _c_, then _a_ _R_ _c_.</li>
+          </ul>
+        </li>
+      </ul>
+      <emu-note>
+        <p>The two properties above are called, in order, irreflexivity and transitivity.</p>
+      </emu-note>
+      <p>A <dfn>strict total order</dfn> is a Relation value _R_ that satisfies the following.</p>
+      <ul>
+        <li>
+          <p>For all _a_, _b_, and _c_ in _R_'s domain:</p>
+          <ul>
+            <li>_a_ is identical to _b_ or _a_ _R_ _b_ or _b_ _R_ _a_, and</li>
+            <li>It is not the case that _a_ _R_ _a_, and</li>
+            <li>If _a_ _R_ _b_ and _b_ _R_ _c_, then _a_ _R_ _c_.</li>
+          </ul>
+        </li>
+      </ul>
+      <emu-note>
+        <p>The three properties above are called, in order, totality, irreflexivity, and transitivity.</p>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="6.2.2" -->
+    <emu-clause id="sec-completion-record-specification-type" aoid="Completion">
+      <h1>The Completion Record Specification Type</h1>
+      <p>The Completion type is a Record used to explain the runtime propagation of values and control flow such as the behaviour of statements (`break`, `continue`, `return` and `throw`) that perform nonlocal transfers of control.</p>
+      <p>Values of the Completion type are Record values whose fields are defined as by <emu-xref href="#table-8"></emu-xref>. Such values are referred to as <dfn>Completion Record</dfn>s.</p>
+      <emu-table id="table-8" caption="Completion Record Fields">
+        <table>
+          <tbody>
+          <tr>
+            <th>
+              Field Name
+            </th>
+            <th>
+              Value
+            </th>
+            <th>
+              Meaning
+            </th>
+          </tr>
+          <tr>
+            <td>
+              [[Type]]
+            </td>
+            <td>
+              One of ~normal~, ~break~, ~continue~, ~return~, or ~throw~
+            </td>
+            <td>
+              The type of completion that occurred.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              [[Value]]
+            </td>
+            <td>
+              any ECMAScript language value or ~empty~
+            </td>
+            <td>
+              The value that was produced.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              [[Target]]
+            </td>
+            <td>
+              any ECMAScript string or ~empty~
+            </td>
+            <td>
+              The target label for directed control transfers.
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </emu-table>
+      <p>The term &ldquo;<dfn>abrupt completion</dfn>&rdquo; refers to any completion with a [[Type]] value other than ~normal~.</p>
+
+      <!-- es6num="6.2.2.1" -->
+      <emu-clause id="sec-normalcompletion" aoid="NormalCompletion">
+        <h1>NormalCompletion</h1>
+        <p>The abstract operation NormalCompletion with a single _argument_, such as:</p>
+        <emu-alg>
+          1. Return NormalCompletion(_argument_).
+        </emu-alg>
+        <p>Is a shorthand that is defined as follows:</p>
+        <emu-alg>
+          1. Return Completion{[[Type]]: ~normal~, [[Value]]: _argument_, [[Target]]: ~empty~}.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="6.2.2.5" -->
+      <emu-clause id="sec-updateempty" aoid="UpdateEmpty">
+        <h1>UpdateEmpty ( _completionRecord_, _value_ )</h1>
+        <p>The abstract operation UpdateEmpty with arguments _completionRecord_ and _value_ performs the following steps:</p>
+        <emu-alg>
+          1. Assert: If _completionRecord_.[[Type]] is either ~return~ or ~throw~, then _completionRecord_.[[Value]] is not ~empty~.
+          1. If _completionRecord_.[[Value]] is not ~empty~, return Completion(_completionRecord_).
+          1. Return Completion{[[Type]]: _completionRecord_.[[Type]], [[Value]]: _value_, [[Target]]: _completionRecord_.[[Target]] }.
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="6.2.3" -->
+    <emu-clause id="sec-reference-specification-type">
+      <h1>The Reference Specification Type</h1>
+      <emu-note>
+        <p>The Reference type is used to explain the behaviour of such operators as `delete`, `typeof`, the assignment operators, the `super` keyword and other language features. For example, the left-hand operand of an assignment is expected to produce a reference.</p>
+      </emu-note>
+      <p>A <dfn>Reference</dfn> is a resolved name or property binding. A Reference consists of three components, the base value component, the referenced name component, and the Boolean-valued strict reference flag. The base value component is either *undefined*, an Object, a Boolean, a String, a Symbol, a Number, or an Environment Record. A base value component of *undefined* indicates that the Reference could not be resolved to a binding. The referenced name component is a String or Symbol value.</p>
+      <p>A <dfn id="super-reference">Super Reference</dfn> is a Reference that is used to represents a name binding that was expressed using the super keyword. A Super Reference has an additional thisValue component, and its base value component will never be an Environment Record.</p>
+      <p>The following abstract operations are used in this specification to operate on references:</p>
+
+      <emu-clause id="sec-getbase" aoid="GetBase" oldids="ao-getbase">
+        <h1>GetBase ( _V_ )</h1>
+        <emu-alg>
+          1. Assert: Type(_V_) is Reference.
+          1. Return the base value component of _V_.
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-getreferencedname" aoid="GetReferencedName" oldids="ao-getreferencedname">
+        <h1>GetReferencedName ( _V_ )</h1>
+        <emu-alg>
+          1. Assert: Type(_V_) is Reference.
+          1. Return the referenced name component of _V_.
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-isstrictreference" aoid="IsStrictReference" oldids="ao-isstrictreference">
+        <h1>IsStrictReference ( _V_ )</h1>
+        <emu-alg>
+          1. Assert: Type(_V_) is Reference.
+          1. Return the strict reference flag of _V_.
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-hasprimitivebase" aoid="HasPrimitiveBase" oldids="ao-hasprimitivebase">
+        <h1>HasPrimitiveBase ( _V_ )</h1>
+        <emu-alg>
+          1. Assert: Type(_V_) is Reference.
+          1. If Type(_V_'s base value component) is Boolean, String, Symbol, or Number, return *true*; otherwise return *false*.
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-ispropertyreference" aoid="IsPropertyReference" oldids="ao-ispropertyreference">
+        <h1>IsPropertyReference ( _V_ )</h1>
+        <emu-alg>
+          1. Assert: Type(_V_) is Reference.
+          1. If either the base value component of _V_ is an Object or HasPrimitiveBase(_V_) is *true*, return *true*; otherwise return *false*.
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-isunresolvablereference" aoid="IsUnresolvableReference" oldids="ao-isunresolvablereference">
+        <h1>IsUnresolvableReference ( _V_ )</h1>
+        <emu-alg>
+          1. Assert: Type(_V_) is Reference.
+          1. If the base value component of _V_ is *undefined*, return *true*; otherwise return *false*.
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-issuperreference" aoid="IsSuperReference" oldids="ao-issuperreference">
+        <h1>IsSuperReference ( _V_ )</h1>
+        <emu-alg>
+          1. Assert: Type(_V_) is Reference.
+          1. If _V_ has a thisValue component, return *true*; otherwise return *false*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="6.2.3.1" -->
+      <emu-clause id="sec-getvalue" aoid="GetValue">
+        <h1>GetValue ( _V_ )</h1>
+        <emu-alg>
+          1. ReturnIfAbrupt(_V_).
+          1. If Type(_V_) is not Reference, return _V_.
+          1. Let _base_ be GetBase(_V_).
+          1. If IsUnresolvableReference(_V_) is *true*, throw a *ReferenceError* exception.
+          1. If IsPropertyReference(_V_) is *true*, then
+            1. If HasPrimitiveBase(_V_) is *true*, then
+              1. Assert: In this case, _base_ will never be *undefined* or *null*.
+              1. Set _base_ to ! ToObject(_base_).
+            1. Return ? _base_.[[Get]](GetReferencedName(_V_), GetThisValue(_V_)).
+          1. Else _base_ must be an Environment Record,
+            1. Return ? _base_.GetBindingValue(GetReferencedName(_V_), IsStrictReference(_V_)) (see <emu-xref href="#sec-environment-records"></emu-xref>).
+        </emu-alg>
+        <emu-note>
+          <p>The object that may be created in step 5.a.ii is not accessible outside of the above abstract operation and the ordinary object [[Get]] internal method. An implementation might choose to avoid the actual creation of the object.</p>
+        </emu-note>
+      </emu-clause>
+
+      <!-- es6num="6.2.3.2" -->
+      <emu-clause id="sec-putvalue" aoid="PutValue">
+        <h1>PutValue ( _V_, _W_ )</h1>
+        <emu-alg>
+          1. ReturnIfAbrupt(_V_).
+          1. ReturnIfAbrupt(_W_).
+          1. If Type(_V_) is not Reference, throw a *ReferenceError* exception.
+          1. Let _base_ be GetBase(_V_).
+          1. If IsUnresolvableReference(_V_) is *true*, then
+            1. If IsStrictReference(_V_) is *true*, then
+              1. Throw a *ReferenceError* exception.
+            1. Let _globalObj_ be GetGlobalObject().
+            1. Return ? Set(_globalObj_, GetReferencedName(_V_), _W_, *false*).
+          1. Else if IsPropertyReference(_V_) is *true*, then
+            1. If HasPrimitiveBase(_V_) is *true*, then
+              1. Assert: In this case, _base_ will never be *undefined* or *null*.
+              1. Set _base_ to ! ToObject(_base_).
+            1. Let _succeeded_ be ? _base_.[[Set]](GetReferencedName(_V_), _W_, GetThisValue(_V_)).
+            1. If _succeeded_ is *false* and IsStrictReference(_V_) is *true*, throw a *TypeError* exception.
+            1. Return.
+          1. Else _base_ must be an Environment Record,
+            1. Return ? _base_.SetMutableBinding(GetReferencedName(_V_), _W_, IsStrictReference(_V_)) (see <emu-xref href="#sec-environment-records"></emu-xref>).
+        </emu-alg>
+        <emu-note>
+          <p>The object that may be created in step 6.a.ii is not accessible outside of the above algorithm and the ordinary object [[Set]] internal method. An implementation might choose to avoid the actual creation of that object.</p>
+        </emu-note>
+      </emu-clause>
+
+      <!-- es6num="6.2.3.3" -->
+      <emu-clause id="sec-getthisvalue" aoid="GetThisValue">
+        <h1>GetThisValue ( _V_ )</h1>
+        <emu-alg>
+          1. Assert: IsPropertyReference(_V_) is *true*.
+          1. If IsSuperReference(_V_) is *true*, then
+            1. Return the value of the thisValue component of the reference _V_.
+          1. Return GetBase(_V_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="6.2.3.4" -->
+      <emu-clause id="sec-initializereferencedbinding" aoid="InitializeReferencedBinding">
+        <h1>InitializeReferencedBinding ( _V_, _W_ )</h1>
+        <emu-alg>
+          1. ReturnIfAbrupt(_V_).
+          1. ReturnIfAbrupt(_W_).
+          1. Assert: Type(_V_) is Reference.
+          1. Assert: IsUnresolvableReference(_V_) is *false*.
+          1. Let _base_ be GetBase(_V_).
+          1. Assert: _base_ is an Environment Record.
+          1. Return _base_.InitializeBinding(GetReferencedName(_V_), _W_).
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="6.2.4" -->
+    <emu-clause id="sec-property-descriptor-specification-type">
+      <h1>The Property Descriptor Specification Type</h1>
+      <p>The <dfn>Property Descriptor</dfn> type is used to explain the manipulation and reification of Object property attributes. Values of the Property Descriptor type are Records. Each field's name is an attribute name and its value is a corresponding attribute value as specified in <emu-xref href="#sec-property-attributes"></emu-xref>. In addition, any field may be present or absent. The schema name used within this specification to tag literal descriptions of Property Descriptor records is &ldquo;PropertyDescriptor&rdquo;.</p>
+      <p>Property Descriptor values may be further classified as data Property Descriptors and accessor Property Descriptors based upon the existence or use of certain fields. A data Property Descriptor is one that includes any fields named either [[Value]] or [[Writable]]. An accessor Property Descriptor is one that includes any fields named either [[Get]] or [[Set]]. Any Property Descriptor may have fields named [[Enumerable]] and [[Configurable]]. A Property Descriptor value may not be both a data Property Descriptor and an accessor Property Descriptor; however, it may be neither. A generic Property Descriptor is a Property Descriptor value that is neither a data Property Descriptor nor an accessor Property Descriptor. A fully populated Property Descriptor is one that is either an accessor Property Descriptor or a data Property Descriptor and that has all of the fields that correspond to the property attributes defined in either <emu-xref href="#table-2"></emu-xref> or <emu-xref href="#table-3"></emu-xref>.</p>
+      <p>The following abstract operations are used in this specification to operate upon Property Descriptor values:</p>
+
+      <!-- es6num="6.2.4.1" -->
+      <emu-clause id="sec-isaccessordescriptor" aoid="IsAccessorDescriptor">
+        <h1>IsAccessorDescriptor ( _Desc_ )</h1>
+        <p>When the abstract operation IsAccessorDescriptor is called with Property Descriptor _Desc_, the following steps are taken:</p>
+        <emu-alg>
+          1. If _Desc_ is *undefined*, return *false*.
+          1. If both _Desc_.[[Get]] and _Desc_.[[Set]] are absent, return *false*.
+          1. Return *true*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="6.2.4.2" -->
+      <emu-clause id="sec-isdatadescriptor" aoid="IsDataDescriptor">
+        <h1>IsDataDescriptor ( _Desc_ )</h1>
+        <p>When the abstract operation IsDataDescriptor is called with Property Descriptor _Desc_, the following steps are taken:</p>
+        <emu-alg>
+          1. If _Desc_ is *undefined*, return *false*.
+          1. If both _Desc_.[[Value]] and _Desc_.[[Writable]] are absent, return *false*.
+          1. Return *true*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="6.2.4.3" -->
+      <emu-clause id="sec-isgenericdescriptor" aoid="IsGenericDescriptor">
+        <h1>IsGenericDescriptor ( _Desc_ )</h1>
+        <p>When the abstract operation IsGenericDescriptor is called with Property Descriptor _Desc_, the following steps are taken:</p>
+        <emu-alg>
+          1. If _Desc_ is *undefined*, return *false*.
+          1. If IsAccessorDescriptor(_Desc_) and IsDataDescriptor(_Desc_) are both *false*, return *true*.
+          1. Return *false*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="6.2.4.4" -->
+      <emu-clause id="sec-frompropertydescriptor" aoid="FromPropertyDescriptor">
+        <h1>FromPropertyDescriptor ( _Desc_ )</h1>
+        <p>When the abstract operation FromPropertyDescriptor is called with Property Descriptor _Desc_, the following steps are taken:</p>
+        <emu-alg>
+          1. If _Desc_ is *undefined*, return *undefined*.
+          1. Let _obj_ be ObjectCreate(%ObjectPrototype%).
+          1. Assert: _obj_ is an extensible ordinary object with no own properties.
+          1. If _Desc_ has a [[Value]] field, then
+            1. Perform CreateDataProperty(_obj_, `"value"`, _Desc_.[[Value]]).
+          1. If _Desc_ has a [[Writable]] field, then
+            1. Perform CreateDataProperty(_obj_, `"writable"`, _Desc_.[[Writable]]).
+          1. If _Desc_ has a [[Get]] field, then
+            1. Perform CreateDataProperty(_obj_, `"get"`, _Desc_.[[Get]]).
+          1. If _Desc_ has a [[Set]] field, then
+            1. Perform CreateDataProperty(_obj_, `"set"`, _Desc_.[[Set]]).
+          1. If _Desc_ has an [[Enumerable]] field, then
+            1. Perform CreateDataProperty(_obj_, `"enumerable"`, _Desc_.[[Enumerable]]).
+          1. If _Desc_ has a [[Configurable]] field, then
+            1. Perform CreateDataProperty(_obj_, `"configurable"`, _Desc_.[[Configurable]]).
+          1. Assert: All of the above CreateDataProperty operations return *true*.
+          1. Return _obj_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="6.2.4.5" -->
+      <emu-clause id="sec-topropertydescriptor" aoid="ToPropertyDescriptor">
+        <h1>ToPropertyDescriptor ( _Obj_ )</h1>
+        <p>When the abstract operation ToPropertyDescriptor is called with object _Obj_, the following steps are taken:</p>
+        <emu-alg>
+          1. If Type(_Obj_) is not Object, throw a *TypeError* exception.
+          1. Let _desc_ be a new Property Descriptor that initially has no fields.
+          1. Let _hasEnumerable_ be ? HasProperty(_Obj_, `"enumerable"`).
+          1. If _hasEnumerable_ is *true*, then
+            1. Let _enum_ be ToBoolean(? Get(_Obj_, `"enumerable"`)).
+            1. Set _desc_.[[Enumerable]] to _enum_.
+          1. Let _hasConfigurable_ be ? HasProperty(_Obj_, `"configurable"`).
+          1. If _hasConfigurable_ is *true*, then
+            1. Let _conf_ be ToBoolean(? Get(_Obj_, `"configurable"`)).
+            1. Set _desc_.[[Configurable]] to _conf_.
+          1. Let _hasValue_ be ? HasProperty(_Obj_, `"value"`).
+          1. If _hasValue_ is *true*, then
+            1. Let _value_ be ? Get(_Obj_, `"value"`).
+            1. Set _desc_.[[Value]] to _value_.
+          1. Let _hasWritable_ be ? HasProperty(_Obj_, `"writable"`).
+          1. If _hasWritable_ is *true*, then
+            1. Let _writable_ be ToBoolean(? Get(_Obj_, `"writable"`)).
+            1. Set _desc_.[[Writable]] to _writable_.
+          1. Let _hasGet_ be ? HasProperty(_Obj_, `"get"`).
+          1. If _hasGet_ is *true*, then
+            1. Let _getter_ be ? Get(_Obj_, `"get"`).
+            1. If IsCallable(_getter_) is *false* and _getter_ is not *undefined*, throw a *TypeError* exception.
+            1. Set _desc_.[[Get]] to _getter_.
+          1. Let _hasSet_ be ? HasProperty(_Obj_, `"set"`).
+          1. If _hasSet_ is *true*, then
+            1. Let _setter_ be ? Get(_Obj_, `"set"`).
+            1. If IsCallable(_setter_) is *false* and _setter_ is not *undefined*, throw a *TypeError* exception.
+            1. Set _desc_.[[Set]] to _setter_.
+          1. If _desc_.[[Get]] is present or _desc_.[[Set]] is present, then
+            1. If _desc_.[[Value]] is present or _desc_.[[Writable]] is present, throw a *TypeError* exception.
+          1. Return _desc_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="6.2.4.6" -->
+      <emu-clause id="sec-completepropertydescriptor" aoid="CompletePropertyDescriptor">
+        <h1>CompletePropertyDescriptor ( _Desc_ )</h1>
+        <p>When the abstract operation CompletePropertyDescriptor is called with Property Descriptor _Desc_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: _Desc_ is a Property Descriptor.
+          1. Let _like_ be Record{[[Value]]: *undefined*, [[Writable]]: *false*, [[Get]]: *undefined*, [[Set]]: *undefined*, [[Enumerable]]: *false*, [[Configurable]]: *false*}.
+          1. If IsGenericDescriptor(_Desc_) is *true* or IsDataDescriptor(_Desc_) is *true*, then
+            1. If _Desc_ does not have a [[Value]] field, set _Desc_.[[Value]] to _like_.[[Value]].
+            1. If _Desc_ does not have a [[Writable]] field, set _Desc_.[[Writable]] to _like_.[[Writable]].
+          1. Else,
+            1. If _Desc_ does not have a [[Get]] field, set _Desc_.[[Get]] to _like_.[[Get]].
+            1. If _Desc_ does not have a [[Set]] field, set _Desc_.[[Set]] to _like_.[[Set]].
+          1. If _Desc_ does not have an [[Enumerable]] field, set _Desc_.[[Enumerable]] to _like_.[[Enumerable]].
+          1. If _Desc_ does not have a [[Configurable]] field, set _Desc_.[[Configurable]] to _like_.[[Configurable]].
+          1. Return _Desc_.
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="6.2.5" -->
+    <emu-clause id="sec-lexical-environment-and-environment-record-specification-types">
+      <h1>The Lexical Environment and Environment Record Specification Types</h1>
+      <p>The Lexical Environment and Environment Record types are used to explain the behaviour of name resolution in nested functions and blocks. These types and the operations upon them are defined in <emu-xref href="#sec-lexical-environments"></emu-xref>.</p>
+    </emu-clause>
+
+    <!-- es6num="6.2.6" -->
+    <emu-clause id="sec-data-blocks">
+      <h1>Data Blocks</h1>
+      <p>The <dfn>Data Block</dfn> specification type is used to describe a distinct and mutable sequence of byte-sized (8 bit) numeric values. A Data Block value is created with a fixed number of bytes that each have the initial value 0.</p>
+      <p>For notational convenience within this specification, an array-like syntax can be used to access the individual bytes of a Data Block value. This notation presents a Data Block value as a 0-origined integer indexed sequence of bytes. For example, if _db_ is a 5 byte Data Block value then _db_[2] can be used to access its 3<sup>rd</sup> byte.</p>
+      <p>A data block that resides in memory that can be referenced from multiple agents concurrently is designated a <dfn>Shared Data Block</dfn>. A Shared Data Block has an identity (for the purposes of equality testing Shared Data Block values) that is <em>address-free</em>: it is tied not to the virtual addresses the block is mapped to in any process, but to the set of locations in memory that the block represents. Two data blocks are equal only if the sets of the locations they contain are equal; otherwise, they are not equal and the intersection of the sets of locations they contain is empty.  Finally, Shared Data Blocks can be distinguished from Data Blocks.</p>
+      <p>The semantics of Shared Data Blocks is defined using Shared Data Block events by the memory model. Abstract operations below introduce Shared Data Block events and act as the interface between evaluation semantics and the event semantics of the memory model. The events form a candidate execution, on which the memory model acts as a filter. Please consult the memory model for full semantics.</p>
+      <p>Shared Data Block events are modeled by Records, defined in the memory model.</p>
+      <p>The following abstract operations are used in this specification to operate upon Data Block values:</p>
+
+      <!-- es6num="6.2.6.1" -->
+      <emu-clause id="sec-createbytedatablock" aoid="CreateByteDataBlock">
+        <h1>CreateByteDataBlock ( _size_ )</h1>
+        <p>When the abstract operation CreateByteDataBlock is called with integer argument _size_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: _size_&ge;0.
+          1. Let _db_ be a new Data Block value consisting of _size_ bytes. If it is impossible to create such a Data Block, throw a *RangeError* exception.
+          1. Set all of the bytes of _db_ to 0.
+          1. Return _db_.
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-createsharedbytedatablock" aoid="CreateSharedByteDataBlock">
+        <h1>CreateSharedByteDataBlock( _size_ )</h1>
+        <p>When the abstract operation CreateSharedByteDataBlock is called with integer argument _size_, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: _size_&ge;0.
+          1. Let _db_ be a new Shared Data Block value consisting of _size_ bytes. If it is impossible to create such a Shared Data Block, throw a *RangeError* exception.
+          1. Let _execution_ be the [[CandidateExecution]] field of the surrounding agent's Agent Record.
+          1. Let _eventList_ be the [[EventList]] field of the element in _execution_.[[EventLists]] whose [[AgentSignifier]] is AgentSignifier().
+          1. Let _zero_ be &laquo; 0 &raquo;.
+          1. For each index _i_ of _db_, do
+            1. Append WriteSharedMemory{ [[Order]]: `"Init"`, [[NoTear]]: *true*, [[Block]]: _db_, [[ByteIndex]]: _i_, [[ElementSize]]: 1, [[Payload]]: _zero_ } to _eventList_.
+          1. Return _db_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="6.2.6.2" -->
+      <emu-clause id="sec-copydatablockbytes" aoid="CopyDataBlockBytes">
+        <h1>CopyDataBlockBytes ( _toBlock_, _toIndex_, _fromBlock_, _fromIndex_, _count_ )</h1>
+        <p>When the abstract operation CopyDataBlockBytes is called, the following steps are taken:</p>
+        <emu-alg>
+          1. Assert: _fromBlock_ and _toBlock_ are distinct Data Block or Shared Data Block values.
+          1. Assert: _fromIndex_, _toIndex_, and _count_ are integer values &ge; 0.
+          1. Let _fromSize_ be the number of bytes in _fromBlock_.
+          1. Assert: _fromIndex_+_count_ &le; _fromSize_.
+          1. Let _toSize_ be the number of bytes in _toBlock_.
+          1. Assert: _toIndex_+_count_ &le; _toSize_.
+          1. Repeat, while _count_&gt;0
+            1. If _fromBlock_ is a Shared Data Block, then
+              1. Let _execution_ be the [[CandidateExecution]] field of the surrounding agent's Agent Record.
+              1. Let _eventList_ be the [[EventList]] field of the element in _execution_.[[EventLists]] whose [[AgentSignifier]] is AgentSignifier().
+              1. Let _bytes_ be a List of length 1 that contains a nondeterministically chosen byte value.
+              1. NOTE: In implementations, _bytes_ is the result of a non-atomic read instruction on the underlying hardware. The nondeterminism is a semantic prescription of the memory model to describe observable behaviour of hardware with weak consistency.
+              1. Let _readEvent_ be ReadSharedMemory{ [[Order]]: `"Unordered"`, [[NoTear]]: *true*, [[Block]]: _fromBlock_, [[ByteIndex]]: _fromIndex_, [[ElementSize]]: 1 }.
+              1. Append _readEvent_ to _eventList_.
+              1. Append Chosen Value Record { [[Event]]: _readEvent_, [[ChosenValue]]: _bytes_ } to _execution_.[[ChosenValues]].
+              1. If _toBlock_ is a Shared Data Block, then
+                1. Append WriteSharedMemory{ [[Order]]: `"Unordered"`, [[NoTear]]: *true*, [[Block]]: _toBlock_, [[ByteIndex]]: _toIndex_, [[ElementSize]]: 1, [[Payload]]: _bytes_ } to _eventList_.
+              1. Else,
+                1. Set _toBlock_[_toIndex_] to _bytes_[0].
+            1. Else,
+              1. Assert: _toBlock_ is not a Shared Data Block.
+              1. Set _toBlock_[_toIndex_] to _fromBlock_[_fromIndex_].
+            1. Increment _toIndex_ and _fromIndex_ each by 1.
+            1. Decrement _count_ by 1.
+          1. Return NormalCompletion(~empty~).
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+  </emu-clause>
+</emu-clause>
