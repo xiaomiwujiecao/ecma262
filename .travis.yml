@@ -1,5 +1,12 @@
-after_success:
-  - ./scripts/auto-deploy.sh
+branches:
+  only:
+  - master
+
+script:
+  - bash ./scripts/deploy.sh
+
+# after_success:
+#   - ./scripts/auto-deploy.sh
 
 env:
   global:
