@@ -1,0 +1,237 @@
+<emu-clause id="sec-ecmascript-language-lexical-grammar">
+  <h1>ECMAScript Language: Lexical Grammar</h1>
+  <p>The source text of an ECMAScript |Script| or |Module| is first converted into a sequence of input elements, which are tokens, line terminators, comments, or white space. The source text is scanned from left to right, repeatedly taking the longest possible sequence of code points as the next input element.</p>
+  <p>There are several situations where the identification of lexical input elements is sensitive to the syntactic grammar context that is consuming the input elements. This requires multiple goal symbols for the lexical grammar. The |InputElementRegExpOrTemplateTail| goal is used in syntactic grammar contexts where a |RegularExpressionLiteral|, a |TemplateMiddle|, or a |TemplateTail| is permitted. The |InputElementRegExp| goal symbol is used in all syntactic grammar contexts where a |RegularExpressionLiteral| is permitted but neither a |TemplateMiddle|, nor a |TemplateTail| is permitted. The |InputElementTemplateTail| goal is used in all syntactic grammar contexts where a |TemplateMiddle| or a |TemplateTail| is permitted but a |RegularExpressionLiteral| is not permitted. In all other contexts, |InputElementDiv| is used as the lexical goal symbol.</p>
+  <emu-note>
+    <p>The use of multiple lexical goals ensures that there are no lexical ambiguities that would affect automatic semicolon insertion. For example, there are no syntactic grammar contexts where both a leading division or division-assignment, and a leading |RegularExpressionLiteral| are permitted. This is not affected by semicolon insertion (see <emu-xref href="#sec-automatic-semicolon-insertion"></emu-xref>); in examples such as the following:</p>
+    <pre><code class="javascript">
+      a = b
+      /hi/g.exec(c).map(d);
+    </code></pre>
+    <p>where the first non-whitespace, non-comment code point after a |LineTerminator| is U+002F (SOLIDUS) and the syntactic context allows division or division-assignment, no semicolon is inserted at the |LineTerminator|. That is, the above example is interpreted in the same way as:</p>
+    <pre><code class="javascript">
+      a = b / hi / g.exec(c).map(d);
+    </code></pre>
+  </emu-note>
+  <h2>Syntax</h2>
+  <emu-grammar type="definition">
+    InputElementDiv ::
+      WhiteSpace
+      LineTerminator
+      Comment
+      CommonToken
+      DivPunctuator
+      RightBracePunctuator
+
+    InputElementRegExp ::
+      WhiteSpace
+      LineTerminator
+      Comment
+      CommonToken
+      RightBracePunctuator
+      RegularExpressionLiteral
+
+    InputElementRegExpOrTemplateTail ::
+      WhiteSpace
+      LineTerminator
+      Comment
+      CommonToken
+      RegularExpressionLiteral
+      TemplateSubstitutionTail
+
+    InputElementTemplateTail ::
+      WhiteSpace
+      LineTerminator
+      Comment
+      CommonToken
+      DivPunctuator
+      TemplateSubstitutionTail
+  </emu-grammar>
+
+  <!-- es6num="11.1" -->
+  <emu-clause id="sec-unicode-format-control-characters">
+    <h1>Unicode Format-Control Characters</h1>
+    <p>The Unicode format-control characters (i.e., the characters in category &ldquo;Cf&rdquo; in the Unicode Character Database such as LEFT-TO-RIGHT MARK or RIGHT-TO-LEFT MARK) are control codes used to control the formatting of a range of text in the absence of higher-level protocols for this (such as mark-up languages).</p>
+    <p>It is useful to allow format-control characters in source text to facilitate editing and display. All format control characters may be used within comments, and within string literals, template literals, and regular expression literals.</p>
+    <p>U+200C (ZERO WIDTH NON-JOINER) and U+200D (ZERO WIDTH JOINER) are format-control characters that are used to make necessary distinctions when forming words or phrases in certain languages. In ECMAScript source text these code points may also be used in an |IdentifierName| after the first character.</p>
+    <p>U+FEFF (ZERO WIDTH NO-BREAK SPACE) is a format-control character used primarily at the start of a text to mark it as Unicode and to allow detection of the text's encoding and byte order. &lt;ZWNBSP&gt; characters intended for this purpose can sometimes also appear after the start of a text, for example as a result of concatenating files. In ECMAScript source text &lt;ZWNBSP&gt; code points are treated as white space characters (see <emu-xref href="#sec-white-space"></emu-xref>).</p>
+    <p>The special treatment of certain format-control characters outside of comments, string literals, and regular expression literals is summarized in <emu-xref href="#table-31"></emu-xref>.</p>
+    <emu-table id="table-31" caption="Format-Control Code Point Usage">
+      <table>
+        <tbody>
+        <tr>
+          <th>
+            Code Point
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Abbreviation
+          </th>
+          <th>
+            Usage
+          </th>
+        </tr>
+        <tr>
+          <td>
+            `U+200C`
+          </td>
+          <td>
+            ZERO WIDTH NON-JOINER
+          </td>
+          <td>
+            &lt;ZWNJ&gt;
+          </td>
+          <td>
+            |IdentifierPart|
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `U+200D`
+          </td>
+          <td>
+            ZERO WIDTH JOINER
+          </td>
+          <td>
+            &lt;ZWJ&gt;
+          </td>
+          <td>
+            |IdentifierPart|
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `U+FEFF`
+          </td>
+          <td>
+            ZERO WIDTH NO-BREAK SPACE
+          </td>
+          <td>
+            &lt;ZWNBSP&gt;
+          </td>
+          <td>
+            |WhiteSpace|
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </emu-table>
+  </emu-clause>
+
+  <!-- es6num="11.2" -->
+  <emu-clause id="sec-white-space">
+    <h1>White Space</h1>
+    <p>White space code points are used to improve source text readability and to separate tokens (indivisible lexical units) from each other, but are otherwise insignificant. White space code points may occur between any two tokens and at the start or end of input. White space code points may occur within a |StringLiteral|, a |RegularExpressionLiteral|, a |Template|, or a |TemplateSubstitutionTail| where they are considered significant code points forming part of a literal value. They may also occur within a |Comment|, but cannot appear within any other kind of token.</p>
+    <p>The ECMAScript white space code points are listed in <emu-xref href="#table-32"></emu-xref>.</p>
+    <emu-table id="table-32" caption="White Space Code Points">
+      <table>
+        <tbody>
+        <tr>
+          <th>
+            Code Point
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Abbreviation
+          </th>
+        </tr>
+        <tr>
+          <td>
+            `U+0009`
+          </td>
+          <td>
+            CHARACTER TABULATION
+          </td>
+          <td>
+            &lt;TAB&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `U+000B`
+          </td>
+          <td>
+            LINE TABULATION
+          </td>
+          <td>
+            &lt;VT&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `U+000C`
+          </td>
+          <td>
+            FORM FEED (FF)
+          </td>
+          <td>
+            &lt;FF&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `U+0020`
+          </td>
+          <td>
+            SPACE
+          </td>
+          <td>
+            &lt;SP&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `U+00A0`
+          </td>
+          <td>
+            NO-BREAK SPACE
+          </td>
+          <td>
+            &lt;NBSP&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `U+FEFF`
+          </td>
+          <td>
+            ZERO WIDTH NO-BREAK SPACE
+          </td>
+          <td>
+            &lt;ZWNBSP&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Other category &ldquo;Zs&rdquo;
+          </td>
+          <td>
+            Any other Unicode &ldquo;Space_Separator&rdquo; code point
+          </td>
+          <td>
+            &lt;USP&gt;
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </emu-table>
+    <p>ECMAScript implementations must recognize as |WhiteSpace| code points listed in the &ldquo;Space_Separator&rdquo; (&ldquo;Zs&rdquo;) category.</p>
+    <emu-note>
+      <p>Other than for the code points listed in <emu-xref href="#table-32"></emu-xref>, ECMAScript |WhiteSpace| intentionally excludes all code points that have the Unicode &ldquo;White_Space&rdquo; property but which are not classified in category &ldquo;Space_Separator&rdquo; (&ldquo;Zs&rdquo;).</p>
+    </emu-note>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      WhiteSpace ::
+        &lt;TAB&gt;
+        &lt;VT&gt;
+        &lt;FF&gt;
+        &lt;SP&gt;
+        &lt;NBSP&gt;
+        &lt;ZWNBSP&gt;
+        &lt;USP&gt;
+    </emu-grammar>
+  </emu-clause>

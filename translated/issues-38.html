@@ -1,0 +1,141 @@
+  <emu-clause id="sec-line-terminators">
+    <h1>Line Terminators</h1>
+    <p>Like white space code points, line terminator code points are used to improve source text readability and to separate tokens (indivisible lexical units) from each other. However, unlike white space code points, line terminators have some influence over the behaviour of the syntactic grammar. In general, line terminators may occur between any two tokens, but there are a few places where they are forbidden by the syntactic grammar. Line terminators also affect the process of automatic semicolon insertion (<emu-xref href="#sec-automatic-semicolon-insertion"></emu-xref>). A line terminator cannot occur within any token except a |StringLiteral|, |Template|, or |TemplateSubstitutionTail|. Line terminators may only occur within a |StringLiteral| token as part of a |LineContinuation|.</p>
+    <p>A line terminator can occur within a |MultiLineComment| but cannot occur within a |SingleLineComment|.</p>
+    <p>Line terminators are included in the set of white space code points that are matched by the `\\s` class in regular expressions.</p>
+    <p>The ECMAScript line terminator code points are listed in <emu-xref href="#table-33"></emu-xref>.</p>
+    <emu-table id="table-33" caption="Line Terminator Code Points">
+      <table>
+        <tbody>
+        <tr>
+          <th>
+            Code Point
+          </th>
+          <th>
+            Unicode Name
+          </th>
+          <th>
+            Abbreviation
+          </th>
+        </tr>
+        <tr>
+          <td>
+            `U+000A`
+          </td>
+          <td>
+            LINE FEED (LF)
+          </td>
+          <td>
+            &lt;LF&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `U+000D`
+          </td>
+          <td>
+            CARRIAGE RETURN (CR)
+          </td>
+          <td>
+            &lt;CR&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `U+2028`
+          </td>
+          <td>
+            LINE SEPARATOR
+          </td>
+          <td>
+            &lt;LS&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `U+2029`
+          </td>
+          <td>
+            PARAGRAPH SEPARATOR
+          </td>
+          <td>
+            &lt;PS&gt;
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </emu-table>
+    <p>Only the Unicode code points in <emu-xref href="#table-33"></emu-xref> are treated as line terminators. Other new line or line breaking Unicode code points are not treated as line terminators but are treated as white space if they meet the requirements listed in <emu-xref href="#table-32"></emu-xref>. The sequence &lt;CR&gt;&lt;LF&gt; is commonly used as a line terminator. It should be considered a single |SourceCharacter| for the purpose of reporting line numbers.</p>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      LineTerminator ::
+        &lt;LF&gt;
+        &lt;CR&gt;
+        &lt;LS&gt;
+        &lt;PS&gt;
+
+      LineTerminatorSequence ::
+        &lt;LF&gt;
+        &lt;CR&gt; [lookahead != &lt;LF&gt; ]
+        &lt;LS&gt;
+        &lt;PS&gt;
+        &lt;CR&gt; &lt;LF&gt;
+    </emu-grammar>
+  </emu-clause>
+
+  <!-- es6num="11.4" -->
+  <emu-clause id="sec-comments">
+    <h1>Comments</h1>
+    <p>Comments can be either single or multi-line. Multi-line comments cannot nest.</p>
+    <p>Because a single-line comment can contain any Unicode code point except a |LineTerminator| code point, and because of the general rule that a token is always as long as possible, a single-line comment always consists of all code points from the `//` marker to the end of the line. However, the |LineTerminator| at the end of the line is not considered to be part of the single-line comment; it is recognized separately by the lexical grammar and becomes part of the stream of input elements for the syntactic grammar. This point is very important, because it implies that the presence or absence of single-line comments does not affect the process of automatic semicolon insertion (see <emu-xref href="#sec-automatic-semicolon-insertion"></emu-xref>).</p>
+    <p>Comments behave like white space and are discarded except that, if a |MultiLineComment| contains a line terminator code point, then the entire comment is considered to be a |LineTerminator| for purposes of parsing by the syntactic grammar.</p>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      Comment ::
+        MultiLineComment
+        SingleLineComment
+
+      MultiLineComment ::
+        `/*` MultiLineCommentChars? `*/`
+
+      MultiLineCommentChars ::
+        MultiLineNotAsteriskChar MultiLineCommentChars?
+        `*` PostAsteriskCommentChars?
+
+      PostAsteriskCommentChars ::
+        MultiLineNotForwardSlashOrAsteriskChar MultiLineCommentChars?
+        `*` PostAsteriskCommentChars?
+
+      MultiLineNotAsteriskChar ::
+        SourceCharacter but not `*`
+
+      MultiLineNotForwardSlashOrAsteriskChar ::
+        SourceCharacter but not one of `/` or `*`
+
+      SingleLineComment ::
+        `//` SingleLineCommentChars?
+
+      SingleLineCommentChars ::
+        SingleLineCommentChar SingleLineCommentChars?
+
+      SingleLineCommentChar ::
+        SourceCharacter but not LineTerminator
+    </emu-grammar>
+  </emu-clause>
+
+  <!-- es6num="11.5" -->
+  <emu-clause id="sec-tokens">
+    <h1>Tokens</h1>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      CommonToken ::
+        IdentifierName
+        Punctuator
+        NumericLiteral
+        StringLiteral
+        Template
+    </emu-grammar>
+    <emu-note>
+      <p>The |DivPunctuator|, |RegularExpressionLiteral|, |RightBracePunctuator|, and |TemplateSubstitutionTail| productions derive additional tokens that are not included in the |CommonToken| production.</p>
+    </emu-note>
+  </emu-clause>

@@ -1,0 +1,751 @@
+  <emu-clause id="sec-equality-operators">
+    <h1>Equality Operators</h1>
+    <emu-note>
+      <p>The result of evaluating an equality operator is always of type Boolean, reflecting whether the relationship named by the operator holds between its two operands.</p>
+    </emu-note>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      EqualityExpression[In, Yield, Await] :
+        RelationalExpression[?In, ?Yield, ?Await]
+        EqualityExpression[?In, ?Yield, ?Await] `==` RelationalExpression[?In, ?Yield, ?Await]
+        EqualityExpression[?In, ?Yield, ?Await] `!=` RelationalExpression[?In, ?Yield, ?Await]
+        EqualityExpression[?In, ?Yield, ?Await] `===` RelationalExpression[?In, ?Yield, ?Await]
+        EqualityExpression[?In, ?Yield, ?Await] `!==` RelationalExpression[?In, ?Yield, ?Await]
+    </emu-grammar>
+
+    <!-- es6num="12.10.1" -->
+    <emu-clause id="sec-equality-operators-static-semantics-isfunctiondefinition">
+      <h1>Static Semantics: IsFunctionDefinition</h1>
+      <emu-see-also-para op="IsFunctionDefinition"></emu-see-also-para>
+      <emu-grammar>
+        EqualityExpression :
+          EqualityExpression `==` RelationalExpression
+          EqualityExpression `!=` RelationalExpression
+          EqualityExpression `===` RelationalExpression
+          EqualityExpression `!==` RelationalExpression
+      </emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.10.2" -->
+    <emu-clause id="sec-equality-operators-static-semantics-isvalidsimpleassignmenttarget">
+      <h1>Static Semantics: IsValidSimpleAssignmentTarget</h1>
+      <emu-see-also-para op="IsValidSimpleAssignmentTarget"></emu-see-also-para>
+      <emu-grammar>
+        EqualityExpression :
+          EqualityExpression `==` RelationalExpression
+          EqualityExpression `!=` RelationalExpression
+          EqualityExpression `===` RelationalExpression
+          EqualityExpression `!==` RelationalExpression
+      </emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.10.3" -->
+    <emu-clause id="sec-equality-operators-runtime-semantics-evaluation">
+      <h1>Runtime Semantics: Evaluation</h1>
+      <emu-grammar>EqualityExpression : EqualityExpression `==` RelationalExpression</emu-grammar>
+      <emu-alg>
+        1. Let _lref_ be the result of evaluating |EqualityExpression|.
+        1. Let _lval_ be ? GetValue(_lref_).
+        1. Let _rref_ be the result of evaluating |RelationalExpression|.
+        1. Let _rval_ be ? GetValue(_rref_).
+        1. Return the result of performing Abstract Equality Comparison _rval_ == _lval_.
+      </emu-alg>
+      <emu-grammar>EqualityExpression : EqualityExpression `!=` RelationalExpression</emu-grammar>
+      <emu-alg>
+        1. Let _lref_ be the result of evaluating |EqualityExpression|.
+        1. Let _lval_ be ? GetValue(_lref_).
+        1. Let _rref_ be the result of evaluating |RelationalExpression|.
+        1. Let _rval_ be ? GetValue(_rref_).
+        1. Let _r_ be the result of performing Abstract Equality Comparison _rval_ == _lval_.
+        1. If _r_ is *true*, return *false*. Otherwise, return *true*.
+      </emu-alg>
+      <emu-grammar>EqualityExpression : EqualityExpression `===` RelationalExpression</emu-grammar>
+      <emu-alg>
+        1. Let _lref_ be the result of evaluating |EqualityExpression|.
+        1. Let _lval_ be ? GetValue(_lref_).
+        1. Let _rref_ be the result of evaluating |RelationalExpression|.
+        1. Let _rval_ be ? GetValue(_rref_).
+        1. Return the result of performing Strict Equality Comparison _rval_ === _lval_.
+      </emu-alg>
+      <emu-grammar>EqualityExpression : EqualityExpression `!==` RelationalExpression</emu-grammar>
+      <emu-alg>
+        1. Let _lref_ be the result of evaluating |EqualityExpression|.
+        1. Let _lval_ be ? GetValue(_lref_).
+        1. Let _rref_ be the result of evaluating |RelationalExpression|.
+        1. Let _rval_ be ? GetValue(_rref_).
+        1. Let _r_ be the result of performing Strict Equality Comparison _rval_ === _lval_.
+        1. If _r_ is *true*, return *false*. Otherwise, return *true*.
+      </emu-alg>
+      <emu-note>
+        <p>Given the above definition of equality:</p>
+        <ul>
+          <li>
+            String comparison can be forced by: `"" + a == "" + b`.
+          </li>
+          <li>
+            Numeric comparison can be forced by: `+a == +b`.
+          </li>
+          <li>
+            Boolean comparison can be forced by: `!a == !b`.
+          </li>
+        </ul>
+      </emu-note>
+      <emu-note>
+        <p>The equality operators maintain the following invariants:</p>
+        <ul>
+          <li>
+            `A != B` is equivalent to `!(A == B)`.
+          </li>
+          <li>
+            `A == B` is equivalent to `B == A`, except in the order of evaluation of `A` and `B`.
+          </li>
+        </ul>
+      </emu-note>
+      <emu-note>
+        <p>The equality operator is not always transitive. For example, there might be two distinct String objects, each representing the same String value; each String object would be considered equal to the String value by the `==` operator, but the two String objects would not be equal to each other. For example:</p>
+        <ul>
+          <li>
+            `new String("a") == "a"` and `"a" == new String("a")` are both *true*.
+          </li>
+          <li>
+            `new String("a") == new String("a")` is *false*.
+          </li>
+        </ul>
+      </emu-note>
+      <emu-note>
+        <p>Comparison of Strings uses a simple equality test on sequences of code unit values. There is no attempt to use the more complex, semantically oriented definitions of character or string equality and collating order defined in the Unicode specification. Therefore Strings values that are canonically equal according to the Unicode standard could test as unequal. In effect this algorithm assumes that both Strings are already in normalized form.</p>
+      </emu-note>
+    </emu-clause>
+  </emu-clause>
+
+  <!-- es6num="12.11" -->
+  <emu-clause id="sec-binary-bitwise-operators">
+    <h1>Binary Bitwise Operators</h1>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      BitwiseANDExpression[In, Yield, Await] :
+        EqualityExpression[?In, ?Yield, ?Await]
+        BitwiseANDExpression[?In, ?Yield, ?Await] `&amp;` EqualityExpression[?In, ?Yield, ?Await]
+
+      BitwiseXORExpression[In, Yield, Await] :
+        BitwiseANDExpression[?In, ?Yield, ?Await]
+        BitwiseXORExpression[?In, ?Yield, ?Await] `^` BitwiseANDExpression[?In, ?Yield, ?Await]
+
+      BitwiseORExpression[In, Yield, Await] :
+        BitwiseXORExpression[?In, ?Yield, ?Await]
+        BitwiseORExpression[?In, ?Yield, ?Await] `|` BitwiseXORExpression[?In, ?Yield, ?Await]
+    </emu-grammar>
+
+    <!-- es6num="12.11.1" -->
+    <emu-clause id="sec-binary-bitwise-operators-static-semantics-isfunctiondefinition">
+      <h1>Static Semantics: IsFunctionDefinition</h1>
+      <emu-see-also-para op="IsFunctionDefinition"></emu-see-also-para>
+      <emu-grammar>
+        BitwiseANDExpression : BitwiseANDExpression `&amp;` EqualityExpression
+
+        BitwiseXORExpression : BitwiseXORExpression `^` BitwiseANDExpression
+
+        BitwiseORExpression : BitwiseORExpression `|` BitwiseXORExpression
+      </emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.11.2" -->
+    <emu-clause id="sec-binary-bitwise-operators-static-semantics-isvalidsimpleassignmenttarget">
+      <h1>Static Semantics: IsValidSimpleAssignmentTarget</h1>
+      <emu-see-also-para op="IsValidSimpleAssignmentTarget"></emu-see-also-para>
+      <emu-grammar>
+        BitwiseANDExpression : BitwiseANDExpression `&amp;` EqualityExpression
+
+        BitwiseXORExpression : BitwiseXORExpression `^` BitwiseANDExpression
+
+        BitwiseORExpression : BitwiseORExpression `|` BitwiseXORExpression
+      </emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.11.3" -->
+    <emu-clause id="sec-binary-bitwise-operators-runtime-semantics-evaluation">
+      <h1>Runtime Semantics: Evaluation</h1>
+      <p>The production <emu-grammar type="example">A : A @ B</emu-grammar>, where @ is one of the bitwise operators in the productions above, is evaluated as follows:</p>
+      <emu-alg>
+        1. Let _lref_ be the result of evaluating _A_.
+        1. Let _lval_ be ? GetValue(_lref_).
+        1. Let _rref_ be the result of evaluating _B_.
+        1. Let _rval_ be ? GetValue(_rref_).
+        1. Let _lnum_ be ? ToInt32(_lval_).
+        1. Let _rnum_ be ? ToInt32(_rval_).
+        1. Return the result of applying the bitwise operator @ to _lnum_ and _rnum_. The result is a signed 32-bit integer.
+      </emu-alg>
+    </emu-clause>
+  </emu-clause>
+
+  <!-- es6num="12.12" -->
+  <emu-clause id="sec-binary-logical-operators">
+    <h1>Binary Logical Operators</h1>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      LogicalANDExpression[In, Yield, Await] :
+        BitwiseORExpression[?In, ?Yield, ?Await]
+        LogicalANDExpression[?In, ?Yield, ?Await] `&amp;&amp;` BitwiseORExpression[?In, ?Yield, ?Await]
+
+      LogicalORExpression[In, Yield, Await] :
+        LogicalANDExpression[?In, ?Yield, ?Await]
+        LogicalORExpression[?In, ?Yield, ?Await] `||` LogicalANDExpression[?In, ?Yield, ?Await]
+    </emu-grammar>
+    <emu-note>
+      <p>The value produced by a `&amp;&amp;` or `||` operator is not necessarily of type Boolean. The value produced will always be the value of one of the two operand expressions.</p>
+    </emu-note>
+
+    <!-- es6num="12.12.1" -->
+    <emu-clause id="sec-binary-logical-operators-static-semantics-isfunctiondefinition">
+      <h1>Static Semantics: IsFunctionDefinition</h1>
+      <emu-see-also-para op="IsFunctionDefinition"></emu-see-also-para>
+      <emu-grammar>
+        LogicalANDExpression : LogicalANDExpression `&amp;&amp;` BitwiseORExpression
+
+        LogicalORExpression : LogicalORExpression `||` LogicalANDExpression
+      </emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.12.2" -->
+    <emu-clause id="sec-binary-logical-operators-static-semantics-isvalidsimpleassignmenttarget">
+      <h1>Static Semantics: IsValidSimpleAssignmentTarget</h1>
+      <emu-see-also-para op="IsValidSimpleAssignmentTarget"></emu-see-also-para>
+      <emu-grammar>
+        LogicalANDExpression : LogicalANDExpression `&amp;&amp;` BitwiseORExpression
+
+        LogicalORExpression : LogicalORExpression `||` LogicalANDExpression
+      </emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.12.3" -->
+    <emu-clause id="sec-binary-logical-operators-runtime-semantics-evaluation">
+      <h1>Runtime Semantics: Evaluation</h1>
+      <emu-grammar>LogicalANDExpression : LogicalANDExpression `&amp;&amp;` BitwiseORExpression</emu-grammar>
+      <emu-alg>
+        1. Let _lref_ be the result of evaluating |LogicalANDExpression|.
+        1. Let _lval_ be ? GetValue(_lref_).
+        1. Let _lbool_ be ToBoolean(_lval_).
+        1. If _lbool_ is *false*, return _lval_.
+        1. Let _rref_ be the result of evaluating |BitwiseORExpression|.
+        1. Return ? GetValue(_rref_).
+      </emu-alg>
+      <emu-grammar>LogicalORExpression : LogicalORExpression `||` LogicalANDExpression</emu-grammar>
+      <emu-alg>
+        1. Let _lref_ be the result of evaluating |LogicalORExpression|.
+        1. Let _lval_ be ? GetValue(_lref_).
+        1. Let _lbool_ be ToBoolean(_lval_).
+        1. If _lbool_ is *true*, return _lval_.
+        1. Let _rref_ be the result of evaluating |LogicalANDExpression|.
+        1. Return ? GetValue(_rref_).
+      </emu-alg>
+    </emu-clause>
+  </emu-clause>
+
+  <!-- es6num="12.13" -->
+  <emu-clause id="sec-conditional-operator">
+    <h1>Conditional Operator ( `? :` )</h1>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      ConditionalExpression[In, Yield, Await] :
+        LogicalORExpression[?In, ?Yield, ?Await]
+        LogicalORExpression[?In, ?Yield, ?Await] `?` AssignmentExpression[+In, ?Yield, ?Await] `:` AssignmentExpression[?In, ?Yield, ?Await]
+    </emu-grammar>
+    <emu-note>
+      <p>The grammar for a |ConditionalExpression| in ECMAScript is slightly different from that in C and Java, which each allow the second subexpression to be an |Expression| but restrict the third expression to be a |ConditionalExpression|. The motivation for this difference in ECMAScript is to allow an assignment expression to be governed by either arm of a conditional and to eliminate the confusing and fairly useless case of a comma expression as the centre expression.</p>
+    </emu-note>
+
+    <!-- es6num="12.13.1" -->
+    <emu-clause id="sec-conditional-operator-static-semantics-isfunctiondefinition">
+      <h1>Static Semantics: IsFunctionDefinition</h1>
+      <emu-see-also-para op="IsFunctionDefinition"></emu-see-also-para>
+      <emu-grammar>ConditionalExpression : LogicalORExpression `?` AssignmentExpression `:` AssignmentExpression</emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.13.2" -->
+    <emu-clause id="sec-conditional-operator-static-semantics-isvalidsimpleassignmenttarget">
+      <h1>Static Semantics: IsValidSimpleAssignmentTarget</h1>
+      <emu-see-also-para op="IsValidSimpleAssignmentTarget"></emu-see-also-para>
+      <emu-grammar>ConditionalExpression : LogicalORExpression `?` AssignmentExpression `:` AssignmentExpression</emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.13.3" -->
+    <emu-clause id="sec-conditional-operator-runtime-semantics-evaluation">
+      <h1>Runtime Semantics: Evaluation</h1>
+      <emu-grammar>ConditionalExpression : LogicalORExpression `?` AssignmentExpression `:` AssignmentExpression</emu-grammar>
+      <emu-alg>
+        1. Let _lref_ be the result of evaluating |LogicalORExpression|.
+        1. Let _lval_ be ToBoolean(? GetValue(_lref_)).
+        1. If _lval_ is *true*, then
+          1. Let _trueRef_ be the result of evaluating the first |AssignmentExpression|.
+          1. Return ? GetValue(_trueRef_).
+        1. Else,
+          1. Let _falseRef_ be the result of evaluating the second |AssignmentExpression|.
+          1. Return ? GetValue(_falseRef_).
+      </emu-alg>
+    </emu-clause>
+  </emu-clause>
+
+  <!-- es6num="12.14" -->
+  <emu-clause id="sec-assignment-operators">
+    <h1>Assignment Operators</h1>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      AssignmentExpression[In, Yield, Await] :
+        ConditionalExpression[?In, ?Yield, ?Await]
+        [+Yield] YieldExpression[?In, ?Await]
+        ArrowFunction[?In, ?Yield, ?Await]
+        AsyncArrowFunction[?In, ?Yield, ?Await]
+        LeftHandSideExpression[?Yield, ?Await] `=` AssignmentExpression[?In, ?Yield, ?Await] #assignment
+        LeftHandSideExpression[?Yield, ?Await] AssignmentOperator AssignmentExpression[?In, ?Yield, ?Await]
+
+      AssignmentOperator : one of
+        `*=` `/=` `%=` `+=` `-=` `&lt;&lt;=` `&gt;&gt;=` `&gt;&gt;&gt;=` `&amp;=` `^=` `|=` `**=`
+    </emu-grammar>
+
+    <!-- es6num="12.14.1" -->
+    <emu-clause id="sec-assignment-operators-static-semantics-early-errors">
+      <h1>Static Semantics: Early Errors</h1>
+      <emu-grammar>AssignmentExpression : LeftHandSideExpression `=` AssignmentExpression</emu-grammar>
+      <ul>
+        <li>
+          It is a Syntax Error if |LeftHandSideExpression| is either an |ObjectLiteral| or an |ArrayLiteral| and |LeftHandSideExpression| cannot be reparsed as an |AssignmentPattern|.
+        </li>
+        <li>
+          It is an early Reference Error if |LeftHandSideExpression| is neither an |ObjectLiteral| nor an |ArrayLiteral| and IsValidSimpleAssignmentTarget of |LeftHandSideExpression| is *false*.
+        </li>
+      </ul>
+      <emu-grammar>AssignmentExpression : LeftHandSideExpression AssignmentOperator AssignmentExpression</emu-grammar>
+      <ul>
+        <li>
+          It is an early Reference Error if IsValidSimpleAssignmentTarget of |LeftHandSideExpression| is *false*.
+        </li>
+      </ul>
+    </emu-clause>
+
+    <!-- es6num="12.14.2" -->
+    <emu-clause id="sec-assignment-operators-static-semantics-isfunctiondefinition">
+      <h1>Static Semantics: IsFunctionDefinition</h1>
+      <emu-see-also-para op="IsFunctionDefinition"></emu-see-also-para>
+      <emu-grammar>
+        AssignmentExpression :
+          ArrowFunction
+          AsyncArrowFunction
+      </emu-grammar>
+      <emu-alg>
+        1. Return *true*.
+      </emu-alg>
+      <emu-grammar>
+        AssignmentExpression :
+          YieldExpression
+          LeftHandSideExpression `=` AssignmentExpression
+          LeftHandSideExpression AssignmentOperator AssignmentExpression
+      </emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.14.3" -->
+    <emu-clause id="sec-assignment-operators-static-semantics-isvalidsimpleassignmenttarget">
+      <h1>Static Semantics: IsValidSimpleAssignmentTarget</h1>
+      <emu-see-also-para op="IsValidSimpleAssignmentTarget"></emu-see-also-para>
+      <emu-grammar>
+        AssignmentExpression :
+          YieldExpression
+          ArrowFunction
+          AsyncArrowFunction
+          LeftHandSideExpression `=` AssignmentExpression
+          LeftHandSideExpression AssignmentOperator AssignmentExpression
+      </emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.14.4" -->
+    <emu-clause id="sec-assignment-operators-runtime-semantics-evaluation">
+      <h1>Runtime Semantics: Evaluation</h1>
+      <emu-grammar>AssignmentExpression : LeftHandSideExpression `=` AssignmentExpression</emu-grammar>
+      <emu-alg>
+        1. If |LeftHandSideExpression| is neither an |ObjectLiteral| nor an |ArrayLiteral|, then
+          1. Let _lref_ be the result of evaluating |LeftHandSideExpression|.
+          1. ReturnIfAbrupt(_lref_).
+          1. Let _rref_ be the result of evaluating |AssignmentExpression|.
+          1. Let _rval_ be ? GetValue(_rref_).
+          1. If IsAnonymousFunctionDefinition(|AssignmentExpression|) and IsIdentifierRef of |LeftHandSideExpression| are both *true*, then
+            1. Let _hasNameProperty_ be ? HasOwnProperty(_rval_, `"name"`).
+            1. If _hasNameProperty_ is *false*, perform SetFunctionName(_rval_, GetReferencedName(_lref_)).
+          1. Perform ? PutValue(_lref_, _rval_).
+          1. Return _rval_.
+        1. Let _assignmentPattern_ be the result of reparsing |LeftHandSideExpression| as an |AssignmentPattern|.
+        1. Let _rref_ be the result of evaluating |AssignmentExpression|.
+        1. Let _rval_ be ? GetValue(_rref_).
+        1. Perform ? DestructuringAssignmentEvaluation of _assignmentPattern_ using _rval_ as the argument.
+        1. Return _rval_.
+      </emu-alg>
+      <emu-grammar>AssignmentExpression : LeftHandSideExpression AssignmentOperator AssignmentExpression</emu-grammar>
+      <emu-alg>
+        1. Let _lref_ be the result of evaluating |LeftHandSideExpression|.
+        1. Let _lval_ be ? GetValue(_lref_).
+        1. Let _rref_ be the result of evaluating |AssignmentExpression|.
+        1. Let _rval_ be ? GetValue(_rref_).
+        1. Let _op_ be the `@` where |AssignmentOperator| is `@=`.
+        1. Let _r_ be the result of applying _op_ to _lval_ and _rval_ as if evaluating the expression _lval_ _op_ _rval_.
+        1. Perform ? PutValue(_lref_, _r_).
+        1. Return _r_.
+      </emu-alg>
+      <emu-note>
+        <p>When an assignment occurs within strict mode code, it is a runtime error if _lref_ in step 1.f of the first algorithm or step 7 of the second algorithm it is an unresolvable reference. If it is, a *ReferenceError* exception is thrown. The |LeftHandSideExpression| also may not be a reference to a data property with the attribute value {[[Writable]]: *false*}, to an accessor property with the attribute value {[[Set]]: *undefined*}, nor to a non-existent property of an object for which the IsExtensible predicate returns the value *false*. In these cases a *TypeError* exception is thrown.</p>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="12.14.5" -->
+    <emu-clause id="sec-destructuring-assignment">
+      <h1>Destructuring Assignment</h1>
+      <h2>Supplemental Syntax</h2>
+      <p>In certain circumstances when processing an instance of the production <emu-grammar>AssignmentExpression : LeftHandSideExpression `=` AssignmentExpression</emu-grammar> the following grammar is used to refine the interpretation of |LeftHandSideExpression|.</p>
+      <emu-grammar type="definition">
+        AssignmentPattern[Yield, Await] :
+          ObjectAssignmentPattern[?Yield, ?Await]
+          ArrayAssignmentPattern[?Yield, ?Await]
+
+        ObjectAssignmentPattern[Yield, Await] :
+          `{` `}`
+          `{` AssignmentPropertyList[?Yield, ?Await] `}`
+          `{` AssignmentPropertyList[?Yield, ?Await] `,` `}`
+
+        ArrayAssignmentPattern[Yield, Await] :
+          `[` Elision? AssignmentRestElement[?Yield, ?Await]? `]`
+          `[` AssignmentElementList[?Yield, ?Await] `]`
+          `[` AssignmentElementList[?Yield, ?Await] `,` Elision? AssignmentRestElement[?Yield, ?Await]? `]`
+
+        AssignmentPropertyList[Yield, Await] :
+          AssignmentProperty[?Yield, ?Await]
+          AssignmentPropertyList[?Yield, ?Await] `,` AssignmentProperty[?Yield, ?Await]
+
+        AssignmentElementList[Yield, Await] :
+          AssignmentElisionElement[?Yield, ?Await]
+          AssignmentElementList[?Yield, ?Await] `,` AssignmentElisionElement[?Yield, ?Await]
+
+        AssignmentElisionElement[Yield, Await] :
+          Elision? AssignmentElement[?Yield, ?Await]
+
+        AssignmentProperty[Yield, Await] :
+          IdentifierReference[?Yield, ?Await] Initializer[+In, ?Yield, ?Await]?
+          PropertyName[?Yield, ?Await] `:` AssignmentElement[?Yield, ?Await]
+
+        AssignmentElement[Yield, Await] :
+          DestructuringAssignmentTarget[?Yield, ?Await] Initializer[+In, ?Yield, ?Await]?
+
+        AssignmentRestElement[Yield, Await] :
+          `...` DestructuringAssignmentTarget[?Yield, ?Await]
+
+        DestructuringAssignmentTarget[Yield, Await] :
+          LeftHandSideExpression[?Yield, ?Await]
+      </emu-grammar>
+
+      <!-- es6num="12.14.5.1" -->
+      <emu-clause id="sec-destructuring-assignment-static-semantics-early-errors">
+        <h1>Static Semantics: Early Errors</h1>
+        <emu-grammar>AssignmentProperty : IdentifierReference Initializer?</emu-grammar>
+        <ul>
+          <li>
+            It is a Syntax Error if IsValidSimpleAssignmentTarget of |IdentifierReference| is *false*.
+          </li>
+        </ul>
+        <emu-grammar>DestructuringAssignmentTarget : LeftHandSideExpression</emu-grammar>
+        <ul>
+          <li>
+            It is a Syntax Error if |LeftHandSideExpression| is either an |ObjectLiteral| or an |ArrayLiteral| and if |LeftHandSideExpression| cannot be reparsed as an |AssignmentPattern|.
+          </li>
+          <li>
+            It is a Syntax Error if |LeftHandSideExpression| is neither an |ObjectLiteral| nor an |ArrayLiteral| and IsValidSimpleAssignmentTarget(|LeftHandSideExpression|) is *false*.
+          </li>
+        </ul>
+      </emu-clause>
+
+      <!-- es6num="12.14.5.2" -->
+      <emu-clause id="sec-runtime-semantics-destructuringassignmentevaluation">
+        <h1>Runtime Semantics: DestructuringAssignmentEvaluation</h1>
+        <p>With parameter _value_.</p>
+        <emu-grammar>ObjectAssignmentPattern : `{` `}`</emu-grammar>
+        <emu-alg>
+          1. Perform ? RequireObjectCoercible(_value_).
+          1. Return NormalCompletion(~empty~).
+        </emu-alg>
+        <emu-grammar>
+          ObjectAssignmentPattern :
+            `{` AssignmentPropertyList `}`
+            `{` AssignmentPropertyList `,` `}`
+        </emu-grammar>
+        <emu-alg>
+          1. Perform ? RequireObjectCoercible(_value_).
+          1. Return the result of performing DestructuringAssignmentEvaluation for |AssignmentPropertyList| using _value_ as the argument.
+        </emu-alg>
+        <emu-grammar>ArrayAssignmentPattern : `[` `]`</emu-grammar>
+        <emu-alg>
+          1. Let _iteratorRecord_ be ? GetIterator(_value_).
+          1. Return ? IteratorClose(_iteratorRecord_, NormalCompletion(~empty~)).
+        </emu-alg>
+        <emu-grammar>ArrayAssignmentPattern : `[` Elision `]`</emu-grammar>
+        <emu-alg>
+          1. Let _iteratorRecord_ be ? GetIterator(_value_).
+          1. Let _result_ be the result of performing IteratorDestructuringAssignmentEvaluation of |Elision| with _iteratorRecord_ as the argument.
+          1. If _iteratorRecord_.[[Done]] is *false*, return ? IteratorClose(_iteratorRecord_, _result_).
+          1. Return _result_.
+        </emu-alg>
+        <emu-grammar>ArrayAssignmentPattern : `[` Elision? AssignmentRestElement `]`</emu-grammar>
+        <emu-alg>
+          1. Let _iteratorRecord_ be ? GetIterator(_value_).
+          1. If |Elision| is present, then
+            1. Let _status_ be the result of performing IteratorDestructuringAssignmentEvaluation of |Elision| with _iteratorRecord_ as the argument.
+            1. If _status_ is an abrupt completion, then
+              1. Assert: _iteratorRecord_.[[Done]] is *true*.
+              1. Return Completion(_status_).
+          1. Let _result_ be the result of performing IteratorDestructuringAssignmentEvaluation of |AssignmentRestElement| with _iteratorRecord_ as the argument.
+          1. If _iteratorRecord_.[[Done]] is *false*, return ? IteratorClose(_iteratorRecord_, _result_).
+          1. Return _result_.
+        </emu-alg>
+        <emu-grammar>ArrayAssignmentPattern : `[` AssignmentElementList `]`</emu-grammar>
+        <emu-alg>
+          1. Let _iteratorRecord_ be ? GetIterator(_value_).
+          1. Let _result_ be the result of performing IteratorDestructuringAssignmentEvaluation of |AssignmentElementList| using _iteratorRecord_ as the argument.
+          1. If _iteratorRecord_.[[Done]] is *false*, return ? IteratorClose(_iteratorRecord_, _result_).
+          1. Return _result_.
+        </emu-alg>
+        <emu-grammar>ArrayAssignmentPattern : `[` AssignmentElementList `,` Elision? AssignmentRestElement? `]`</emu-grammar>
+        <emu-alg>
+          1. Let _iteratorRecord_ be ? GetIterator(_value_).
+          1. Let _status_ be the result of performing IteratorDestructuringAssignmentEvaluation of |AssignmentElementList| using _iteratorRecord_ as the argument.
+          1. If _status_ is an abrupt completion, then
+            1. If _iteratorRecord_.[[Done]] is *false*, return ? IteratorClose(_iteratorRecord_, _status_).
+            1. Return Completion(_status_).
+          1. If |Elision| is present, then
+            1. Set _status_ to the result of performing IteratorDestructuringAssignmentEvaluation of |Elision| with _iteratorRecord_ as the argument.
+            1. If _status_ is an abrupt completion, then
+              1. Assert: _iteratorRecord_.[[Done]] is *true*.
+              1. Return Completion(_status_).
+          1. If |AssignmentRestElement| is present, then
+            1. Set _status_ to the result of performing IteratorDestructuringAssignmentEvaluation of |AssignmentRestElement| with _iteratorRecord_ as the argument.
+          1. If _iteratorRecord_.[[Done]] is *false*, return ? IteratorClose(_iteratorRecord_, _status_).
+          1. Return Completion(_status_).
+        </emu-alg>
+        <emu-grammar>AssignmentPropertyList : AssignmentPropertyList `,` AssignmentProperty</emu-grammar>
+        <emu-alg>
+          1. Perform ? DestructuringAssignmentEvaluation for |AssignmentPropertyList| using _value_ as the argument.
+          1. Return the result of performing DestructuringAssignmentEvaluation for |AssignmentProperty| using _value_ as the argument.
+        </emu-alg>
+        <emu-grammar>AssignmentProperty : IdentifierReference Initializer?</emu-grammar>
+        <emu-alg>
+          1. Let _P_ be StringValue of |IdentifierReference|.
+          1. Let _lref_ be ? ResolveBinding(_P_).
+          1. Let _v_ be ? GetV(_value_, _P_).
+          1. If |Initializer_opt| is present and _v_ is *undefined*, then
+            1. Let _defaultValue_ be the result of evaluating |Initializer|.
+            1. Set _v_ to ? GetValue(_defaultValue_).
+            1. If IsAnonymousFunctionDefinition(|Initializer|) is *true*, then
+              1. Let _hasNameProperty_ be ? HasOwnProperty(_v_, `"name"`).
+              1. If _hasNameProperty_ is *false*, perform SetFunctionName(_v_, _P_).
+          1. Return ? PutValue(_lref_, _v_).
+        </emu-alg>
+        <emu-grammar>AssignmentProperty : PropertyName `:` AssignmentElement</emu-grammar>
+        <emu-alg>
+          1. Let _name_ be the result of evaluating |PropertyName|.
+          1. ReturnIfAbrupt(_name_).
+          1. Return the result of performing KeyedDestructuringAssignmentEvaluation of |AssignmentElement| with _value_ and _name_ as the arguments.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.14.5.3" -->
+      <emu-clause id="sec-runtime-semantics-iteratordestructuringassignmentevaluation">
+        <h1>Runtime Semantics: IteratorDestructuringAssignmentEvaluation</h1>
+        <p>With parameter _iteratorRecord_.</p>
+        <emu-grammar>AssignmentElementList : AssignmentElisionElement</emu-grammar>
+        <emu-alg>
+          1. Return the result of performing IteratorDestructuringAssignmentEvaluation of |AssignmentElisionElement| using _iteratorRecord_ as the argument.
+        </emu-alg>
+        <emu-grammar>AssignmentElementList : AssignmentElementList `,` AssignmentElisionElement</emu-grammar>
+        <emu-alg>
+          1. Perform ? IteratorDestructuringAssignmentEvaluation of |AssignmentElementList| using _iteratorRecord_ as the argument.
+          1. Return the result of performing IteratorDestructuringAssignmentEvaluation of |AssignmentElisionElement| using _iteratorRecord_ as the argument.
+        </emu-alg>
+        <emu-grammar>AssignmentElisionElement : AssignmentElement</emu-grammar>
+        <emu-alg>
+          1. Return the result of performing IteratorDestructuringAssignmentEvaluation of |AssignmentElement| with _iteratorRecord_ as the argument.
+        </emu-alg>
+        <emu-grammar>AssignmentElisionElement : Elision AssignmentElement</emu-grammar>
+        <emu-alg>
+          1. Perform ? IteratorDestructuringAssignmentEvaluation of |Elision| with _iteratorRecord_ as the argument.
+          1. Return the result of performing IteratorDestructuringAssignmentEvaluation of |AssignmentElement| with _iteratorRecord_ as the argument.
+        </emu-alg>
+        <emu-grammar>Elision : `,`</emu-grammar>
+        <emu-alg>
+          1. If _iteratorRecord_.[[Done]] is *false*, then
+            1. Let _next_ be IteratorStep(_iteratorRecord_).
+            1. If _next_ is an abrupt completion, set _iteratorRecord_.[[Done]] to *true*.
+            1. ReturnIfAbrupt(_next_).
+            1. If _next_ is *false*, set _iteratorRecord_.[[Done]] to *true*.
+          1. Return NormalCompletion(~empty~).
+        </emu-alg>
+        <emu-grammar>Elision : Elision `,`</emu-grammar>
+        <emu-alg>
+          1. Perform ? IteratorDestructuringAssignmentEvaluation of |Elision| with _iteratorRecord_ as the argument.
+          1. If _iteratorRecord_.[[Done]] is *false*, then
+            1. Let _next_ be IteratorStep(_iteratorRecord_).
+            1. If _next_ is an abrupt completion, set _iteratorRecord_.[[Done]] to *true*.
+            1. ReturnIfAbrupt(_next_).
+            1. If _next_ is *false*, set _iteratorRecord_.[[Done]] to *true*.
+          1. Return NormalCompletion(~empty~).
+        </emu-alg>
+        <emu-grammar>AssignmentElement : DestructuringAssignmentTarget Initializer?</emu-grammar>
+        <emu-alg>
+          1. If |DestructuringAssignmentTarget| is neither an |ObjectLiteral| nor an |ArrayLiteral|, then
+            1. Let _lref_ be the result of evaluating |DestructuringAssignmentTarget|.
+            1. ReturnIfAbrupt(_lref_).
+          1. If _iteratorRecord_.[[Done]] is *false*, then
+            1. Let _next_ be IteratorStep(_iteratorRecord_).
+            1. If _next_ is an abrupt completion, set _iteratorRecord_.[[Done]] to *true*.
+            1. ReturnIfAbrupt(_next_).
+            1. If _next_ is *false*, set _iteratorRecord_.[[Done]] to *true*.
+            1. Else,
+              1. Let _value_ be IteratorValue(_next_).
+              1. If _value_ is an abrupt completion, set _iteratorRecord_.[[Done]] to *true*.
+              1. ReturnIfAbrupt(_value_).
+          1. If _iteratorRecord_.[[Done]] is *true*, let _value_ be *undefined*.
+          1. If |Initializer| is present and _value_ is *undefined*, then
+            1. Let _defaultValue_ be the result of evaluating |Initializer|.
+            1. Let _v_ be ? GetValue(_defaultValue_).
+          1. Else, let _v_ be _value_.
+          1. If |DestructuringAssignmentTarget| is an |ObjectLiteral| or an |ArrayLiteral|, then
+            1. Let _nestedAssignmentPattern_ be the result of reparsing |DestructuringAssignmentTarget| as an |AssignmentPattern|.
+            1. Return the result of performing DestructuringAssignmentEvaluation of _nestedAssignmentPattern_ with _v_ as the argument.
+          1. If |Initializer| is present and _value_ is *undefined* and IsAnonymousFunctionDefinition(|Initializer|) and IsIdentifierRef of |DestructuringAssignmentTarget| are both *true*, then
+            1. Let _hasNameProperty_ be ? HasOwnProperty(_v_, `"name"`).
+            1. If _hasNameProperty_ is *false*, perform SetFunctionName(_v_, GetReferencedName(_lref_)).
+          1. Return ? PutValue(_lref_, _v_).
+        </emu-alg>
+        <emu-note>
+          <p>Left to right evaluation order is maintained by evaluating a |DestructuringAssignmentTarget| that is not a destructuring pattern prior to accessing the iterator or evaluating the |Initializer|.</p>
+        </emu-note>
+        <emu-grammar>AssignmentRestElement : `...` DestructuringAssignmentTarget</emu-grammar>
+        <emu-alg>
+          1. If |DestructuringAssignmentTarget| is neither an |ObjectLiteral| nor an |ArrayLiteral|, then
+            1. Let _lref_ be the result of evaluating |DestructuringAssignmentTarget|.
+            1. ReturnIfAbrupt(_lref_).
+          1. Let _A_ be ! ArrayCreate(0).
+          1. Let _n_ be 0.
+          1. Repeat, while _iteratorRecord_.[[Done]] is *false*,
+            1. Let _next_ be IteratorStep(_iteratorRecord_).
+            1. If _next_ is an abrupt completion, set _iteratorRecord_.[[Done]] to *true*.
+            1. ReturnIfAbrupt(_next_).
+            1. If _next_ is *false*, set _iteratorRecord_.[[Done]] to *true*.
+            1. Else,
+              1. Let _nextValue_ be IteratorValue(_next_).
+              1. If _nextValue_ is an abrupt completion, set _iteratorRecord_.[[Done]] to *true*.
+              1. ReturnIfAbrupt(_nextValue_).
+              1. Let _status_ be CreateDataProperty(_A_, ! ToString(_n_), _nextValue_).
+              1. Assert: _status_ is *true*.
+              1. Increment _n_ by 1.
+          1. If |DestructuringAssignmentTarget| is neither an |ObjectLiteral| nor an |ArrayLiteral|, then
+            1. Return ? PutValue(_lref_, _A_).
+          1. Let _nestedAssignmentPattern_ be the result of reparsing |DestructuringAssignmentTarget| as an |AssignmentPattern|.
+          1. Return the result of performing DestructuringAssignmentEvaluation of _nestedAssignmentPattern_ with _A_ as the argument.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.14.5.4" -->
+      <emu-clause id="sec-runtime-semantics-keyeddestructuringassignmentevaluation">
+        <h1>Runtime Semantics: KeyedDestructuringAssignmentEvaluation</h1>
+        <p>With parameters _value_ and _propertyName_.</p>
+        <emu-grammar>AssignmentElement : DestructuringAssignmentTarget Initializer?</emu-grammar>
+        <emu-alg>
+          1. If |DestructuringAssignmentTarget| is neither an |ObjectLiteral| nor an |ArrayLiteral|, then
+            1. Let _lref_ be the result of evaluating |DestructuringAssignmentTarget|.
+            1. ReturnIfAbrupt(_lref_).
+          1. Let _v_ be ? GetV(_value_, _propertyName_).
+          1. If |Initializer| is present and _v_ is *undefined*, then
+            1. Let _defaultValue_ be the result of evaluating |Initializer|.
+            1. Let _rhsValue_ be ? GetValue(_defaultValue_).
+          1. Else, let _rhsValue_ be _v_.
+          1. If |DestructuringAssignmentTarget| is an |ObjectLiteral| or an |ArrayLiteral|, then
+            1. Let _assignmentPattern_ be the result of reparsing |DestructuringAssignmentTarget| as an |AssignmentPattern|.
+            1. Return the result of performing DestructuringAssignmentEvaluation of _assignmentPattern_ with _rhsValue_ as the argument.
+          1. If |Initializer| is present and _v_ is *undefined* and IsAnonymousFunctionDefinition(|Initializer|) and IsIdentifierRef of |DestructuringAssignmentTarget| are both *true*, then
+            1. Let _hasNameProperty_ be ? HasOwnProperty(_rhsValue_, `"name"`).
+            1. If _hasNameProperty_ is *false*, perform SetFunctionName(_rhsValue_, GetReferencedName(_lref_)).
+          1. Return ? PutValue(_lref_, _rhsValue_).
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+  </emu-clause>
+
+  <!-- es6num="12.15" -->
+  <emu-clause id="sec-comma-operator">
+    <h1>Comma Operator ( `,` )</h1>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      Expression[In, Yield, Await] :
+        AssignmentExpression[?In, ?Yield, ?Await]
+        Expression[?In, ?Yield, ?Await] `,` AssignmentExpression[?In, ?Yield, ?Await]
+    </emu-grammar>
+
+    <!-- es6num="12.15.1" -->
+    <emu-clause id="sec-comma-operator-static-semantics-isfunctiondefinition">
+      <h1>Static Semantics: IsFunctionDefinition</h1>
+      <emu-see-also-para op="IsFunctionDefinition"></emu-see-also-para>
+      <emu-grammar>Expression : Expression `,` AssignmentExpression</emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.15.2" -->
+    <emu-clause id="sec-comma-operator-static-semantics-isvalidsimpleassignmenttarget">
+      <h1>Static Semantics: IsValidSimpleAssignmentTarget</h1>
+      <emu-see-also-para op="IsValidSimpleAssignmentTarget"></emu-see-also-para>
+      <emu-grammar>Expression : Expression `,` AssignmentExpression</emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.15.3" -->
+    <emu-clause id="sec-comma-operator-runtime-semantics-evaluation">
+      <h1>Runtime Semantics: Evaluation</h1>
+      <emu-grammar>Expression : Expression `,` AssignmentExpression</emu-grammar>
+      <emu-alg>
+        1. Let _lref_ be the result of evaluating |Expression|.
+        1. Perform ? GetValue(_lref_).
+        1. Let _rref_ be the result of evaluating |AssignmentExpression|.
+        1. Return ? GetValue(_rref_).
+      </emu-alg>
+      <emu-note>
+        <p>GetValue must be called even though its value is not used because it may have observable side-effects.</p>
+      </emu-note>
+    </emu-clause>
+  </emu-clause>
+</emu-clause>

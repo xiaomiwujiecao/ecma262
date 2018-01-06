@@ -1,0 +1,1183 @@
+<emu-clause id="sec-ecmascript-language-expressions">
+  <h1>ECMAScript Language: Expressions</h1>
+
+  <!-- es6num="12.1" -->
+  <emu-clause id="sec-identifiers">
+    <h1>Identifiers</h1>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      IdentifierReference[Yield, Await] :
+        Identifier
+        [~Yield] `yield`
+        [~Await] `await`
+
+      BindingIdentifier[Yield, Await] :
+        Identifier
+        `yield`
+        `await`
+
+      LabelIdentifier[Yield, Await] :
+        Identifier
+        [~Yield] `yield`
+        [~Await] `await`
+
+      Identifier :
+        IdentifierName but not ReservedWord
+    </emu-grammar>
+
+    <emu-note>
+      <p>`yield` and `await` are permitted as |BindingIdentifier| in the grammar, and prohibited with static semantics below, to prohibit automatic semicolon insertion in cases such as</p>
+      <pre><code class="javascript">
+        let
+        await 0;
+      </code></pre>
+    </emu-note>
+
+    <!-- es6num="12.1.1" -->
+    <emu-clause id="sec-identifiers-static-semantics-early-errors">
+      <h1>Static Semantics: Early Errors</h1>
+      <emu-grammar>BindingIdentifier : Identifier</emu-grammar>
+      <ul>
+        <li>
+          It is a Syntax Error if the code matched by this production is contained in strict mode code and the StringValue of |Identifier| is `"arguments"` or `"eval"`.
+        </li>
+      </ul>
+      <emu-grammar>
+        IdentifierReference : `yield`
+
+        BindingIdentifier : `yield`
+
+        LabelIdentifier : `yield`
+      </emu-grammar>
+      <ul>
+        <li>
+          It is a Syntax Error if the code matched by this production is contained in strict mode code.
+        </li>
+      </ul>
+      <emu-grammar>
+        IdentifierReference : `await`
+
+        BindingIdentifier : `await`
+
+        LabelIdentifier : `await`
+      </emu-grammar>
+      <ul>
+        <li>
+          It is a Syntax Error if the goal symbol of the syntactic grammar is |Module|.
+        </li>
+      </ul>
+      <emu-grammar>
+        BindingIdentifier : `yield`
+      </emu-grammar>
+      <ul>
+        <li>
+          It is a Syntax Error if this production has a <sub>[Yield]</sub> parameter.
+        </li>
+      </ul>
+      <emu-grammar>
+        BindingIdentifier : `await`
+      </emu-grammar>
+      <ul>
+        <li>
+          It is a Syntax Error if this production has an <sub>[Await]</sub> parameter.
+        </li>
+      </ul>
+      <emu-grammar>
+        IdentifierReference[Yield, Await] : Identifier
+
+        BindingIdentifier[Yield, Await] : Identifier
+
+        LabelIdentifier[Yield, Await] : Identifier
+      </emu-grammar>
+      <ul>
+        <li>
+          It is a Syntax Error if this production has a <sub>[Yield]</sub> parameter and StringValue of |Identifier| is `"yield"`.
+        </li>
+        <li>
+          It is a Syntax Error if this production has an <sub>[Await]</sub> parameter and StringValue of |Identifier| is `"await"`.
+        </li>
+      </ul>
+      <emu-grammar>Identifier : IdentifierName but not ReservedWord</emu-grammar>
+      <ul>
+        <li>
+          It is a Syntax Error if this phrase is contained in strict mode code and the StringValue of |IdentifierName| is: `"implements"`, `"interface"`, `"let"`, `"package"`, `"private"`, `"protected"`, `"public"`, `"static"`, or `"yield"`.
+        </li>
+        <li>
+          It is a Syntax Error if the goal symbol of the syntactic grammar is |Module| and the StringValue of |IdentifierName| is `"await"`.
+        </li>
+        <li>
+          It is a Syntax Error if StringValue of |IdentifierName| is the same String value as the StringValue of any |ReservedWord| except for `yield` or `await`.
+        </li>
+      </ul>
+      <emu-note>
+        <p>StringValue of |IdentifierName| normalizes any Unicode escape sequences in |IdentifierName| hence such escapes cannot be used to write an |Identifier| whose code point sequence is the same as a |ReservedWord|.</p>
+      </emu-note>
+    </emu-clause>
+
+    <!-- es6num="12.1.2" -->
+    <emu-clause id="sec-identifiers-static-semantics-boundnames">
+      <h1>Static Semantics: BoundNames</h1>
+      <emu-see-also-para op="BoundNames"></emu-see-also-para>
+      <emu-grammar>BindingIdentifier : Identifier</emu-grammar>
+      <emu-alg>
+        1. Return a new List containing the StringValue of |Identifier|.
+      </emu-alg>
+      <emu-grammar>BindingIdentifier : `yield`</emu-grammar>
+      <emu-alg>
+        1. Return a new List containing `"yield"`.
+      </emu-alg>
+      <emu-grammar>BindingIdentifier : `await`</emu-grammar>
+      <emu-alg>
+        1. Return a new List containing `"await"`.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.1.3" -->
+    <emu-clause id="sec-identifiers-static-semantics-isvalidsimpleassignmenttarget">
+      <h1>Static Semantics: IsValidSimpleAssignmentTarget</h1>
+      <emu-see-also-para op="IsValidSimpleAssignmentTarget"></emu-see-also-para>
+      <emu-grammar>IdentifierReference : Identifier</emu-grammar>
+      <emu-alg>
+        1. If this |IdentifierReference| is contained in strict mode code and StringValue of |Identifier| is `"eval"` or `"arguments"`, return *false*.
+        1. Return *true*.
+      </emu-alg>
+      <emu-grammar>IdentifierReference : `yield`</emu-grammar>
+      <emu-alg>
+        1. Return *true*.
+      </emu-alg>
+      <emu-grammar>IdentifierReference : `await`</emu-grammar>
+      <emu-alg>
+        1. Return *true*.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.1.4" -->
+    <emu-clause id="sec-identifiers-static-semantics-stringvalue">
+      <h1>Static Semantics: StringValue</h1>
+      <emu-see-also-para op="StringValue"></emu-see-also-para>
+      <emu-grammar>
+        IdentifierReference : `yield`
+
+        BindingIdentifier : `yield`
+
+        LabelIdentifier : `yield`
+      </emu-grammar>
+      <emu-alg>
+        1. Return `"yield"`.
+      </emu-alg>
+      <emu-grammar>
+        IdentifierReference : `await`
+
+        BindingIdentifier : `await`
+
+        LabelIdentifier : `await`
+      </emu-grammar>
+      <emu-alg>
+        1. Return `"await"`.
+      </emu-alg>
+      <emu-grammar>Identifier : IdentifierName but not ReservedWord</emu-grammar>
+      <emu-alg>
+        1. Return the StringValue of |IdentifierName|.
+      </emu-alg>
+    </emu-clause>
+
+    <!-- es6num="12.1.5" -->
+    <emu-clause id="sec-identifiers-runtime-semantics-bindinginitialization">
+      <h1>Runtime Semantics: BindingInitialization</h1>
+      <p>With parameters _value_ and _environment_.</p>
+      <emu-see-also-para op="BindingInitialization"></emu-see-also-para>
+      <emu-note>
+        <p>*undefined* is passed for _environment_ to indicate that a PutValue operation should be used to assign the initialization value. This is the case for `var` statements and formal parameter lists of some non-strict functions (See <emu-xref href="#sec-functiondeclarationinstantiation"></emu-xref>). In those cases a lexical binding is hoisted and preinitialized prior to evaluation of its initializer.</p>
+      </emu-note>
+      <emu-grammar>BindingIdentifier : Identifier</emu-grammar>
+      <emu-alg>
+        1. Let _name_ be StringValue of |Identifier|.
+        1. Return ? InitializeBoundName(_name_, _value_, _environment_).
+      </emu-alg>
+      <emu-grammar>BindingIdentifier : `yield`</emu-grammar>
+      <emu-alg>
+        1. Return ? InitializeBoundName(`"yield"`, _value_, _environment_).
+      </emu-alg>
+      <emu-grammar>BindingIdentifier : `await`</emu-grammar>
+      <emu-alg>
+        1. Return ? InitializeBoundName(`"await"`, _value_, _environment_).
+      </emu-alg>
+
+      <!-- es6num="12.1.5.1" -->
+      <emu-clause id="sec-initializeboundname" aoid="InitializeBoundName">
+        <h1>Runtime Semantics: InitializeBoundName ( _name_, _value_, _environment_ )</h1>
+        <emu-alg>
+          1. Assert: Type(_name_) is String.
+          1. If _environment_ is not *undefined*, then
+            1. Let _env_ be the EnvironmentRecord component of _environment_.
+            1. Perform _env_.InitializeBinding(_name_, _value_).
+            1. Return NormalCompletion(*undefined*).
+          1. Else,
+            1. Let _lhs_ be ResolveBinding(_name_).
+            1. Return ? PutValue(_lhs_, _value_).
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="12.1.6" -->
+    <emu-clause id="sec-identifiers-runtime-semantics-evaluation">
+      <h1>Runtime Semantics: Evaluation</h1>
+      <emu-grammar>IdentifierReference : Identifier</emu-grammar>
+      <emu-alg>
+        1. Return ? ResolveBinding(StringValue of |Identifier|).
+      </emu-alg>
+      <emu-grammar>IdentifierReference : `yield`</emu-grammar>
+      <emu-alg>
+        1. Return ? ResolveBinding(`"yield"`).
+      </emu-alg>
+      <emu-grammar>IdentifierReference : `await`</emu-grammar>
+      <emu-alg>
+        1. Return ? ResolveBinding(`"await"`).
+      </emu-alg>
+      <emu-note>
+        <p>The result of evaluating an |IdentifierReference| is always a value of type Reference.</p>
+      </emu-note>
+      <emu-note>
+        <p>In non-strict code, the keyword `yield` may be used as an identifier. Evaluating the |IdentifierReference| resolves the binding of `yield` as if it was an |Identifier|. Early Error restriction ensures that such an evaluation only can occur for non-strict code.</p>
+      </emu-note>
+    </emu-clause>
+  </emu-clause>
+
+  <!-- es6num="12.2" -->
+  <emu-clause id="sec-primary-expression">
+    <h1>Primary Expression</h1>
+    <h2>Syntax</h2>
+    <emu-grammar type="definition">
+      PrimaryExpression[Yield, Await] :
+        `this`
+        IdentifierReference[?Yield, ?Await]
+        Literal
+        ArrayLiteral[?Yield, ?Await]
+        ObjectLiteral[?Yield, ?Await]
+        FunctionExpression
+        ClassExpression[?Yield, ?Await]
+        GeneratorExpression
+        AsyncFunctionExpression
+        RegularExpressionLiteral
+        TemplateLiteral[?Yield, ?Await, ~Tagged]
+        CoverParenthesizedExpressionAndArrowParameterList[?Yield, ?Await] #parencover
+
+      CoverParenthesizedExpressionAndArrowParameterList[Yield, Await] :
+        `(` Expression[+In, ?Yield, ?Await] `)`
+        `(` Expression[+In, ?Yield, ?Await] `,` `)`
+        `(` `)`
+        `(` `...` BindingIdentifier[?Yield, ?Await] `)`
+        `(` `...` BindingPattern[?Yield, ?Await] `)`
+        `(` Expression[+In, ?Yield, ?Await] `,` `...` BindingIdentifier[?Yield, ?Await] `)`
+        `(` Expression[+In, ?Yield, ?Await] `,` `...` BindingPattern[?Yield, ?Await] `)`
+    </emu-grammar>
+    <h2>Supplemental Syntax</h2>
+    <p>When processing an instance of the production
+      <br>
+      <emu-grammar>PrimaryExpression[Yield, Await] : CoverParenthesizedExpressionAndArrowParameterList[?Yield, ?Await]</emu-grammar>
+      <br>
+      the interpretation of |CoverParenthesizedExpressionAndArrowParameterList| is refined using the following grammar:</p>
+    <emu-grammar type="definition">
+      ParenthesizedExpression[Yield, Await] :
+        `(` Expression[+In, ?Yield, ?Await] `)`
+    </emu-grammar>
+
+    <!-- es6num="12.2.1" -->
+    <emu-clause id="sec-primary-expression-semantics">
+      <h1>Semantics</h1>
+
+      <!-- es6num="12.2.1.1" -->
+      <emu-clause id="sec-static-semantics-coveredparenthesizedexpression">
+        <h1>Static Semantics: CoveredParenthesizedExpression</h1>
+        <emu-grammar>CoverParenthesizedExpressionAndArrowParameterList : `(` Expression `)`</emu-grammar>
+        <emu-alg>
+          1. Return the result of reparsing |CoverParenthesizedExpressionAndArrowParameterList| as a |ParenthesizedExpression|.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.1.2" -->
+      <emu-clause id="sec-semantics-static-semantics-hasname">
+        <h1>Static Semantics: HasName</h1>
+        <emu-see-also-para op="HasName"></emu-see-also-para>
+        <emu-grammar>PrimaryExpression : CoverParenthesizedExpressionAndArrowParameterList</emu-grammar>
+        <emu-alg>
+          1. Let _expr_ be CoveredParenthesizedExpression of |CoverParenthesizedExpressionAndArrowParameterList|.
+          1. If IsFunctionDefinition of _expr_ is *false*, return *false*.
+          1. Return HasName of _expr_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.1.3" -->
+      <emu-clause id="sec-semantics-static-semantics-isfunctiondefinition">
+        <h1>Static Semantics: IsFunctionDefinition</h1>
+        <emu-see-also-para op="IsFunctionDefinition"></emu-see-also-para>
+        <emu-grammar>
+          PrimaryExpression :
+            `this`
+            IdentifierReference
+            Literal
+            ArrayLiteral
+            ObjectLiteral
+            RegularExpressionLiteral
+            TemplateLiteral
+        </emu-grammar>
+        <emu-alg>
+          1. Return *false*.
+        </emu-alg>
+        <emu-grammar>PrimaryExpression : CoverParenthesizedExpressionAndArrowParameterList</emu-grammar>
+        <emu-alg>
+          1. Let _expr_ be CoveredParenthesizedExpression of |CoverParenthesizedExpressionAndArrowParameterList|.
+          1. Return IsFunctionDefinition of _expr_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.1.4" -->
+      <emu-clause id="sec-semantics-static-semantics-isidentifierref">
+        <h1>Static Semantics: IsIdentifierRef</h1>
+        <emu-see-also-para op="IsIdentifierRef"></emu-see-also-para>
+        <emu-grammar>PrimaryExpression : IdentifierReference</emu-grammar>
+        <emu-alg>
+          1. Return *true*.
+        </emu-alg>
+        <emu-grammar>
+          PrimaryExpression :
+            `this`
+            Literal
+            ArrayLiteral
+            ObjectLiteral
+            FunctionExpression
+            ClassExpression
+            GeneratorExpression
+            AsyncFunctionExpression
+            RegularExpressionLiteral
+            TemplateLiteral
+            CoverParenthesizedExpressionAndArrowParameterList
+        </emu-grammar>
+        <emu-alg>
+          1. Return *false*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.1.5" -->
+      <emu-clause id="sec-semantics-static-semantics-isvalidsimpleassignmenttarget">
+        <h1>Static Semantics: IsValidSimpleAssignmentTarget</h1>
+        <emu-see-also-para op="IsValidSimpleAssignmentTarget"></emu-see-also-para>
+        <emu-grammar>
+          PrimaryExpression :
+            `this`
+            Literal
+            ArrayLiteral
+            ObjectLiteral
+            FunctionExpression
+            ClassExpression
+            GeneratorExpression
+            AsyncFunctionExpression
+            RegularExpressionLiteral
+            TemplateLiteral
+        </emu-grammar>
+        <emu-alg>
+          1. Return *false*.
+        </emu-alg>
+        <emu-grammar>PrimaryExpression : CoverParenthesizedExpressionAndArrowParameterList</emu-grammar>
+        <emu-alg>
+          1. Let _expr_ be CoveredParenthesizedExpression of |CoverParenthesizedExpressionAndArrowParameterList|.
+          1. Return IsValidSimpleAssignmentTarget of _expr_.
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="12.2.2" -->
+    <emu-clause id="sec-this-keyword">
+      <h1>The `this` Keyword</h1>
+
+      <!-- es6num="12.2.2.1" -->
+      <emu-clause id="sec-this-keyword-runtime-semantics-evaluation">
+        <h1>Runtime Semantics: Evaluation</h1>
+        <emu-grammar>PrimaryExpression : `this`</emu-grammar>
+        <emu-alg>
+          1. Return ? ResolveThisBinding( ).
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="12.2.3" -->
+    <emu-clause id="sec-identifier-reference">
+      <h1>Identifier Reference</h1>
+      <p>See <emu-xref href="#sec-identifiers"></emu-xref> for |IdentifierReference|.</p>
+    </emu-clause>
+
+    <!-- es6num="12.2.4" -->
+    <emu-clause id="sec-primary-expression-literals">
+      <h1>Literals</h1>
+      <h2>Syntax</h2>
+      <emu-grammar type="definition">
+        Literal :
+          NullLiteral
+          BooleanLiteral
+          NumericLiteral
+          StringLiteral
+      </emu-grammar>
+
+      <!-- es6num="12.2.4.1" -->
+      <emu-clause id="sec-literals-runtime-semantics-evaluation">
+        <h1>Runtime Semantics: Evaluation</h1>
+        <emu-grammar>Literal : NullLiteral</emu-grammar>
+        <emu-alg>
+          1. Return *null*.
+        </emu-alg>
+        <emu-grammar>Literal : BooleanLiteral</emu-grammar>
+        <emu-alg>
+          1. If |BooleanLiteral| is the token `false`, return *false*.
+          1. If |BooleanLiteral| is the token `true`, return *true*.
+        </emu-alg>
+        <emu-grammar>Literal : NumericLiteral</emu-grammar>
+        <emu-alg>
+          1. Return the number whose value is MV of |NumericLiteral| as defined in <emu-xref href="#sec-literals-numeric-literals"></emu-xref>.
+        </emu-alg>
+        <emu-grammar>Literal : StringLiteral</emu-grammar>
+        <emu-alg>
+          1. Return the StringValue of |StringLiteral| as defined in <emu-xref href="#sec-string-literals-static-semantics-stringvalue"></emu-xref>.
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="12.2.5" -->
+    <emu-clause id="sec-array-initializer">
+      <h1>Array Initializer</h1>
+      <emu-note>
+        <p>An |ArrayLiteral| is an expression describing the initialization of an Array object, using a list, of zero or more expressions each of which represents an array element, enclosed in square brackets. The elements need not be literals; they are evaluated each time the array initializer is evaluated.</p>
+      </emu-note>
+      <p>Array elements may be elided at the beginning, middle or end of the element list. Whenever a comma in the element list is not preceded by an |AssignmentExpression| (i.e., a comma at the beginning or after another comma), the missing array element contributes to the length of the Array and increases the index of subsequent elements. Elided array elements are not defined. If an element is elided at the end of an array, that element does not contribute to the length of the Array.</p>
+      <h2>Syntax</h2>
+      <emu-grammar type="definition">
+        ArrayLiteral[Yield, Await] :
+          `[` Elision? `]`
+          `[` ElementList[?Yield, ?Await] `]`
+          `[` ElementList[?Yield, ?Await] `,` Elision? `]`
+
+        ElementList[Yield, Await] :
+          Elision? AssignmentExpression[+In, ?Yield, ?Await]
+          Elision? SpreadElement[?Yield, ?Await]
+          ElementList[?Yield, ?Await] `,` Elision? AssignmentExpression[+In, ?Yield, ?Await]
+          ElementList[?Yield, ?Await] `,` Elision? SpreadElement[?Yield, ?Await]
+
+        Elision :
+          `,`
+          Elision `,`
+
+        SpreadElement[Yield, Await] :
+          `...` AssignmentExpression[+In, ?Yield, ?Await]
+      </emu-grammar>
+
+      <!-- es6num="12.2.5.1" -->
+      <emu-clause id="sec-static-semantics-elisionwidth">
+        <h1>Static Semantics: ElisionWidth</h1>
+        <emu-grammar>Elision : `,`</emu-grammar>
+        <emu-alg>
+          1. Return the numeric value 1.
+        </emu-alg>
+        <emu-grammar>Elision : Elision `,`</emu-grammar>
+        <emu-alg>
+          1. Let _preceding_ be the ElisionWidth of |Elision|.
+          1. Return _preceding_+1.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.5.2" -->
+      <emu-clause id="sec-runtime-semantics-arrayaccumulation">
+        <h1>Runtime Semantics: ArrayAccumulation</h1>
+        <p>With parameters _array_ and _nextIndex_.</p>
+        <emu-grammar>ElementList : Elision? AssignmentExpression</emu-grammar>
+        <emu-alg>
+          1. Let _padding_ be the ElisionWidth of |Elision|; if |Elision| is not present, use the numeric value zero.
+          1. Let _initResult_ be the result of evaluating |AssignmentExpression|.
+          1. Let _initValue_ be ? GetValue(_initResult_).
+          1. Let _created_ be CreateDataProperty(_array_, ToString(ToUint32(_nextIndex_+_padding_)), _initValue_).
+          1. Assert: _created_ is *true*.
+          1. Return _nextIndex_+_padding_+1.
+        </emu-alg>
+        <emu-grammar>ElementList : Elision? SpreadElement</emu-grammar>
+        <emu-alg>
+          1. Let _padding_ be the ElisionWidth of |Elision|; if |Elision| is not present, use the numeric value zero.
+          1. Return the result of performing ArrayAccumulation for |SpreadElement| with arguments _array_ and _nextIndex_+_padding_.
+        </emu-alg>
+        <emu-grammar>ElementList : ElementList `,` Elision? AssignmentExpression</emu-grammar>
+        <emu-alg>
+          1. Let _postIndex_ be the result of performing ArrayAccumulation for |ElementList| with arguments _array_ and _nextIndex_.
+          1. ReturnIfAbrupt(_postIndex_).
+          1. Let _padding_ be the ElisionWidth of |Elision|; if |Elision| is not present, use the numeric value zero.
+          1. Let _initResult_ be the result of evaluating |AssignmentExpression|.
+          1. Let _initValue_ be ? GetValue(_initResult_).
+          1. Let _created_ be CreateDataProperty(_array_, ToString(ToUint32(_postIndex_+_padding_)), _initValue_).
+          1. Assert: _created_ is *true*.
+          1. Return _postIndex_+_padding_+1.
+        </emu-alg>
+        <emu-grammar>ElementList : ElementList `,` Elision? SpreadElement</emu-grammar>
+        <emu-alg>
+          1. Let _postIndex_ be the result of performing ArrayAccumulation for |ElementList| with arguments _array_ and _nextIndex_.
+          1. ReturnIfAbrupt(_postIndex_).
+          1. Let _padding_ be the ElisionWidth of |Elision|; if |Elision| is not present, use the numeric value zero.
+          1. Return the result of performing ArrayAccumulation for |SpreadElement| with arguments _array_ and _postIndex_+_padding_.
+        </emu-alg>
+        <emu-grammar>SpreadElement : `...` AssignmentExpression</emu-grammar>
+        <emu-alg>
+          1. Let _spreadRef_ be the result of evaluating |AssignmentExpression|.
+          1. Let _spreadObj_ be ? GetValue(_spreadRef_).
+          1. Let _iteratorRecord_ be ? GetIterator(_spreadObj_).
+          1. Repeat,
+            1. Let _next_ be ? IteratorStep(_iteratorRecord_).
+            1. If _next_ is *false*, return _nextIndex_.
+            1. Let _nextValue_ be ? IteratorValue(_next_).
+            1. Let _status_ be CreateDataProperty(_array_, ToString(ToUint32(_nextIndex_)), _nextValue_).
+            1. Assert: _status_ is *true*.
+            1. Let _nextIndex_ be _nextIndex_ + 1.
+        </emu-alg>
+        <emu-note>
+          <p>CreateDataProperty is used to ensure that own properties are defined for the array even if the standard built-in Array prototype object has been modified in a manner that would preclude the creation of new own properties using [[Set]].</p>
+        </emu-note>
+      </emu-clause>
+
+      <!-- es6num="12.2.5.3" -->
+      <emu-clause id="sec-array-initializer-runtime-semantics-evaluation">
+        <h1>Runtime Semantics: Evaluation</h1>
+        <emu-grammar>ArrayLiteral : `[` Elision? `]`</emu-grammar>
+        <emu-alg>
+          1. Let _array_ be ! ArrayCreate(0).
+          1. Let _pad_ be the ElisionWidth of |Elision|; if |Elision| is not present, use the numeric value zero.
+          1. Perform Set(_array_, `"length"`, ToUint32(_pad_), *false*).
+          1. NOTE: The above Set cannot fail because of the nature of the object returned by ArrayCreate.
+          1. Return _array_.
+        </emu-alg>
+        <emu-grammar>ArrayLiteral : `[` ElementList `]`</emu-grammar>
+        <emu-alg>
+          1. Let _array_ be ! ArrayCreate(0).
+          1. Let _len_ be the result of performing ArrayAccumulation for |ElementList| with arguments _array_ and 0.
+          1. ReturnIfAbrupt(_len_).
+          1. Perform Set(_array_, `"length"`, ToUint32(_len_), *false*).
+          1. NOTE: The above Set cannot fail because of the nature of the object returned by ArrayCreate.
+          1. Return _array_.
+        </emu-alg>
+        <emu-grammar>ArrayLiteral : `[` ElementList `,` Elision? `]`</emu-grammar>
+        <emu-alg>
+          1. Let _array_ be ! ArrayCreate(0).
+          1. Let _len_ be the result of performing ArrayAccumulation for |ElementList| with arguments _array_ and 0.
+          1. ReturnIfAbrupt(_len_).
+          1. Let _padding_ be the ElisionWidth of |Elision|; if |Elision| is not present, use the numeric value zero.
+          1. Perform Set(_array_, `"length"`, ToUint32(_padding_+_len_), *false*).
+          1. NOTE: The above Set cannot fail because of the nature of the object returned by ArrayCreate.
+          1. Return _array_.
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="12.2.6" -->
+    <emu-clause id="sec-object-initializer">
+      <h1>Object Initializer</h1>
+      <emu-note>
+        <p>An object initializer is an expression describing the initialization of an Object, written in a form resembling a literal. It is a list of zero or more pairs of property keys and associated values, enclosed in curly brackets. The values need not be literals; they are evaluated each time the object initializer is evaluated.</p>
+      </emu-note>
+      <h2>Syntax</h2>
+      <emu-grammar type="definition">
+        ObjectLiteral[Yield, Await] :
+          `{` `}`
+          `{` PropertyDefinitionList[?Yield, ?Await] `}`
+          `{` PropertyDefinitionList[?Yield, ?Await] `,` `}`
+
+        PropertyDefinitionList[Yield, Await] :
+          PropertyDefinition[?Yield, ?Await]
+          PropertyDefinitionList[?Yield, ?Await] `,` PropertyDefinition[?Yield, ?Await]
+
+        PropertyDefinition[Yield, Await] :
+          IdentifierReference[?Yield, ?Await]
+          CoverInitializedName[?Yield, ?Await]
+          PropertyName[?Yield, ?Await] `:` AssignmentExpression[+In, ?Yield, ?Await]
+          MethodDefinition[?Yield, ?Await]
+
+        PropertyName[Yield, Await] :
+          LiteralPropertyName
+          ComputedPropertyName[?Yield, ?Await]
+
+        LiteralPropertyName :
+          IdentifierName
+          StringLiteral
+          NumericLiteral
+
+        ComputedPropertyName[Yield, Await] :
+          `[` AssignmentExpression[+In, ?Yield, ?Await] `]`
+
+        CoverInitializedName[Yield, Await] :
+          IdentifierReference[?Yield, ?Await] Initializer[+In, ?Yield, ?Await]
+
+        Initializer[In, Yield, Await] :
+          `=` AssignmentExpression[?In, ?Yield, ?Await]
+      </emu-grammar>
+      <emu-note>
+        <p>|MethodDefinition| is defined in <emu-xref href="#sec-method-definitions"></emu-xref>.</p>
+      </emu-note>
+      <emu-note>
+        <p>In certain contexts, |ObjectLiteral| is used as a cover grammar for a more restricted secondary grammar. The |CoverInitializedName| production is necessary to fully cover these secondary grammars. However, use of this production results in an early Syntax Error in normal contexts where an actual |ObjectLiteral| is expected.</p>
+      </emu-note>
+
+      <!-- es6num="12.2.6.1" -->
+      <emu-clause id="sec-object-initializer-static-semantics-early-errors">
+        <h1>Static Semantics: Early Errors</h1>
+        <emu-grammar>PropertyDefinition : MethodDefinition</emu-grammar>
+        <ul>
+          <li>
+            It is a Syntax Error if HasDirectSuper of |MethodDefinition| is *true*.
+          </li>
+        </ul>
+        <p>In addition to describing an actual object initializer the |ObjectLiteral| productions are also used as a cover grammar for |ObjectAssignmentPattern| and may be recognized as part of a |CoverParenthesizedExpressionAndArrowParameterList|. When |ObjectLiteral| appears in a context where |ObjectAssignmentPattern| is required the following Early Error rules are <b>not</b> applied. In addition, they are not applied when initially parsing a |CoverParenthesizedExpressionAndArrowParameterList| or |CoverCallExpressionAndAsyncArrowHead|.</p>
+        <emu-grammar>PropertyDefinition : CoverInitializedName</emu-grammar>
+        <ul>
+          <li>
+            Always throw a Syntax Error if code matches this production.
+          </li>
+        </ul>
+        <emu-note>
+          <p>This production exists so that |ObjectLiteral| can serve as a cover grammar for |ObjectAssignmentPattern|. It cannot occur in an actual object initializer.</p>
+        </emu-note>
+      </emu-clause>
+
+      <!-- es6num="12.2.6.2" -->
+      <emu-clause id="sec-object-initializer-static-semantics-computedpropertycontains">
+        <h1>Static Semantics: ComputedPropertyContains</h1>
+        <p>With parameter _symbol_.</p>
+        <emu-see-also-para op="ComputedPropertyContains"></emu-see-also-para>
+        <emu-grammar>PropertyName : LiteralPropertyName</emu-grammar>
+        <emu-alg>
+          1. Return *false*.
+        </emu-alg>
+        <emu-grammar>PropertyName : ComputedPropertyName</emu-grammar>
+        <emu-alg>
+          1. Return the result of |ComputedPropertyName| Contains _symbol_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.6.3" -->
+      <emu-clause id="sec-object-initializer-static-semantics-contains">
+        <h1>Static Semantics: Contains</h1>
+        <p>With parameter _symbol_.</p>
+        <emu-see-also-para op="Contains"></emu-see-also-para>
+        <emu-grammar>PropertyDefinition : MethodDefinition</emu-grammar>
+        <emu-alg>
+          1. If _symbol_ is |MethodDefinition|, return *true*.
+          1. Return the result of ComputedPropertyContains for |MethodDefinition| with argument _symbol_.
+        </emu-alg>
+        <emu-note>
+          <p>Static semantic rules that depend upon substructure generally do not look into function definitions.</p>
+        </emu-note>
+        <emu-grammar>LiteralPropertyName : IdentifierName</emu-grammar>
+        <emu-alg>
+          1. If _symbol_ is a |ReservedWord|, return *false*.
+          1. If _symbol_ is an |Identifier| and StringValue of _symbol_ is the same value as the StringValue of |IdentifierName|, return *true*.
+          1. Return *false*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.6.5" -->
+      <emu-clause id="sec-static-semantics-iscomputedpropertykey">
+        <h1>Static Semantics: IsComputedPropertyKey</h1>
+        <emu-grammar>PropertyName : LiteralPropertyName</emu-grammar>
+        <emu-alg>
+          1. Return *false*.
+        </emu-alg>
+        <emu-grammar>PropertyName : ComputedPropertyName</emu-grammar>
+        <emu-alg>
+          1. Return *true*.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.6.6" -->
+      <emu-clause id="sec-object-initializer-static-semantics-propname">
+        <h1>Static Semantics: PropName</h1>
+        <emu-see-also-para op="PropName"></emu-see-also-para>
+        <emu-grammar>PropertyDefinition : IdentifierReference</emu-grammar>
+        <emu-alg>
+          1. Return StringValue of |IdentifierReference|.
+        </emu-alg>
+        <emu-grammar>PropertyDefinition : PropertyName `:` AssignmentExpression</emu-grammar>
+        <emu-alg>
+          1. Return PropName of |PropertyName|.
+        </emu-alg>
+        <emu-grammar>LiteralPropertyName : IdentifierName</emu-grammar>
+        <emu-alg>
+          1. Return StringValue of |IdentifierName|.
+        </emu-alg>
+        <emu-grammar>LiteralPropertyName : StringLiteral</emu-grammar>
+        <emu-alg>
+          1. Return the String value whose code units are the SV of the |StringLiteral|.
+        </emu-alg>
+        <emu-grammar>LiteralPropertyName : NumericLiteral</emu-grammar>
+        <emu-alg>
+          1. Let _nbr_ be the result of forming the value of the |NumericLiteral|.
+          1. Return ! ToString(_nbr_).
+        </emu-alg>
+        <emu-grammar>ComputedPropertyName : `[` AssignmentExpression `]`</emu-grammar>
+        <emu-alg>
+          1. Return ~empty~.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.6.7" -->
+      <emu-clause id="sec-static-semantics-propertynamelist">
+        <h1>Static Semantics: PropertyNameList</h1>
+        <emu-grammar>PropertyDefinitionList : PropertyDefinition</emu-grammar>
+        <emu-alg>
+          1. If PropName of |PropertyDefinition| is ~empty~, return a new empty List.
+          1. Return a new List containing PropName of |PropertyDefinition|.
+        </emu-alg>
+        <emu-grammar>PropertyDefinitionList : PropertyDefinitionList `,` PropertyDefinition</emu-grammar>
+        <emu-alg>
+          1. Let _list_ be PropertyNameList of |PropertyDefinitionList|.
+          1. If PropName of |PropertyDefinition| is ~empty~, return _list_.
+          1. Append PropName of |PropertyDefinition| to the end of _list_.
+          1. Return _list_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.6.8" -->
+      <emu-clause id="sec-object-initializer-runtime-semantics-evaluation">
+        <h1>Runtime Semantics: Evaluation</h1>
+        <emu-grammar>ObjectLiteral : `{` `}`</emu-grammar>
+        <emu-alg>
+          1. Return ObjectCreate(%ObjectPrototype%).
+        </emu-alg>
+        <emu-grammar>
+          ObjectLiteral :
+            `{` PropertyDefinitionList `}`
+            `{` PropertyDefinitionList `,` `}`
+        </emu-grammar>
+        <emu-alg>
+          1. Let _obj_ be ObjectCreate(%ObjectPrototype%).
+          1. Perform ? PropertyDefinitionEvaluation of |PropertyDefinitionList| with arguments _obj_ and *true*.
+          1. Return _obj_.
+        </emu-alg>
+        <emu-grammar>LiteralPropertyName : IdentifierName</emu-grammar>
+        <emu-alg>
+          1. Return StringValue of |IdentifierName|.
+        </emu-alg>
+        <emu-grammar>LiteralPropertyName : StringLiteral</emu-grammar>
+        <emu-alg>
+          1. Return the String value whose code units are the SV of the |StringLiteral|.
+        </emu-alg>
+        <emu-grammar>LiteralPropertyName : NumericLiteral</emu-grammar>
+        <emu-alg>
+          1. Let _nbr_ be the result of forming the value of the |NumericLiteral|.
+          1. Return ! ToString(_nbr_).
+        </emu-alg>
+        <emu-grammar>ComputedPropertyName : `[` AssignmentExpression `]`</emu-grammar>
+        <emu-alg>
+          1. Let _exprValue_ be the result of evaluating |AssignmentExpression|.
+          1. Let _propName_ be ? GetValue(_exprValue_).
+          1. Return ? ToPropertyKey(_propName_).
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.6.9" -->
+      <emu-clause id="sec-object-initializer-runtime-semantics-propertydefinitionevaluation">
+        <h1>Runtime Semantics: PropertyDefinitionEvaluation</h1>
+        <p>With parameters _object_ and _enumerable_.</p>
+        <emu-see-also-para op="PropertyDefinitionEvaluation"></emu-see-also-para>
+        <emu-grammar>PropertyDefinitionList : PropertyDefinitionList `,` PropertyDefinition</emu-grammar>
+        <emu-alg>
+          1. Perform ? PropertyDefinitionEvaluation of |PropertyDefinitionList| with arguments _object_ and _enumerable_.
+          1. Return the result of performing PropertyDefinitionEvaluation of |PropertyDefinition| with arguments _object_ and _enumerable_.
+        </emu-alg>
+        <emu-grammar>PropertyDefinition : IdentifierReference</emu-grammar>
+        <emu-alg>
+          1. Let _propName_ be StringValue of |IdentifierReference|.
+          1. Let _exprValue_ be the result of evaluating |IdentifierReference|.
+          1. Let _propValue_ be ? GetValue(_exprValue_).
+          1. Assert: _enumerable_ is *true*.
+          1. Return CreateDataPropertyOrThrow(_object_, _propName_, _propValue_).
+        </emu-alg>
+        <emu-grammar>PropertyDefinition : PropertyName `:` AssignmentExpression</emu-grammar>
+        <emu-alg>
+          1. Let _propKey_ be the result of evaluating |PropertyName|.
+          1. ReturnIfAbrupt(_propKey_).
+          1. Let _exprValueRef_ be the result of evaluating |AssignmentExpression|.
+          1. Let _propValue_ be ? GetValue(_exprValueRef_).
+          1. If IsAnonymousFunctionDefinition(|AssignmentExpression|) is *true*, then
+            1. Let _hasNameProperty_ be ? HasOwnProperty(_propValue_, `"name"`).
+            1. If _hasNameProperty_ is *false*, perform SetFunctionName(_propValue_, _propKey_).
+          1. Assert: _enumerable_ is *true*.
+          1. Return CreateDataPropertyOrThrow(_object_, _propKey_, _propValue_).
+        </emu-alg>
+        <emu-note>
+          <p>An alternative semantics for this production is given in <emu-xref href="#sec-__proto__-property-names-in-object-initializers"></emu-xref>.</p>
+        </emu-note>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="12.2.7" -->
+    <emu-clause id="sec-function-defining-expressions">
+      <h1>Function Defining Expressions</h1>
+      <p>See <emu-xref href="#sec-function-definitions"></emu-xref> for <emu-grammar>PrimaryExpression : FunctionExpression</emu-grammar>.</p>
+      <p>See <emu-xref href="#sec-generator-function-definitions"></emu-xref> for <emu-grammar>PrimaryExpression : GeneratorExpression</emu-grammar>.</p>
+      <p>See <emu-xref href="#sec-class-definitions"></emu-xref> for <emu-grammar>PrimaryExpression : ClassExpression</emu-grammar>.</p>
+      <p>See <emu-xref href="#sec-async-function-definitions"></emu-xref> for <emu-grammar>PrimaryExpression : AsyncFunctionExpression</emu-grammar>.</p>
+    </emu-clause>
+
+    <!-- es6num="12.2.8" -->
+    <emu-clause id="sec-primary-expression-regular-expression-literals">
+      <h1>Regular Expression Literals</h1>
+      <h2>Syntax</h2>
+      <p>See <emu-xref href="#sec-literals-regular-expression-literals"></emu-xref>.</p>
+
+      <!-- es6num="12.2.8.1" -->
+      <emu-clause id="sec-primary-expression-regular-expression-literals-static-semantics-early-errors">
+        <h1>Static Semantics: Early Errors</h1>
+        <emu-grammar>PrimaryExpression : RegularExpressionLiteral</emu-grammar>
+        <ul>
+          <li>
+            It is a Syntax Error if BodyText of |RegularExpressionLiteral| cannot be recognized using the goal symbol |Pattern| of the ECMAScript RegExp grammar specified in <emu-xref href="#sec-patterns"></emu-xref>.
+          </li>
+          <li>
+            It is a Syntax Error if FlagText of |RegularExpressionLiteral| contains any code points other than `"g"`, `"i"`, `"m"`, `"u"`, or `"y"`, or if it contains the same code point more than once.
+          </li>
+        </ul>
+      </emu-clause>
+
+      <!-- es6num="12.2.8.2" -->
+      <emu-clause id="sec-regular-expression-literals-runtime-semantics-evaluation">
+        <h1>Runtime Semantics: Evaluation</h1>
+        <emu-grammar>PrimaryExpression : RegularExpressionLiteral</emu-grammar>
+        <emu-alg>
+          1. Let _pattern_ be the String value consisting of the UTF16Encoding of each code point of BodyText of |RegularExpressionLiteral|.
+          1. Let _flags_ be the String value consisting of the UTF16Encoding of each code point of FlagText of |RegularExpressionLiteral|.
+          1. Return RegExpCreate(_pattern_, _flags_).
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="12.2.9" -->
+    <emu-clause id="sec-template-literals">
+      <h1>Template Literals</h1>
+      <h2>Syntax</h2>
+      <emu-grammar type="definition">
+        TemplateLiteral[Yield, Await, Tagged] :
+          NoSubstitutionTemplate
+          SubstitutionTemplate[?Yield, ?Await, ?Tagged]
+
+        SubstitutionTemplate[Yield, Await, Tagged] :
+          TemplateHead Expression[+In, ?Yield, ?Await] TemplateSpans[?Yield, ?Await, ?Tagged]
+
+        TemplateSpans[Yield, Await, Tagged] :
+          TemplateTail
+          TemplateMiddleList[?Yield, ?Await, ?Tagged] TemplateTail
+
+        TemplateMiddleList[Yield, Await, Tagged] :
+          TemplateMiddle Expression[+In, ?Yield, ?Await]
+          TemplateMiddleList[?Yield, ?Await, ?Tagged] TemplateMiddle Expression[+In, ?Yield, ?Await]
+      </emu-grammar>
+
+      <emu-clause id="sec-static-semantics-template-early-errors" oldids="sec-primary-expression-template-literals-static-semantics-early-errors">
+        <h1>Static Semantics: Early Errors</h1>
+        <emu-grammar>
+          TemplateLiteral[Yield, Await, Tagged] : NoSubstitutionTemplate
+        </emu-grammar>
+        <ul>
+          <li>
+            It is a Syntax Error if the number of elements in the result of TemplateStrings of |TemplateLiteral| with argument *false* is greater than 2<sup>32</sup>-1.
+          </li>
+          <li>
+            It is a Syntax Error if the <sub>[Tagged]</sub> parameter was not set and |NoSubstitutionTemplate| Contains |NotEscapeSequence|.
+          </li>
+        </ul>
+
+        <emu-grammar>
+          SubstitutionTemplate[Yield, Await, Tagged] : TemplateHead Expression[+In, ?Yield, ?Await] TemplateSpans[?Yield, ?Await, ?Tagged]
+        </emu-grammar>
+        <ul>
+          <li>
+            It is a Syntax Error if the <sub>[Tagged]</sub> parameter was not set and |TemplateHead| Contains |NotEscapeSequence|.
+          </li>
+        </ul>
+
+        <emu-grammar>
+          TemplateSpans[Yield, Await, Tagged] : TemplateTail
+        </emu-grammar>
+        <ul>
+          <li>
+            It is a Syntax Error if the <sub>[Tagged]</sub> parameter was not set and |TemplateTail| Contains |NotEscapeSequence|.
+          </li>
+        </ul>
+
+        <emu-grammar>
+          TemplateMiddleList[Yield, Await, Tagged] :
+            TemplateMiddle Expression[+In, ?Yield, ?Await]
+            TemplateMiddleList[?Yield, ?Await, ?Tagged] TemplateMiddle Expression[+In, ?Yield, ?Await]
+        </emu-grammar>
+        <ul>
+          <li>
+            It is a Syntax Error if the <sub>[Tagged]</sub> parameter was not set and |TemplateMiddle| Contains |NotEscapeSequence|.
+          </li>
+        </ul>
+      </emu-clause>
+
+      <!-- es6num="12.2.9.1" -->
+      <emu-clause id="sec-static-semantics-templatestrings">
+        <h1>Static Semantics: TemplateStrings</h1>
+        <p>With parameter _raw_.</p>
+        <emu-grammar>TemplateLiteral : NoSubstitutionTemplate</emu-grammar>
+        <emu-alg>
+          1. If _raw_ is *false*, then
+            1. Let _string_ be the TV of |NoSubstitutionTemplate|.
+          1. Else,
+            1. Let _string_ be the TRV of |NoSubstitutionTemplate|.
+          1. Return a List containing the single element, _string_.
+        </emu-alg>
+        <emu-grammar>SubstitutionTemplate : TemplateHead Expression TemplateSpans</emu-grammar>
+        <emu-alg>
+          1. If _raw_ is *false*, then
+            1. Let _head_ be the TV of |TemplateHead|.
+          1. Else,
+            1. Let _head_ be the TRV of |TemplateHead|.
+          1. Let _tail_ be TemplateStrings of |TemplateSpans| with argument _raw_.
+          1. Return a List containing _head_ followed by the elements, in order, of _tail_.
+        </emu-alg>
+        <emu-grammar>TemplateSpans : TemplateTail</emu-grammar>
+        <emu-alg>
+          1. If _raw_ is *false*, then
+            1. Let _tail_ be the TV of |TemplateTail|.
+          1. Else,
+            1. Let _tail_ be the TRV of |TemplateTail|.
+          1. Return a List containing the single element, _tail_.
+        </emu-alg>
+        <emu-grammar>TemplateSpans : TemplateMiddleList TemplateTail</emu-grammar>
+        <emu-alg>
+          1. Let _middle_ be TemplateStrings of |TemplateMiddleList| with argument _raw_.
+          1. If _raw_ is *false*, then
+            1. Let _tail_ be the TV of |TemplateTail|.
+          1. Else,
+            1. Let _tail_ be the TRV of |TemplateTail|.
+          1. Return a List containing the elements, in order, of _middle_ followed by _tail_.
+        </emu-alg>
+        <emu-grammar>TemplateMiddleList : TemplateMiddle Expression</emu-grammar>
+        <emu-alg>
+          1. If _raw_ is *false*, then
+            1. Let _string_ be the TV of |TemplateMiddle|.
+          1. Else,
+            1. Let _string_ be the TRV of |TemplateMiddle|.
+          1. Return a List containing the single element, _string_.
+        </emu-alg>
+        <emu-grammar>TemplateMiddleList : TemplateMiddleList TemplateMiddle Expression</emu-grammar>
+        <emu-alg>
+          1. Let _front_ be TemplateStrings of |TemplateMiddleList| with argument _raw_.
+          1. If _raw_ is *false*, then
+            1. Let _last_ be the TV of |TemplateMiddle|.
+          1. Else,
+            1. Let _last_ be the TRV of |TemplateMiddle|.
+          1. Append _last_ as the last element of the List _front_.
+          1. Return _front_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.9.2" -->
+      <emu-clause id="sec-template-literals-runtime-semantics-argumentlistevaluation">
+        <h1>Runtime Semantics: ArgumentListEvaluation</h1>
+        <emu-see-also-para op="ArgumentListEvaluation"></emu-see-also-para>
+        <emu-grammar>TemplateLiteral : NoSubstitutionTemplate</emu-grammar>
+        <emu-alg>
+          1. Let _templateLiteral_ be this |TemplateLiteral|.
+          1. Let _siteObj_ be GetTemplateObject(_templateLiteral_).
+          1. Return a List containing the one element which is _siteObj_.
+        </emu-alg>
+        <emu-grammar>SubstitutionTemplate : TemplateHead Expression TemplateSpans</emu-grammar>
+        <emu-alg>
+          1. Let _templateLiteral_ be this |TemplateLiteral|.
+          1. Let _siteObj_ be GetTemplateObject(_templateLiteral_).
+          1. Let _firstSubRef_ be the result of evaluating |Expression|.
+          1. Let _firstSub_ be ? GetValue(_firstSubRef_).
+          1. Let _restSub_ be SubstitutionEvaluation of |TemplateSpans|.
+          1. ReturnIfAbrupt(_restSub_).
+          1. Assert: _restSub_ is a List.
+          1. Return a List whose first element is _siteObj_, whose second elements is _firstSub_, and whose subsequent elements are the elements of _restSub_, in order. _restSub_ may contain no elements.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.9.3" -->
+      <emu-clause id="sec-gettemplateobject" aoid="GetTemplateObject">
+        <h1>Runtime Semantics: GetTemplateObject ( _templateLiteral_ )</h1>
+        <p>The abstract operation GetTemplateObject is called with a Parse Node, _templateLiteral_, as an argument. It performs the following steps:</p>
+        <emu-alg>
+          1. Let _rawStrings_ be TemplateStrings of _templateLiteral_ with argument *true*.
+          1. Let _realm_ be the current Realm Record.
+          1. Let _templateRegistry_ be _realm_.[[TemplateMap]].
+          1. For each element _e_ of _templateRegistry_, do
+            1. If _e_.[[Strings]] and _rawStrings_ contain the same values in the same order, then
+              1. Return _e_.[[Array]].
+          1. Let _cookedStrings_ be TemplateStrings of _templateLiteral_ with argument *false*.
+          1. Let _count_ be the number of elements in the List _cookedStrings_.
+          1. Assert: _count_ &le; 2<sup>32</sup>-1.
+          1. Let _template_ be ! ArrayCreate(_count_).
+          1. Let _rawObj_ be ! ArrayCreate(_count_).
+          1. Let _index_ be 0.
+          1. Repeat, while _index_ &lt; _count_
+            1. Let _prop_ be ! ToString(_index_).
+            1. Let _cookedValue_ be the String value _cookedStrings_[_index_].
+            1. Call _template_.[[DefineOwnProperty]](_prop_, PropertyDescriptor{[[Value]]: _cookedValue_, [[Writable]]: *false*, [[Enumerable]]: *true*, [[Configurable]]: *false*}).
+            1. Let _rawValue_ be the String value _rawStrings_[_index_].
+            1. Call _rawObj_.[[DefineOwnProperty]](_prop_, PropertyDescriptor{[[Value]]: _rawValue_, [[Writable]]: *false*, [[Enumerable]]: *true*, [[Configurable]]: *false*}).
+            1. Let _index_ be _index_+1.
+          1. Perform SetIntegrityLevel(_rawObj_, `"frozen"`).
+          1. Call _template_.[[DefineOwnProperty]](`"raw"`, PropertyDescriptor{[[Value]]: _rawObj_, [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *false*}).
+          1. Perform SetIntegrityLevel(_template_, `"frozen"`).
+          1. Append the Record{[[Strings]]: _rawStrings_, [[Array]]: _template_} to _templateRegistry_.
+          1. Return _template_.
+        </emu-alg>
+        <emu-note>
+          <p>The creation of a template object cannot result in an abrupt completion.</p>
+        </emu-note>
+        <emu-note>
+          <p>Each |TemplateLiteral| in the program code of a realm is associated with a unique template object that is used in the evaluation of tagged Templates (<emu-xref href="#sec-template-literals-runtime-semantics-evaluation"></emu-xref>). The template objects are frozen and the same template object is used each time a specific tagged Template is evaluated. Whether template objects are created lazily upon first evaluation of the |TemplateLiteral| or eagerly prior to first evaluation is an implementation choice that is not observable to ECMAScript code.</p>
+        </emu-note>
+        <emu-note>
+          <p>Future editions of this specification may define additional non-enumerable properties of template objects.</p>
+        </emu-note>
+      </emu-clause>
+
+      <!-- es6num="12.2.9.4" -->
+      <emu-clause id="sec-runtime-semantics-substitutionevaluation">
+        <h1>Runtime Semantics: SubstitutionEvaluation</h1>
+        <emu-grammar>TemplateSpans : TemplateTail</emu-grammar>
+        <emu-alg>
+          1. Return a new empty List.
+        </emu-alg>
+        <emu-grammar>TemplateSpans : TemplateMiddleList TemplateTail</emu-grammar>
+        <emu-alg>
+          1. Return the result of SubstitutionEvaluation of |TemplateMiddleList|.
+        </emu-alg>
+        <emu-grammar>TemplateMiddleList : TemplateMiddle Expression</emu-grammar>
+        <emu-alg>
+          1. Let _subRef_ be the result of evaluating |Expression|.
+          1. Let _sub_ be ? GetValue(_subRef_).
+          1. Return a List containing only _sub_.
+        </emu-alg>
+        <emu-grammar>TemplateMiddleList : TemplateMiddleList TemplateMiddle Expression</emu-grammar>
+        <emu-alg>
+          1. Let _preceding_ be the result of SubstitutionEvaluation of |TemplateMiddleList|.
+          1. ReturnIfAbrupt(_preceding_).
+          1. Let _nextRef_ be the result of evaluating |Expression|.
+          1. Let _next_ be ? GetValue(_nextRef_).
+          1. Append _next_ as the last element of the List _preceding_.
+          1. Return _preceding_.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.9.5" -->
+      <emu-clause id="sec-template-literals-runtime-semantics-evaluation">
+        <h1>Runtime Semantics: Evaluation</h1>
+        <emu-grammar>TemplateLiteral : NoSubstitutionTemplate</emu-grammar>
+        <emu-alg>
+          1. Return the String value whose code units are the elements of the TV of |NoSubstitutionTemplate| as defined in <emu-xref href="#sec-template-literal-lexical-components"></emu-xref>.
+        </emu-alg>
+        <emu-grammar>SubstitutionTemplate : TemplateHead Expression TemplateSpans</emu-grammar>
+        <emu-alg>
+          1. Let _head_ be the TV of |TemplateHead| as defined in <emu-xref href="#sec-template-literal-lexical-components"></emu-xref>.
+          1. Let _sub_ be the result of evaluating |Expression|.
+          1. ReturnIfAbrupt(_sub_).
+          1. Let _middle_ be ? ToString(_sub_).
+          1. Let _tail_ be the result of evaluating |TemplateSpans|.
+          1. ReturnIfAbrupt(_tail_).
+          1. Return the string-concatenation of _head_, _middle_, and _tail_.
+        </emu-alg>
+        <emu-note>
+          <p>The string conversion semantics applied to the |Expression| value are like `String.prototype.concat` rather than the `+` operator.</p>
+        </emu-note>
+        <emu-grammar>TemplateSpans : TemplateTail</emu-grammar>
+        <emu-alg>
+          1. Let _tail_ be the TV of |TemplateTail| as defined in <emu-xref href="#sec-template-literal-lexical-components"></emu-xref>.
+          1. Return the String value consisting of the code units of _tail_.
+        </emu-alg>
+        <emu-grammar>TemplateSpans : TemplateMiddleList TemplateTail</emu-grammar>
+        <emu-alg>
+          1. Let _head_ be the result of evaluating |TemplateMiddleList|.
+          1. ReturnIfAbrupt(_head_).
+          1. Let _tail_ be the TV of |TemplateTail| as defined in <emu-xref href="#sec-template-literal-lexical-components"></emu-xref>.
+          1. Return the string-concatenation of _head_ and _tail_.
+        </emu-alg>
+        <emu-grammar>TemplateMiddleList : TemplateMiddle Expression</emu-grammar>
+        <emu-alg>
+          1. Let _head_ be the TV of |TemplateMiddle| as defined in <emu-xref href="#sec-template-literal-lexical-components"></emu-xref>.
+          1. Let _sub_ be the result of evaluating |Expression|.
+          1. ReturnIfAbrupt(_sub_).
+          1. Let _middle_ be ? ToString(_sub_).
+          1. Return the sequence of code units consisting of the code units of _head_ followed by the elements of _middle_.
+        </emu-alg>
+        <emu-note>
+          <p>The string conversion semantics applied to the |Expression| value are like `String.prototype.concat` rather than the `+` operator.</p>
+        </emu-note>
+        <emu-grammar>TemplateMiddleList : TemplateMiddleList TemplateMiddle Expression</emu-grammar>
+        <emu-alg>
+          1. Let _rest_ be the result of evaluating |TemplateMiddleList|.
+          1. ReturnIfAbrupt(_rest_).
+          1. Let _middle_ be the TV of |TemplateMiddle| as defined in <emu-xref href="#sec-template-literal-lexical-components"></emu-xref>.
+          1. Let _sub_ be the result of evaluating |Expression|.
+          1. ReturnIfAbrupt(_sub_).
+          1. Let _last_ be ? ToString(_sub_).
+          1. Return the sequence of code units consisting of the elements of _rest_ followed by the code units of _middle_ followed by the elements of _last_.
+        </emu-alg>
+        <emu-note>
+          <p>The string conversion semantics applied to the |Expression| value are like `String.prototype.concat` rather than the `+` operator.</p>
+        </emu-note>
+      </emu-clause>
+    </emu-clause>
+
+    <!-- es6num="12.2.10" -->
+    <emu-clause id="sec-grouping-operator">
+      <h1>The Grouping Operator</h1>
+
+      <!-- es6num="12.2.10.1" -->
+      <emu-clause id="sec-grouping-operator-static-semantics-early-errors">
+        <h1>Static Semantics: Early Errors</h1>
+        <emu-grammar>PrimaryExpression : CoverParenthesizedExpressionAndArrowParameterList</emu-grammar>
+        <ul>
+          <li>
+            It is a Syntax Error if |CoverParenthesizedExpressionAndArrowParameterList| cannot be reparsed as a |ParenthesizedExpression|.
+          </li>
+          <li>
+            All Early Error rules for |ParenthesizedExpression| and its derived productions also apply to CoveredParenthesizedExpression of |CoverParenthesizedExpressionAndArrowParameterList|.
+          </li>
+        </ul>
+      </emu-clause>
+
+      <!-- es6num="12.2.10.2" -->
+      <emu-clause id="sec-grouping-operator-static-semantics-isfunctiondefinition">
+        <h1>Static Semantics: IsFunctionDefinition</h1>
+        <emu-see-also-para op="IsFunctionDefinition"></emu-see-also-para>
+        <emu-grammar>ParenthesizedExpression : `(` Expression `)`</emu-grammar>
+        <emu-alg>
+          1. Return IsFunctionDefinition of |Expression|.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.10.3" -->
+      <emu-clause id="sec-grouping-operator-static-semantics-isvalidsimpleassignmenttarget">
+        <h1>Static Semantics: IsValidSimpleAssignmentTarget</h1>
+        <emu-see-also-para op="IsValidSimpleAssignmentTarget"></emu-see-also-para>
+        <emu-grammar>ParenthesizedExpression : `(` Expression `)`</emu-grammar>
+        <emu-alg>
+          1. Return IsValidSimpleAssignmentTarget of |Expression|.
+        </emu-alg>
+      </emu-clause>
+
+      <!-- es6num="12.2.10.4" -->
+      <emu-clause id="sec-grouping-operator-runtime-semantics-evaluation">
+        <h1>Runtime Semantics: Evaluation</h1>
+        <emu-grammar>PrimaryExpression : CoverParenthesizedExpressionAndArrowParameterList</emu-grammar>
+        <emu-alg>
+          1. Let _expr_ be CoveredParenthesizedExpression of |CoverParenthesizedExpressionAndArrowParameterList|.
+          1. Return the result of evaluating _expr_.
+        </emu-alg>
+        <emu-grammar>ParenthesizedExpression : `(` Expression `)`</emu-grammar>
+        <emu-alg>
+          1. Return the result of evaluating |Expression|. This may be of type Reference.
+        </emu-alg>
+        <emu-note>
+          <p>This algorithm does not apply GetValue to the result of evaluating |Expression|. The principal motivation for this is so that operators such as `delete` and `typeof` may be applied to parenthesized expressions.</p>
+        </emu-note>
+      </emu-clause>
+    </emu-clause>
+  </emu-clause>
