@@ -15,9 +15,8 @@ git remote set-url origin "${SSH_REPO}"
 openssl aes-256-cbc \
     -K $encrypted_37575234dd3c_key \
     -iv $encrypted_37575234dd3c_iv \
-    -in ${PRIVATE_KEY_FILE_NAME}.enc 
-    -out ${PRIVATE_KEY_FILE_NAME} -d
-    
+    -in ${$PRIVATE_KEY_FILE_NAME}.enc \
+    -out $PRIVATE_KEY_FILE_NAME -d
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Enable SSH authentication
