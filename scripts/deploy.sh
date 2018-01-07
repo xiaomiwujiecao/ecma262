@@ -3,7 +3,8 @@
 SOURCE_BRANCH="cn"
 MASTER_BRANCH="master"
 
-if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" -o "$TRAVIS_BRANCH" != "$MASTER_BRANCH" ]; then
+if [ "$TRAVIS_PULL_REQUEST" != "false"] || ["$TRAVIS_BRANCH" != "$SOURCE_BRANCH"] || ["$TRAVIS_BRANCH" != "$MASTER_BRANCH" ]
+then
     echo "Skipping deploy; just doing a build"
     npm run build
     exit 0
