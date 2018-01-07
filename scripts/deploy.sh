@@ -1,13 +1,8 @@
 #!/bin/bash
 
-SOURCE_BRANCH="cn"
-MASTER_BRANCH="master"
+SOURCE_BRANCH="master"
 
-echo $TRAVIS_BRANCH
-echo $SOURCE_BRANCH
-echo $MASTER_BRANCH
-
-if [ "$TRAVIS_PULL_REQUEST" != "false" ] || [ "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ] && [ "$TRAVIS_BRANCH" != "$MASTER_BRANCH" ]
+if [ "$TRAVIS_PULL_REQUEST" != "false" ] || [ "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]
 then
     echo "Skipping deploy; just doing a build"
     npm run build
@@ -15,6 +10,7 @@ then
 fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+npm run build
 
 git config --global user.name "Travis CI"
 git config --global user.email "ci@travis-ci.org"
@@ -28,8 +24,5 @@ ssh-add scripts/deploy_key
 
 # Update the content from the `gh-pages` branch
 
-$(npm bin)/update-branch --commands "npm run build" \
-                         --commit-message "Update gh-pages [skip ci]" \
-                         --directory "out" \
-                         --distribution-branch "gh-pages" \
-                         --source-branch "master"
+chmod -R 777 node_modules/gh-pages/
+npm run deploy
