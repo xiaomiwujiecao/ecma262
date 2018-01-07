@@ -9,59 +9,59 @@
     <emu-clause id="sec-context-free-grammars">
       <h1><abbr title="Context-Free Grammars">上下文无关文法</abbr></h1>
       <p><em><abbr title="Context-Free Grammars">上下文无关文法</abbr></em>由多个<em><abbr title="productions">产生式</abbr></em>组成。每个产生式<abbr title="left-hand side">左侧</abbr>有一个称为<em><abbr title="nonterminal">非终结符</abbr></em>的抽象符号的左值，<abbr title="right-hand side">右侧</abbr>有一个或多个非终结符和<abbr title="terminal">终结</abbr>符号组成的序列的右值。任何文法，它的终结符都来自指定的字母集。</p>
-      <p>一个<dfn><abbr title="chain production">产生式链</abbr></dfn>是一个只含有一个非终结符以及0个或多个终结符作为其右值的产生式。</p>
+      <p>一个<dfn><abbr title="chain production">产生式链</abbr></dfn>是一个只含有一个非终结符以及 0 个或多个终结符作为其右值的产生式。</p>
       <p>句子中单一可区分的非终结符——<dfn><abbr title="goal symbol">目标符</abbr></dfn>，给定一个<em title="language">语言</em>上下文无关文法。换句话说，重复用产生式右值替换序列中任何左值为非终结符所组成的终结符序列集合(可能是无限个)。</p>
     </emu-clause>
 
     <!-- es6num="5.1.2" -->
     <emu-clause id="sec-lexical-and-regexp-grammars">
       <h1><abbr title="The Lexical and RegExp Grammars">词法与正则文法</abbr></h1>
-      <p>ECMAScript<em><abbr title="lexical grammar">词法文法</abbr></em>在<emu-xref href="#sec-ecmascript-language-lexical-grammar"></emu-xref>给出。词法文法拥有符合<emu-xref href="#sec-source-text"></emu-xref>定义的|SourceCharacter|规则的终结符<abbr title="Unicode code points">Unicode码点</abbr>。 它定义了一套产生式，从目标符|InputElementDiv|,|InputElementTemplateTail|,或|InputElementRegExp|,|InputElementRegExpOrTemplateTail|起始，描述如何将这样的字符序列翻译成一个输入元素序列。</p>
-      <p>空白和注释之外的输入元素构成ECMAScript语法文法的终结符，它们被称为ECMAScript<em>tokens</em>。这些tokens是，ECMAScript语言的保留字，标识符，字面量，标点符号。此外，行结束符虽然不被视为tokens，但会成为输入元素流的一部分，用于引导处理自动插入分号(<emu-xref href="#sec-automatic-semicolon-insertion"></emu-xref>)。空白和单行注释会被简单的丢弃，不会出现在语法文法的输入元素的流中。如果一个|MultiLineComment|（即形式为`/*`&hellip;`*/`的注释，不管是否跨越多行）不包含行结束符也会简单地丢弃，但如果一个|MultiLineComment|包含一个或多个结束符，那么，注释会被替换为一个行结束符，成为语法文法输入元素流的一部分。</p>
-      <p><emu-xref href="#sec-patterns"></emu-xref>给出了ECMAScript的<em><abbr title="RegExp grammar">正则文法</abbr></em>。此文法的终结符字符也由|SourceCharacter|定义。它定义了一套产生式，从目标符|Pattern|起始，描述了如何将这样的字符序列翻译成一个正则表达式模式。</p>
-      <p>两个冒号"::"作为分隔符分割词法和正则的文法产生式。词法和正则的文法共享某些产生式。</p>
+      <p>ECMAScript <em><abbr title="lexical grammar">词法文法</abbr></em>在 <emu-xref href="#sec-ecmascript-language-lexical-grammar"></emu-xref> 给出。词法文法拥有符合 <emu-xref href="#sec-source-text"></emu-xref> 定义的 |SourceCharacter| 规则的终结符<abbr title="Unicode code points"> Unicode 码点</abbr>。它定义了一套产生式，从目标符 |InputElementDiv|, |InputElementTemplateTail|,或 |InputElementRegExp|, |InputElementRegExpOrTemplateTail| 起始，描述如何将这样的字符序列翻译成一个输入元素序列。</p>
+      <p>空白和注释之外的输入元素构成 ECMAScript 语法文法的终结符，它们被称为 ECMAScript <em>tokens</em>。这些 tokens 是，ECMAScript 语言的保留字，标识符，字面量，标点符号。此外，行结束符虽然不被视为 tokens，但会成为输入元素流的一部分，用于引导处理自动插入分号(<emu-xref href="#sec-automatic-semicolon-insertion"></emu-xref>)。单个空白和单行注释会的丢弃，不会出现在语法文法的输入元素的流中。如果一个 |MultiLineComment|（即形式为 `/*`&hellip;`*/` 的注释，不管是否跨越多行）不包含行结束符也会直接地丢弃，但如果一个 |MultiLineComment| 包含一个或多个结束符，那么，注释会被替换为一个行结束符，成为语法文法输入元素流的一部分。</p>
+      <p><emu-xref href="#sec-patterns"></emu-xref> 给出了 ECMAScript 的<em><abbr title="RegExp grammar">正则文法</abbr></em>。此文法的终结符字符也由 |SourceCharacter| 定义。它定义了一套产生式，从目标符 |Pattern| 起始，描述了如何将这样的字符序列翻译成一个正则表达式模式。</p>
+      <p>两个冒号 "::" 作为分隔符分割词法和正则的文法产生式。词法和正则的文法共享某些产生式。</p>
     </emu-clause>
 
     <!-- es6num="5.1.3" -->
     <emu-clause id="sec-numeric-string-grammar">
       <h1><abbr title="The Numeric String Grammar">数字字符串文法</abbr></h1>
-      <p>用于转换字符串为数字值的一种文法。 此文法与数字字面量词法文法的一部分类似，并且有终结符|SourceCharacter|。此文法出现在<emu-xref href="#sec-tonumber-applied-to-the-string-type"></emu-xref>。</p>
-      <p>三个冒号":::"作为分隔符分割数字字符串文法的产生式。</p>
+      <p>用于转换字符串为数字值的一种文法。此文法与数字字面量词法文法的一部分类似，并且有终结符 |SourceCharacter|。此文法出现在 <emu-xref href="#sec-tonumber-applied-to-the-string-type"></emu-xref>。</p>
+      <p>三个冒号 ":::" 作为分隔符分割数字字符串文法的产生式。</p>
     </emu-clause>
 
     <!-- es6num="5.1.4" -->
     <emu-clause id="sec-syntactic-grammar">
       <h1><abbr title="The Syntactic Grammar">语法文法</abbr></h1>
-      <p>第 11，12，13，14 章给出了ECMAScript的<em><abbr title="The Syntactic Grammar">语法文法</abbr></em>。词法文法定义的ECMAScript tokens是此文法的终结符(<emu-xref href="#sec-lexical-and-regexp-grammars"></emu-xref>)。它定义了一系列的产生式，从两个可选的目标符号|Script|以及|Module|开始，描述形成ECMAScript程序语法上正常的独立的组件的token是怎样的序列。</p>
-      <p>当一个码点流解析成一个ECMAScript的Script或者Module时，它首先被词法文法程序转换成一个输入元素流；然后使用一个单一语法文法程序解析这个输入元素流。存在语法错误——输入元素流中的token不能被解析成一个单一的目标非终结符（|Script|或者|Module|）——的输入流，将不会留下任何token。</p>
-      <p>当一个解析成功的时候，它会构造一颗解析树（parse tree），一颗根树结构是它的每个节点都是一个<dfn>Parse Node</dfn>。每个Parse Node都是文法中的一个符号的一个<em>实例</em>。它代表了从这样的符号中派生出来的源代码文本的一个跨度。解析树的根节点代表着整个的源代码文本，是解析的目标符的一个实例。当一个Parse Node是一个非终结符的实例的时候，它也是某些左值为非终结符的产生式的一个实例。此外，它有0个或多个<el title="children">孩子</el>，产生式右值中的每个符号：每个孩子的Parse Node都是相应符号的一个实例。</p>
-      <p>只用一个冒号&ldquo;<b>:</b>&rdquo;作为分隔符分割语法词法的产生式。</p>
-      <p>语法文法在条款12，13，14以及15中提出。但是对于哪些token序列是正确的被ECMAScript |Script|或者|Module|接受的解释得并不完整。一些额外的token序列也能被接受，换句话说，那些序列将会被文法描述，只要分号被加入到序列中的某些地方（比如在行终结符之前）。此外，某些通过文法描述的token序列不会被接受，如果一个行终结符出现在某些&ldquo;awkward&rdquo;的地方。</p>
-      <p>在某些情况下，为了避免歧义，语法文法使用广义的产生式，允许token序列不形成一个合法的ECMAScript |Script|或者|Module|。例如，此技术被用作对象字面量和对象解构模式中。在这种情况下，提供了更加限制性的补充文法，其进一步限制可接受的token序列。通常，一个早期错误规则将会定义一个错误条件是否"_P_不能像一个_N_被<dfn><abbr title="reparsed">重解析</abbr></dfn>"，其中_P_是Parse Node（普通产生式的一个实例），_N_是补充文法的非终结符。这里，最初与_P_匹配的token序列被再次用_N_作为目标符号解析。（如果_N_使用语法参数，则将它们设置为当_P_最初解析时使用的相同值）。如果token序列不能被解析为_N_的一个单一实例，则会产生错误，将不会留下任何token。随后，算法访问"像一个_N_<dfn><abbr title="reparsed">重新解析</abbr></dfn>_P_的结果"的短语的解析结果。这将始终是一个解析节点（_N_的一个实例），因此任何解析失败都将被一个早期错误规则检测到。</p>
+      <p>第 11，12，13，14，15 章给出了 ECMAScript 的<em><abbr title="The Syntactic Grammar">语法文法</abbr></em>。词法文法定义的 ECMAScript tokens 是此文法的终结符(<emu-xref href="#sec-lexical-and-regexp-grammars"></emu-xref>)。它定义了一系列的产生式，从两个可选的目标符号 |Script| 以及 |Module| 开始，描述了形成 ECMAScript 程序语法上正常的独立的组件的 token 是怎样的序列。</p>
+      <p>当一个码点流解析成一个 ECMAScript 的 |Script| 或者 |Module| 时，它首先被词法文法程序转换成一个输入元素流；然后使用一个单一语法文法程序解析这个输入元素流。存在语法错误 —— 输入元素流中的 token 不能被解析成一个单一的目标非终结符（|Script| 或者 |Module|）—— 的输入流，将不会留下任何 token。</p>
+      <p>当一个解析成功的时候，它会构造一颗解析树，一颗根树结构是它的每个节点都是一个 <dfn>Parse Node</dfn>。每个 Parse Node 都是文法中的一个符号的一个<em>实例</em>。它代表了从这样的符号中派生出来的源代码文本的一个跨度。解析树的根节点代表着整个的源代码文本，是解析的目标符的一个实例。当一个 Parse Node 是一个非终结符的实例的时候，它也是某些左值为非终结符的产生式的一个实例。此外，它有 0 个或多个<em>孩子</em>，产生式右值中的每个符号：每个孩子的 Parse Node 都是相应符号的一个实例。</p>
+      <p>只用一个冒号 &ldquo;<b>:</b>&rdquo; 作为分隔符分割语法词法的产生式。</p>
+      <p>语法文法在条款 12，13，14，15 中提出。但是对于哪些 token 序列是正确被 ECMAScript |Script| 或者 |Module| 接受的解释得并不完整。一些额外的 token 序列也能被接受，换句话说，那些序列将会被文法描述，只要分号被加入到序列中的某些地方（比如在行终结符之前）。此外，某些通过文法描述的 token 序列不会被接受，如果一个行终结符出现在某些 &ldquo;awkward&rdquo; 的地方。</p>
+      <p>在某些情况下，为了避免歧义，语法文法使用广义的产生式，允许 token 序列形成一个不合法的 ECMAScript |Script| 或者 |Module|。例如，此技术被用作对象字面量和对象解构模式中。在这种情况下，提供了更加限制性的补充文法，其进一步限制可接受的 token 序列。通常，如果 "_P_ 不能像一个 _N_ 被<dfn><abbr title="reparsed">重解析</abbr></dfn>"，则一个早期错误规则将会定义一个错误条件，其中 _P_ 是 Parse Node（普通产生式的一个实例），_N_ 是补充文法的非终结符。这里，最初与 _P_ 匹配的 token 序列被再次用 _N_ 作为目标符号解析。（如果 _N_ 使用语法参数，则将它们设置为当 _P_ 最初解析时使用的相同值）。如果 token 序列不能被解析为 _N_ 的一个单一实例，则会产生错误，将不会留下任何 token。随后，算法访问"像一个 _N_ <dfn><abbr title="reparsed">重新解析</abbr></dfn> _P_ 的结果"的短语的解析结果。这将始终是一个解析节点（_N_ 的一个实例），因此任何解析失败都将被一个早期错误规则检测到。</p>
     </emu-clause>
 
     <!-- es6num="5.1.5" -->
     <emu-clause id="sec-grammar-notation" namespace=grammar-notation>
       <h1><abbr title="Grammar Notation">文法标记法</abbr></h1>
-      <p>不管是在文法的产生式，还是在本规范中，词法文法，正则文法以及数字字符串文法的终结符都用等宽字体展示。这些将以的脚本形式出现。所有通过这种方式指定的终结符码点都被当作合适的基本拉丁语Unicode码点理解，而不是来自其他任何类似Unicode范围的码点。</p>
+      <p>不管是在文法的产生式，还是在本规范中，词法文法，正则文法以及数字字符串文法的终结符都用等宽字体展示。这些将以的脚本形式出现。所有通过这种方式指定的终结符码点都被当作合适的基本拉丁语 Unicode 码点理解，而不是来自其他任何类似 Unicode 范围的码点。</p>
       <p>非终结符以<i>斜体</i>显示。非终结符（也叫产生式）的定义由非终结符名称和其后定义的一个或多个冒号给出。（冒号的数量表示产生式所属的文法。）非终结符的一个或多个替代右值紧跟在下一行。例如，语法定义：</p>
       <emu-grammar type="example">
         WhileStatement :
           `while` `(` Expression `)` Statement
       </emu-grammar>
-      <p>表示这个非终结符|WhileStatement|代表`while`token，其后跟左括号`token`，其后跟|Expression|，其后跟右括号`token`，其后跟|Statement|。这里出现的|Expression|和|Statement|本身是非终结符。另一个例子，语法定义：</p>
+      <p>表示这个非终结符 |WhileStatement| 代表 `while` token，其后跟左括号 `token`，其后跟 |Expression|，其后跟右括号 `token`，其后跟 |Statement|。这里出现的 |Expression| 和 |Statement| 本身是非终结符。另一个例子，语法定义：</p>
       <emu-grammar type="example">
         ArgumentList :
           AssignmentExpression
           ArgumentList `,` AssignmentExpression
       </emu-grammar>
-      <p>表示这个|ArgumentList|可以代表一个|AssignmentExpression|，或|ArgumentList|，其后跟一个逗号，其后跟一个|AssignmentExpression|。这个|ArgumentList|的定义是递归的，也就是说，它定义它自身。其结果是，一个|ArgumentList|可能包含用逗号隔开的任意正数个参数，每个参数表达式是一个|AssignmentExpression|。这样，非终结符共用了递归的定义。</p>
-      <p>终结符或非终结符可能会出现后缀下标&ldquo;<sub>opt</sub>&rdquo;，表示它是可选符号。包含可选符号实际指定了包含两个右值，一个是省略可选元素的，另一个是包含可选元素的。这意味着：</p>
+      <p>表示这个 |ArgumentList| 可以代表一个 |AssignmentExpression|，或 |ArgumentList|，其后跟一个逗号，其后跟一个 |AssignmentExpression|。这个 |ArgumentList| 的定义是递归的，也就是说，它定义它自身。其结果是，一个 |ArgumentList| 可能包含用逗号隔开的任意正数个参数，每个参数表达式是一个 |AssignmentExpression|。这样，非终结符共用了递归的定义。</p>
+      <p>终结符或非终结符可能会出现后缀下标 &ldquo;<sub>opt</sub>&rdquo;，表示它是可选符号。包含可选符号实际指定了包含两个右值，一个是省略可选元素的，另一个是包含可选元素的。这意味着：</p>
       <emu-grammar type="example">
         VariableDeclaration :
           BindingIdentifier Initializer?
       </emu-grammar>
-      <p>是以下的一种缩写:</p>
+      <p>是以下的一种简便的缩写：</p>
       <emu-grammar type="example">
         VariableDeclaration :
           BindingIdentifier
@@ -72,13 +72,13 @@
         IterationStatement :
           `for` `(` LexicalDeclaration Expression? `;` Expression? `)` Statement
       </emu-grammar>
-      <p>是以下的一种缩写:</p>
+      <p>是以下的一种简便的缩写:</p>
       <emu-grammar type="example">
         IterationStatement :
           `for` `(` LexicalDeclaration `;` Expression? `)` Statement
           `for` `(` LexicalDeclaration Expression `;` Expression? `)` Statement
       </emu-grammar>
-      <p>以下也是一种缩写:</p>
+      <p>也是下面的一种缩写:</p>
       <emu-grammar type="example">
         IterationStatement :
           `for` `(` LexicalDeclaration `;` `)` Statement
@@ -86,8 +86,8 @@
           `for` `(` LexicalDeclaration Expression `;` `)` Statement
           `for` `(` LexicalDeclaration Expression `;` Expression `)` Statement
       </emu-grammar>
-      <p>所以在这个例子中，非终结符|IterationStatement|实际上有四个可供选择的右值。</p>
-      <p>产生式可以通过形如&ldquo;<sub>[parameters]</sub>&rdquo;这样的下标注释被参数化，会以后缀的形式出现在产生式定义的非终结符中。&ldquo;<sub>parameters</sub>&rdquo;可以是单独的名称，也可以是一个逗号分隔的名称列表。被参数化的产生式是一系列定义参数名称以下划线开头，追加到参数化的非终结符后面的所有组合的产生式的缩写。这就意味着：</p>
+      <p>所以在这个例子中，非终结符 |IterationStatement| 实际上有四个可供选择的右值。</p>
+      <p>产生式可以通过形如 &ldquo;<sub>[parameters]</sub>&rdquo; 这样的下标注释被参数化，会以后缀的形式出现在产生式定义的非终结符中。&ldquo;<sub>parameters</sub>&rdquo; 可以是单独的名称，也可以是一个逗号分隔的名称列表。被参数化的产生式是一系列定义参数名称以下划线开头，追加到参数化的非终结符后面的所有组合的产生式的缩写。这就意味着：</p>
       <emu-grammar type="example">
         StatementList[Return] :
           ReturnStatement 
@@ -152,7 +152,7 @@
           ReturnStatement
           ExpressionStatement
       </emu-grammar>
-      <p>非终结符引用可能同时具有参数列表和一个&ldquo;<sub>opt</sub>&rdquo;后缀。例如：</p>
+      <p>非终结符引用可能同时具有参数列表和一个 &ldquo;<sub>opt</sub>&rdquo; 后缀。例如：</p>
       <emu-grammar type="example">
         VariableDeclaration :
           BindingIdentifier Initializer[+In]?
@@ -163,7 +163,7 @@
           BindingIdentifier
           BindingIdentifier Initializer_In
       </emu-grammar>
-      <p>在右侧非终结符引用参数名称前置以&ldquo;<sub>?</sub>&rdquo;，使该参数值取决于当前产生式的左侧符号引用的参数名称是否出现。例如：</p>
+      <p>在右侧非终结符引用参数名称前置以 &ldquo;<sub>?</sub>&rdquo;，使该参数值取决于当前产生式的左侧符号引用的参数名称是否出现。例如：</p>
       <emu-grammar type="example">
         VariableDeclaration[In] :
           BindingIdentifier Initializer[?In]
@@ -176,7 +176,7 @@
         VariableDeclaration_In :
           BindingIdentifier Initializer_In
       </emu-grammar>
-      <p>如果右值<abbr title="alternative">选择</abbr>是以&ldquo;[+parameter]&rdquo;作为前缀，则表示选择只有命名参数用于引用产生式的非终结符时可用。如果右值<abbr title="alternative">选择</abbr>是以&ldquo;[\~parameter]&rdquo;作为前缀，则表示选择只有命名参数<em>不是</em>用于引用产生式的非终结符时可用。这意味着:</p>
+      <p>如果右值<abbr title="alternative">选择</abbr>是以 &ldquo;[+parameter]&rdquo; 作为前缀，则表示选择只有命名参数用于引用产生式的非终结符时可用。如果右值<abbr title="alternative">选择</abbr>是以 &ldquo;[\~parameter]&rdquo; 作为前缀，则表示选择只有命名参数<em>不是</em>用于引用产生式的非终结符时可用。这意味着:</p>
       <emu-grammar type="example">
         StatementList[Return] :
           [+Return] ReturnStatement
@@ -206,7 +206,7 @@
         StatementList_Return :
           ExpressionStatement
       </emu-grammar>
-      <p>在文法定义中当单词&ldquo;<b>one of</b>&rdquo;跟随一个或多个分号后的时候，表示随后的一行或多行的终结符是一个可选的定义。例如，ECMAScript的词法文法包含下列的产生式：</p>
+      <p>在文法定义中当单词 &ldquo;<b>one of</b>&rdquo; 跟随一个或多个分号后的时候，表示随后的一行或多行的终结符是一个可选的定义。例如，ECMAScript的词法文法包含下列的产生式：</p>
       <emu-grammar type="example">
         NonZeroDigit :: one of
           `1` `2` `3` `4` `5` `6` `7` `8` `9`
@@ -224,8 +224,8 @@
           `8`
           `9`
       </emu-grammar>
-      <p>如果“[empty]” 出现在一个产生式的右值，它暗示着这个产生式的右值不包含终结符或者非终结符。</p>
-      <p>如果&ldquo;[lookahead &notin; _set_]&rdquo;出现在一个产生式的右值，它暗示着如果随后立即的输入的token序列是给出的集合（_set_）的成员，那么这个产生式也许不会被使用。这个集合可以用一个逗号分割的由一到两个被花括号包裹的元素终结序列的列表表示。为了方便，这个集合也可以用非终结符表示，在这种情况下，它代表所有能由非终结符展开得到的终结符的集合。如果这个集合包含一个单独的终结符，那么短语&ldquo;[lookahead &ne; _terminal_]&rdquo;也许会被使用。</p>
+      <p>如果 &ldquo;[empty]&rdquo; 出现在一个产生式的右值，它暗示着这个产生式的右值不包含终结符或者非终结符。</p>
+      <p>如果 &ldquo;[lookahead &notin; _set_]&rdquo; 出现在一个产生式的右值，它暗示着如果随后立即的输入的token序列是给出的集合（_set_）的成员，那么这个产生式也许不会被使用。这个集合可以用一个逗号分割的由一到两个被花括号包裹的元素终结序列的列表表示。为了方便，这个集合也可以用非终结符表示，在这种情况下，它代表所有能由非终结符展开得到的终结符的集合。如果这个集合包含一个单独的终结符，那么短语 &ldquo;[lookahead &ne; _terminal_]&rdquo; 也许会被使用。</p>
       <p>例如，给出定义:</p>
       <emu-grammar type="example">
         DecimalDigit :: one of
@@ -242,22 +242,22 @@
           DecimalDigit [lookahead &lt;! DecimalDigit]
       </emu-grammar>
       <p>能匹配字母 n 后跟随由偶数起始的一个或多个十进制数字，或一个十进制数字后面跟随一个非十进制数字。</p>
-      <p>类似的，如果产生式的右值出现&ldquo;[lookahead &isin; _set_]&rdquo;，则表示产生式只有在随后立即的输入的token序列是给出的集合（_set_）的成员才能使用。如果集合只包含一个单一的终结符，则可以使用&ldquo;[lookahead == _terminal_]&rdquo;。</p>
-      <p>如果产生式的右侧出现&ldquo;[no |LineTerminator| here]&rdquo;，那么它表示此产生式是个受限的产生式：如果|LineTerminator|在输入流的指定位置出现，那么此产生式将不会被适用。例如，产生式：</p>
+      <p>类似的，如果产生式的右值出现 &ldquo;[lookahead &isin; _set_]&rdquo;，则表示产生式只有在随后立即的输入的token序列是给出的集合（_set_）的成员才能使用。如果集合只包含一个单一的终结符，则可以使用 &ldquo;[lookahead == _terminal_]&rdquo;。</p>
+      <p>如果产生式的右侧出现 &ldquo;[no |LineTerminator| here]&rdquo;，那么它表示此产生式是个受限的产生式：如果 |LineTerminator| 在输入流的指定位置出现，那么此产生式将不会被适用。例如，产生式：</p>
       <emu-grammar type="example">
         ThrowStatement :
           `throw` [no LineTerminator here] Expression `;`
       </emu-grammar>
-      <p>如果一个|LineTerminator|出现在脚本的`throw`token和|Expression|之间的时候，暗示着这个产生式也许不会被使用。</p>
-      <p>除非通过一个受限的产生式禁止一个|LineTerminator|的出现，否则任意数量|LineTerminator|的出现也许会发生在输入元素流中任意两个连续的token之间，并且不影响脚本的语义可接受性。</p>
-      <p>当一个词法文法或者数字字符串文法的产生式中可选部分出现多码点的token时，意味着码点序列将会组成一个token。</p>
-      <p>一个产生式的右值也许会通过&ldquo;<b>but not</b>&rdquo;指定某些不被允许的扩展，然后暗示这个扩展将是被排除在外的。例如，产生式：</p>
+      <p>如果一个 |LineTerminator| 出现在脚本的 `throw` token 和 |Expression| 之间的时候，暗示着这个产生式也许不会被使用。</p>
+      <p>除非通过一个受限的产生式禁止一个 |LineTerminator| 的出现，否则任意数量 |LineTerminator| 的出现也许会发生在输入元素流中任意两个连续的 token 之间，并且不影响脚本的语义可接受性。</p>
+      <p>当一个词法文法或者数字字符串文法的产生式中可选部分出现多码点的 token 时，意味着码点序列将会组成一个 token。</p>
+      <p>一个产生式的右值也许会通过 &ldquo;<b>but not</b>&rdquo; 指定某些不被允许的扩展，然后暗示这个扩展将是被排除在外的。例如，产生式：</p>
       <emu-grammar type="example">
         Identifier ::
           IdentifierName but not ReservedWord
       </emu-grammar>
-      <p>意味着非终结符|Identifier|也许会被任意的码点序列替换，这些码点能够替换提供的|IdentifierName|，但是相同序列的码点不能替换|ReservedWord|。</p>
-      <p>最后，一些非终结符通过sans-serif字体书写的描述性的短语来描述， 在这样的案例中，列出所有的可选部分是不切实际的。</p>
+      <p>意味着非终结符 |Identifier| 也许会被任意的码点序列替换，这些码点能够替换提供的 |IdentifierName|，但是相同序列的码点不能替换 |ReservedWord|。</p>
+      <p>最后，一些非终结符通过 sans-serif 字体书写的描述性的短语来描述， 在这样的案例中，列出所有的可选部分是不切实际的。</p>
       <emu-grammar type="example">
         SourceCharacter ::
           &gt; any Unicode code point
