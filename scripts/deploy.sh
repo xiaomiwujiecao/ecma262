@@ -7,7 +7,7 @@ echo $TRAVIS_BRANCH
 echo $SOURCE_BRANCH
 echo $MASTER_BRANCH
 
-if [ "$TRAVIS_PULL_REQUEST" != "false" ] || [ "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ] || [ "$TRAVIS_BRANCH" != "$MASTER_BRANCH" ]
+if [ "$TRAVIS_PULL_REQUEST" != "false" ] || [ "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ] && [ "$TRAVIS_BRANCH" != "$MASTER_BRANCH" ]
 then
     echo "Skipping deploy; just doing a build"
     npm run build
