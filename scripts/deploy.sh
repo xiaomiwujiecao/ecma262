@@ -3,7 +3,7 @@
 SOURCE_BRANCH="cn"
 MASTER_BRANCH="master"
 
-if [ "$TRAVIS_PULL_REQUEST" != "false"] || ["$TRAVIS_BRANCH" != "$SOURCE_BRANCH"] || ["$TRAVIS_BRANCH" != "$MASTER_BRANCH" ]
+if [ "$TRAVIS_PULL_REQUEST" != "false" ] || [ "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ] || [ "$TRAVIS_BRANCH" != "$MASTER_BRANCH" ]
 then
     echo "Skipping deploy; just doing a build"
     npm run build
@@ -17,10 +17,10 @@ git config --global user.email "ci@travis-ci.org"
 git remote set-url origin git@github.com:docschina/ecma262.git
 
 
-openssl aes-256-cbc -K $encrypted_37575234dd3c_key -iv $encrypted_37575234dd3c_iv -in ./deploy_key.enc -out ./deploy_key -d
-chmod 600 ./deploy_key
+openssl aes-256-cbc -K $encrypted_37575234dd3c_key -iv $encrypted_37575234dd3c_iv -in scripts/deploy_key.enc -out scripts/deploy_key -d
+chmod 600 scripts/deploy_key
 eval `ssh-agent -s`
-ssh-add ./deploy_key
+ssh-add scripts/deploy_key
 
 # Update the content from the `gh-pages` branch
 
