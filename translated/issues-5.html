@@ -1,6 +1,6 @@
 <emu-clause id="sec-web-scripting">
   <h1>Web 脚本</h1>
-  <p>web 浏览器提供用于客户端计算的 ECMAScript 宿主环境，包括如代表窗口，菜单，弹出窗口，对话框，文本域，锚点，框架，历史记录，cookies以及输入/输出的实例对象。此外，宿主环境还提供了脚本代码处理如改变焦点、页面和图片的加载、卸载、错误和中断，选择，表单提交和鼠标交互等等事件的能力。通过 HTML 中的脚本代码组合用户接口元素，固定及计算文本，图片来显示页面。脚本代码可对用户交互进行响应并且不需要一个主程序。</p>
+  <p>web 浏览器提供用于客户端计算的 ECMAScript 宿主环境，包括如代表窗口，菜单，弹出窗口，对话框，文本域，锚点，框架，历史记录，cookies以及输入/输出的实例对象。此外，宿主环境还提供了脚本代码处理如焦点改变、页面和图片的加载、卸载、错误和中断，选择，表单提交和鼠标交互等等事件的能力。通过 HTML 中的脚本代码组合用户接口元素，固定及计算文本，图片来显示页面。脚本代码不需要一个主程序即可对用户交互进行响应。</p>
   <p>WEB 服务器提供一个不同于客户端的如代表请求，客户端，文件等的对象，以及数据锁定和分享的机制。为基于 Web 的应用程序提供一个定制的用户界面，通过浏览器端脚本及服务端脚本的配合使用，可以在客户端和服务端之间进行分布式计算。</p>
   <p>支持 ECMAScript 的 WEB 浏览器和服务器都将它们自身的宿主环境作为 ECMAScript 的补充，以使得 ECMAScript 的执行环境变得完整。</p>
 </emu-clause>
@@ -10,9 +10,9 @@
   <h1>ECMAScript 概述</h1>
   <p>以下是 ECMAScript&mdash; 的非正式概述 —— 描述的只是该语言的一部分。这个概述不是标准的一部分。</p>
   <p>ECMAScript 是基于对象的：基础语言以及主要能力都是通过对象提供，一个 ECMAScript 程序是一组可通信对象。在 ECMAScript 中，一个<em>对象</em>是零个或多个<em>属性</em>的的集合。每个属性都有确定其如何被使用的<em>特性</em>， 如当一个属性的 Writable 特性设置为 *false* 时，执行任何尝试对该属性分配不同值的的 ECMAScript 代码都将失败。属性是其他对象，<em><abbr title="primitive values">原始值</abbr></em>，<em><abbr title="function">函数</abbr></em>的容器。原始值是以下内置类型成员之一：<b>Undefined</b>, <b>Null</b>, <b>Boolean</b>, <b>Number</b>, <b>String</b>, and <b>Symbol;</b>一个对象是内置类型 <b>Object</b> 成员之一，一个函数是一个可调用对象。对象通过属性调用的函数叫做<em><abbr title="method">方法</abbr></em></p>
-  <p>ECMAScript 定义了一组<em><abbr title="built-in objects">内置对象</abbr></em>，从而勾勒出 ECMAScript 实体的定义。这些内置对象包括<abbr title="global object">全局对象</abbr>；基本的语言运行时语义对象，包括 `Object`, `Function`, `Boolean`, `Symbol`，各种 `Error` 象；代表和操作的数值对象，包括 `Math`,`Number`, `Date`；文本处理对象，`String`，`RegExp`；索引值集合的 `Array` 对象，以及九种值具有特定数字数据表示的 `Typed Array` 对象；<abbr title="keyed collections">泛型对象</abbr> `Map`, `Set`；支持结构化数据的 `JSON`, `ArrayBuffer`, `SharedArrayBuffer`,`DataView` 等对象；支持控制抽象的 generator 函数，`Promise` 对象；以及反射对象 `Proxy`，`Reflect`。</p>
+  <p>ECMAScript 定义了一组<em><abbr title="built-in objects">内置对象</abbr></em>，从而勾勒出 ECMAScript 实体的定义。这些内置对象包括<abbr title="global object">全局对象</abbr>；基本的语言运行时语义对象，包括 `Object`, `Function`, `Boolean`, `Symbol`，各种 `Error` 对象；代表和操作的数值对象，包括 `Math`, `Number`, `Date`；文本处理对象，`String`，`RegExp`；索引值集合的 `Array` 对象，以及九种值具有特定数字数据表示的 `Typed Array` 对象；<abbr title="keyed collections">泛型对象</abbr> `Map`, `Set`；支持结构化数据的 `JSON`, `ArrayBuffer`, `SharedArrayBuffer`,`DataView` 等对象；支持控制抽象的 generator 函数，`Promise` 对象；以及反射对象 `Proxy`，`Reflect`。</p>
   <p>ECMAScript 还定义了一组内置<em><abbr title="operators">运算符</abbr></em>。ECMAScript 运算符包括各种一元运算，乘法运算符，加法运算符，位移运算符，关系运算符，等式运算符，二进制运算符，二进制逻辑运算符，赋值运算符和逗号运算符。</p>
-  <p>大型 ECMAScript 程序通过<em><abbr title="modules">模块</abbr></em>被支持，其允许程序可以被分化为多个语句和定义序列。每个模块明确地标识它所使用的其他模块提供的声明，哪些声明可供其他模块使用。</p>
+  <p>大型 ECMAScript 程序通过<em>模块</em>被支持，其允许程序可以被分化为多个语句和定义序列。每个模块明确地标识它所使用的其他模块提供的声明，哪些声明可供其他模块使用。</p>
   <p>ECMAScript 语法有意地类似于 Java 语法。ECMAScript 语法是松散的，使其能够成为易于使用的脚本语言。例如，一个变量不需要声明其具体类型，也不需要与声明相关联属性类型，在调用定义的函数之前也不需要以文本方式显示的声明。</p>
 
   <!-- es6num="4.2.1" -->
@@ -33,7 +33,7 @@
   <!-- es6num="4.2.2" -->
   <emu-clause id="sec-strict-variant-of-ecmascript">
     <h1>ECMAScript 严格变体</h1>
-    <p>ECMAScript 语言认可有些用户希望限制使用语言中某些功能的可能性。他们这样做可能是为了安全考虑，避免他们认为是容易出错的功能，获得增强的错误检查，或其他原因。为了支持这种可能性，ECMAScript 中定义了语言的严格变体。语言的严格变体，排除了 ECMAScript 语言的某些特定的语法和语义特征，还修改了某些功能的详细语义。严格变体还指定了必须抛出错误异常报告的额外错误条件，即使在非严格的语言形式下这些条件不属于错误。</p>
+    <p>ECMAScript 语言认识到有的开发者可能希望限制使用语言中的新特性。他们这样做可能是为了安全考虑，避免他们认为是容易出错的功能，获得增强的错误检查，或其他原因。因此，ECMAScript 中定义了语言的严格变体。语言的严格变体，排除了 ECMAScript 语言的某些特定的语法和语义特征，还修改了某些功能的详细语义。严格变体还指定了必须抛出错误异常报告的额外错误条件，即使在非严格的语言形式下这些条件不属于错误。</p>
     <p>ECMAScript 的严格变体通常被称为语言的<em><abbr title="strict mode">严格模式</abbr></em>。严格模式选择和使用明确地适用于独特 ECMAScript 代码单元级别的，ECMAScript 严格模式语法和语义。由于语法代码单元级别的严格模式被选择，严格模式仅在这个代码单元内施加有局部效果的限制。严格模式不限制或修改任何层面的 ECMAScript 语义，必须一致地操作跨多个代码单元。一个 ECMAScript 程序可同时包含严格模式和非严格模式的代码单元。在这种情况下，严格的模式只适用于严格模式代码单元内实际执行的代码。</p>
     <p>要符合这一规范，ECMAScript 的实现必须同时实现未限制的 ECMAScript 语言和按照这个规范定义的 ECMAScript 的严格模式变体。此外，实现还必须支持未限制的和严格模式代码单元的在同一个程序中混用。</p>
   </emu-clause>
