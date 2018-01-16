@@ -6,7 +6,9 @@ ECMAScript 中文
 
 该仓库包含[ECMAScript®语言规范](https://github.com/tc39/ecma262)当前草案(包含stage 2 - stage 4)的中文翻译，你可以在一下网站进行浏览。
 - [英文](https://tc39.github.io/ecma262/)
-- 中文
+- [中文](https://ecma262.docschina.org/)
+
+> 中文内容为校对过得翻译内容，如有疑问请在相应的 issue 中留言。
 
 ## 约定
 - **LN** 表示文档行号
