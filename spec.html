@@ -56,112 +56,112 @@
   <p>Refer to the <emu-xref href="#sec-colophon">colophon</emu-xref> for more information on how this document is created.</p>
 </div>
 <emu-intro id="sec-intro">
-  <h1>Introduction</h1>
-  <p>This Ecma Standard defines the ECMAScript 2018 Language. It is the ninth edition of the ECMAScript Language Specification. Since publication of the first edition in 1997, ECMAScript has grown to be one of the world's most widely used general-purpose programming languages. It is best known as the language embedded in web browsers but has also been widely adopted for server and embedded applications.</p>
-  <p>ECMAScript is based on several originating technologies, the most well-known being JavaScript (Netscape) and JScript (Microsoft). The language was invented by Brendan Eich at Netscape and first appeared in that company's Navigator 2.0 browser. It has appeared in all subsequent browsers from Netscape and in all browsers from Microsoft starting with Internet Explorer 3.0.</p>
-  <p>The development of the ECMAScript Language Specification started in November 1996. The first edition of this Ecma Standard was adopted by the Ecma General Assembly of June 1997.</p>
-  <p>That Ecma Standard was submitted to ISO/IEC JTC 1 for adoption under the fast-track procedure, and approved as international standard ISO/IEC 16262, in April 1998. The Ecma General Assembly of June 1998 approved the second edition of ECMA-262 to keep it fully aligned with ISO/IEC 16262. Changes between the first and the second edition are editorial in nature.</p>
-  <p>The third edition of the Standard introduced powerful regular expressions, better string handling, new control statements, try/catch exception handling, tighter definition of errors, formatting for numeric output and minor changes in anticipation of future language growth. The third edition of the ECMAScript standard was adopted by the Ecma General Assembly of December 1999 and published as ISO/IEC 16262:2002 in June 2002.</p>
-  <p>After publication of the third edition, ECMAScript achieved massive adoption in conjunction with the World Wide Web where it has become the programming language that is supported by essentially all web browsers. Significant work was done to develop a fourth edition of ECMAScript. However, that work was not completed and not published as the fourth edition of ECMAScript but some of it was incorporated into the development of the sixth edition.</p>
-  <p>The fifth edition of ECMAScript (published as ECMA-262 5<sup>th</sup> edition) codified de facto interpretations of the language specification that have become common among browser implementations and added support for new features that had emerged since the publication of the third edition. Such features include accessor properties, reflective creation and inspection of objects, program control of property attributes, additional array manipulation functions, support for the JSON object encoding format, and a strict mode that provides enhanced error checking and program security. The fifth edition was adopted by the Ecma General Assembly of December 2009.</p>
-  <p>The fifth edition was submitted to ISO/IEC JTC 1 for adoption under the fast-track procedure, and approved as international standard ISO/IEC 16262:2011. Edition 5.1 of the ECMAScript Standard incorporated minor corrections and is the same text as ISO/IEC 16262:2011. The 5.1 Edition was adopted by the Ecma General Assembly of June 2011.</p>
-  <p>Focused development of the sixth edition started in 2009, as the fifth edition was being prepared for publication. However, this was preceded by significant experimentation and language enhancement design efforts dating to the publication of the third edition in 1999. In a very real sense, the completion of the sixth edition is the culmination of a fifteen year effort. The goals for this addition included providing better support for large applications, library creation, and for use of ECMAScript as a compilation target for other languages. Some of its major enhancements included modules, class declarations, lexical block scoping, iterators and generators, promises for asynchronous programming, destructuring patterns, and proper tail calls. The ECMAScript library of built-ins was expanded to support additional data abstractions including maps, sets, and arrays of binary numeric values as well as additional support for Unicode supplemental characters in strings and regular expressions. The built-ins were also made extensible via subclassing. The sixth edition provides the foundation for regular, incremental language and library enhancements. The sixth edition was adopted by the General Assembly of June 2015.</p>
-  <p>ECMAScript 2016 was the first ECMAScript edition released under Ecma TC39's new yearly release cadence and open development process. A plain-text source document was built from the ECMAScript 2015 source document to serve as the base for further development entirely on GitHub. Over the year of this standard's development, hundreds of pull requests and issues were filed representing thousands of bug fixes, editorial fixes and other improvements. Additionally, numerous software tools were developed to aid in this effort including Ecmarkup, Ecmarkdown, and Grammarkdown. ES2016 also included support for a new exponentiation operator and adds a new method to Array.prototype called `includes`.</p>
-  <p>This specification introduces Async Functions, Shared Memory, and Atomics along with smaller language and library enhancements, bug fixes, and editorial updates. Async functions improve the asynchronous programming experience by providing syntax for promise-returning functions. Shared Memory and Atomics introduce a new memory model that allows multi-agent programs to communicate using atomic operations that ensure a well-defined execution order even on parallel CPUs. This specification also includes new static methods on Object: `Object.values`, `Object.entries`, and `Object.getOwnPropertyDescriptors`.</p>
-  <p>Dozens of individuals representing many organizations have made very significant contributions within Ecma TC39 to the development of this edition and to the prior editions. In addition, a vibrant community has emerged supporting TC39's ECMAScript efforts. This community has reviewed numerous drafts, filed thousands of bug reports, performed implementation experiments, contributed test suites, and educated the world-wide developer community about ECMAScript. Unfortunately, it is impossible to identify and acknowledge every person and organization who has contributed to this effort.</p>
+  <h1>介绍</h1>
+  <p>此标准定义了 ECMAScript 2018 语言，是 ECMAScript 语言规范的第九版。自从 1997 年第一版发布以来，ECMAScript 已经成为世界上应用最广泛的编程语言之一。他最为认知的是作为嵌入在 Web 浏览器中的语言，但也被广泛应用于服务器和嵌入式应用程序。</p>
+  <p>ECMAScript 基于几种始发技术，最著名的是 Netscape 的 JavaScript 以及 Microsoft 的 JScript。该语言由 Netscape 的 Brendan Eich 发明，并首次出现在该公司的 Navigator2.0 浏览器中。它已经出现在 Netscape 的所有后续浏览器以及 Microsoft 自 Internet Explorer3.0 开始的所有浏览器中。</p>
+  <p>ECMAScript 语言规范的制定始于 1996 年 11 月。第一版的Ecma标准在 1997 年 6 月通过 Ecma 联合大会。</p>
+  <p>该(第一版) Ecma 标准为了采用快速通道通过，被提交给 ISO/IEC JIC 1，于 1998 年 4 月被批准为国际标准 ISO/IEC16262。在 1998 年 Ecma 联合大会通过了第二版 ECMA-262，以保证完全符合 ISO/IEC 16262。第一版和第二版的变化是编辑层面的。</p>
+  <p>第三版标准引入了强大的正则表达式，更好的字符串处理，新的控制语句，try/catch 异常处理，更严格的错误定义，数字输出的格式化以及预期未来语言发展的微小变化。第三版 ECMAScript 标准于1999年12月被 Ecma 联合大会采纳，于 2002 年 6 月作为 ISO/IEC 16262:2002 发布。</p>
+  <p>在第三版发布后，ECMAScript 在万维网上被大量使用，它成为所有Web浏览器支持的编程语言。为了开发第四版 ECMAScript，做了大量有意义的工作，然而这项工作未能完成，也没能作为第四版 ECMAScript 发布，不过其中一些被纳入第六版开发（工作）中。</p>
+  <p>第五版 ECMAScript(以 ECMA-262 5<sup>th</sup> 版本发布)为那些已经被浏览器广泛实现的语言规范编纂了实质的解释，同时增加了对第三版发布以来出现的新功能的支持。 这些功能包括<abbr title="accessor properties">访问器属性</abbr>，<abbr title="reflective creation and inspection of objects">对象的反向创建与检查</abbr>，<abbr title="program control of property attributes">对象属性特性的控制</abbr>，<abbr title="additional array manipulation functions">更多数组操作函数</abbr>，<abbr title="support for the JSON object encoding format">JSON对象编码格式的支持</abbr>， 以及一种<abbr title="enhanced error checking">增强错误检查</abbr>和<abbr title="program security">程序安全性</abbr>的<abbr title="strict mode">严格模式</abbr>。第五版于2009年12月Ecma联合大会采纳。</p>
+  <p>第五版为了采用快速通道通过，被提交给 ISO/IEC JIC 1，被批准为国际标准 ISO/IEC 16262:2011。第 5.1 版 ECMAScript 标准包含较少的更正，并与 ISO/IEC 16262:2011 保持一致。于2011年6月 Ecma 联合大会被采纳。</p>
+  <p>第六版于 2009 年开始作为重点开发，当时第五版正在准备出版。然而，这之前的重点实验以及语言增强设计工作可以追溯到 1999 年第三版发布。实际上，第六版的完成是十五年努力的结果。 这个版本中增加了包括对大型应用程序，<abbr title="library creation">库创建</abbr>， 以及以 ECMAScript 作为其他语言的编译目标提供更好的支持。其中主要的增强功能包括<abbr title="modules">模块化</abbr>，<abbr title="class declarations">类声明</abbr>，<abbr title="lexical block scoping">词法块作用域</abbr>，<abbr title="iterators and generators">迭代器以及生成器</abbr>，<abbr title="promises for asynchronous programming">异步编程的promise</abbr>，<abbr title="destructuring patterns">解构模式</abbr>，以及<abbr title="proper tail calls">正确的尾部调用</abbr>。 ECMAScript内置库扩展支持了额外的数据抽象，包括<abbr title="maps">Map</abbr>，<abbr title="sets">Set</abbr>，<abbr title="arrays of binary numeric values">二进制值的数组</abbr>， 同时也支持<abbr title="Unicode supplemental characters in strings and regular expressions">Unicode补充字符在字符串及正则表达式</abbr>中使用。内置库也通过子类进行了扩展。第六版为<abbr title="regular">正则</abbr>，<abbr title="incremental language">渐进式语言</abbr>以及<abbr title="library enhancements">库增强</abbr>提供了基础。第六版于 2015 年 6 月被Ecma联合大会采纳。</p>
+  <p>ECMAScript2016使用 Ecma TC39 委员会新的年度发布策略以及公开开发流程的首个 ECMAScript 版本。从 ECMAScript2015 源文档作为基础构建一个纯文本的源文档，以支持完全在 GitHub 上进一步开发。在这个标准的发展的这一年，数百个`pull requests`和`issues`被提交,代表着成千上万的错误修复，编辑修复和其他改进。另外，许多软件工具被开发用来帮助这一工作，包括Ecmarkup，Ecmarkdown和Grammarkdown。ES2016还包括支持一个新的求幂运算符，以及为 Array.prototype 添加了一个名为`include`的新方法。</p>
+  <p>这一版本的规范引入了<abbr title="Async Functions">Async函数</abbr>，<abbr title="Shared Memory">共享内存</abbr>， 以及<abbr title="Atomics along with smaller language and library enhancements">更小语言和库增强的原子</abbr>，<abbr title="bug fixes">错误修复</abbr>，编辑更新。Async函数通过提供`promise-returning`函数语法来提高异步编程体验。共享内存和原子引入了一种新的内存模型，允许<abbr title="multi-agent programs">多个代理程序</abbr>使用原子操作进行通信，以确保即便在并行 CPU 上程序也能有明确定义的执行顺序。此规范还包括 Object 新的静态方法：`Object.values`，`Object.entries`和`Object.getOwnPropertyDescriptors`。</p>
+  <p>许多个人和组织在 Ecma TC39 为当前版本以及以前的版本做出了非常重要的贡献。此外，有了一个充满活力的社区支持 TC39 为 ECMAScript 所做的努力。这个社区审查了许多草案，提交了大量的错误报告，执行实施实验，提供测试套件，全世界的 ECMAScript 的开发者都可以从中受益。然而遗憾的是，不能一一鸣谢为此做出贡献的每个人和组织。</p>
   <p>
     Allen Wirfs-Brock<br>
-    ECMA-262, 6<sup>th</sup> Edition Project Editor
+    ECMA-262, 6<sup>th</sup>版本 项目编辑
   </p>
   <p>
     Brian Terlson<br>
-    ECMA-262, 7<sup>th</sup> Edition Project Editor
+    ECMA-262, 7<sup>th</sup>版本 项目编辑
   </p>
 </emu-intro>
 
 <!-- es6num="1" -->
 <emu-clause id="sec-scope">
-  <h1>Scope</h1>
-  <p>This Standard defines the ECMAScript 2018 general-purpose programming language.</p>
+  <h1>范围</h1>
+  <p>本标准定义了ECMAScript 2018通用编程语言。</p>
 </emu-clause>
 
 <!-- es6num="2" -->
 <emu-clause id="sec-conformance">
-  <h1>Conformance</h1>
-  <p>A conforming implementation of ECMAScript must provide and support all the types, values, objects, properties, functions, and program syntax and semantics described in this specification.</p>
-  <p>A conforming implementation of ECMAScript must interpret source text input in conformance with the latest version of the Unicode Standard and ISO/IEC 10646.</p>
-  <p>A conforming implementation of ECMAScript that provides an application programming interface (API) that supports programs that need to adapt to the linguistic and cultural conventions used by different human languages and countries must implement the interface defined by the most recent edition of ECMA-402 that is compatible with this specification.</p>
-  <p>A conforming implementation of ECMAScript may provide additional types, values, objects, properties, and functions beyond those described in this specification. In particular, a conforming implementation of ECMAScript may provide properties not described in this specification, and values for those properties, for objects that are described in this specification.</p>
-  <p>A conforming implementation of ECMAScript may support program and regular expression syntax not described in this specification. In particular, a conforming implementation of ECMAScript may support program syntax that makes use of the &ldquo;future reserved words&rdquo; listed in subclause <emu-xref href="#sec-future-reserved-words"></emu-xref> of this specification.</p>
-  <p>A conforming implementation of ECMAScript must not implement any extension that is listed as a Forbidden Extension in subclause <emu-xref href="#sec-forbidden-extensions"></emu-xref>.</p>
+  <h1>一致性</h1>
+  <p>一个符合ECMAScript标准的实现应该符合以下提议：</p><p>必须提供和支持本规范中描述的所有的类型，值，对象，属性，函数以及程序语法及语义。</p>
+  <p>解释源文本的输入必须与最新版本的Unicode标准和ISO/IEC 10646标准保持一致。</p>
+  <p>提供的应用程序接口的程序，需要适应使用不同自然语言的国家的语言和文化习惯，且最新版本的`ECMA-402`的实现必须与本规范的接口兼容。</p>
+  <p>应该提供那些超出该规范描述的额外类型，值，对象，属性以及方法。尤其对于该文档有提到但没描述其属性的那些对象，应该提供那些属性以及属性对应的值。</p>
+  <p>应该支持一些没有在规范中提及的程序或者正则表达式语法。尤其应该实现在<emu-xref href="#sec-future-reserved-words"></emu-xref>列出的那些保留字的语法。</p>
+  <p>绝对不能实现在<emu-xref href="#sec-forbidden-extensions"></emu-xref>列出的禁止的扩展。</p>
 </emu-clause>
 
 <!-- es6num="3" -->
 <emu-clause id="sec-normative-references">
-  <h1>Normative References</h1>
-  <p>The following referenced documents are indispensable for the application of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
-  <p>ISO/IEC 10646 <i>Information Technology &ndash; Universal Multiple-Octet Coded Character Set (UCS) plus Amendment 1:2005, Amendment 2:2006, Amendment 3:2008, and Amendment 4:2008</i>, plus additional amendments and corrigenda, or successor</p>
-  <p>ECMA-402, <i>ECMAScript 2015 Internationalization API Specification</i>.
+  <h1>引用标准</h1>
+  <p>为了实现符合本规范的应用程序，下列引用文档是不可或缺的。对于标注了日期的文档，仅适用标注的那个版本。 对于未标注日期的文档，以文档的最新版为准（包括任何修订版）。</p>
+  <p>ISO/IEC 10646:2003: <i>信息技术 &ndash;<abbr title="Universal Multiple-Octet Coded Character Set">通用多八位编码字符集(UCS)</abbr>以及修订 1:2005, 修订 2:2006, 修订 3:2008, 和修订 4:2008</i>, 以及其他修订，更正，后继标准</p>
+  <p>ECMA-402, <i>ECMAScript 2015 国际化API规范</i>.
     <br>
-    <a href="https://ecma-international.org/publications/standards/Ecma-402.htm">https://ecma-international.org/publications/standards/Ecma-402.htm</a></p>
-  <p>ECMA-404, <i>The JSON Data Interchange Format</i>.
+    <a href="http://www.ecma-international.org/publications/standards/Ecma-402.htm">http://www.ecma-international.org/publications/standards/Ecma-402.htm</a></p>
+  <p>ECMA-404, <i>JSON 数据交换格式化</i>.
     <br>
-    <a href="https://ecma-international.org/publications/standards/Ecma-404.htm">https://ecma-international.org/publications/standards/Ecma-404.htm</a></p>
+    <a href="http://www.ecma-international.org/publications/standards/Ecma-404.htm">http://www.ecma-international.org/publications/standards/Ecma-404.htm</a></p>
 </emu-clause>
 
 <!-- es6num="4" -->
 <emu-clause id="sec-overview">
-  <h1>Overview</h1>
-  <p>This section contains a non-normative overview of the ECMAScript language.</p>
-  <p>ECMAScript is an object-oriented programming language for performing computations and manipulating computational objects within a host environment. ECMAScript as defined here is not intended to be computationally self-sufficient; indeed, there are no provisions in this specification for input of external data or output of computed results. Instead, it is expected that the computational environment of an ECMAScript program will provide not only the objects and other facilities described in this specification but also certain environment-specific objects, whose description and behaviour are beyond the scope of this specification except to indicate that they may provide certain properties that can be accessed and certain functions that can be called from an ECMAScript program.</p>
-  <p>ECMAScript was originally designed to be used as a scripting language, but has become widely used as a general-purpose programming language. A <em>scripting language</em> is a programming language that is used to manipulate, customize, and automate the facilities of an existing system. In such systems, useful functionality is already available through a user interface, and the scripting language is a mechanism for exposing that functionality to program control. In this way, the existing system is said to provide a host environment of objects and facilities, which completes the capabilities of the scripting language. A scripting language is intended for use by both professional and non-professional programmers.</p>
-  <p>ECMAScript was originally designed to be a <em>Web scripting language</em>, providing a mechanism to enliven Web pages in browsers and to perform server computation as part of a Web-based client-server architecture. ECMAScript is now used to provide core scripting capabilities for a variety of host environments. Therefore the core language is specified in this document apart from any particular host environment.</p>
-  <p>ECMAScript usage has moved beyond simple scripting and it is now used for the full spectrum of programming tasks in many different environments and scales. As the usage of ECMAScript has expanded, so has the features and facilities it provides. ECMAScript is now a fully featured general-purpose programming language.</p>
-  <p>Some of the facilities of ECMAScript are similar to those used in other programming languages; in particular C, Java&trade;, Self, and Scheme as described in:</p>
+  <h1>概述</h1>
+  <p>本节包含对 ECMAScript 语言非规范性的概述。</p>
+  <p>ECMAScript 是一门在宿主环境执行计算以及操作可计算对象的面向对象编程语言。这里定义的ECMAScript并不打算有自给自足的计算；事实上，该规范并没有规定外部数据的输入或者计算结果的输出。相反，我们期望 ECMAScript 程序的计算环境不仅提供本规范中描述的对象和能力，还包括特定的环境对象，本规范除了说明这些对象应该提供可被 ECMAScript 程序访问的某些属性，调用的某些方法外，关于它的其他描述和行为不在本规范涉及的范围。</p>
+  <p>ECMAScript 最初被设计为一门脚本语言，但是现在已经作为一门通用的编程语言被广泛应用。<em>脚本语言</em>是指一种用于操作，定制，自动化现有系统能力的编程语言。在这样的系统中，通过用户界面已经可以使用有用的功能，而脚本语言是将这些功能暴露给程序控制的机制。 通过这种方式，现有的系统被称为提供对象和能力的宿主环境，从而完成了脚本语言的功能。 脚本语言是供专业和非专业程序员使用的。</p>
+  <p>ECMAScript 最初被设计为<em> Web 脚本语言</em>，提供了一种让网页更加富有生机的机制，并能够进行部分基于Web B/S架构的服务器端计算。ECMAScript 现在被用于在多种宿主中提供核心脚本能力。因此该文档描述的是除特定宿主环境外的语言核心。</p>
+  <p>ECMAScript 用法已经远超出了简单脚本，现在被用于很多不同的环境和规模的全方位编程任务。随着 ECMAScript 使用范围的扩大使，其功能和能力也得到了扩展。ECMAScript 现在成为了一个功能齐全的通用编程语言。</p>
+  <p>ECMAScript 的一些能力类似于其他编程语言中，特别是 C, Java&trade;, Self, 如以及下所述的 Scheme：</p>
   <p>ISO/IEC 9899:1996, <i>Programming Languages &ndash; C</i>.</p>
   <p>Gosling, James, Bill Joy and Guy Steele. <i>The Java<sup>&trade;</sup> Language Specification</i>. Addison Wesley Publishing Co., 1996.</p>
-  <p>Ungar, David, and Smith, Randall B. Self: The Power of Simplicity. <i>OOPSLA '87 Conference Proceedings</i>, pp. 227-241, Orlando, FL, October 1987.</p>
+  <p>Ungar, David, and Smith, Randall B. Self: The Power of Simplicity. <i>OOPSLA '87 Conference Proceedings</i>, pp. 227-241,Orlando, FL, October 1987.</p>
   <p><i>IEEE Standard for the Scheme Programming Language</i>. IEEE Std 1178-1990.</p>
 
   <!-- es6num="4.1" -->
   <emu-clause id="sec-web-scripting">
-    <h1>Web Scripting</h1>
-    <p>A web browser provides an ECMAScript host environment for client-side computation including, for instance, objects that represent windows, menus, pop-ups, dialog boxes, text areas, anchors, frames, history, cookies, and input/output. Further, the host environment provides a means to attach scripting code to events such as change of focus, page and image loading, unloading, error and abort, selection, form submission, and mouse actions. Scripting code appears within the HTML and the displayed page is a combination of user interface elements and fixed and computed text and images. The scripting code is reactive to user interaction, and there is no need for a main program.</p>
-    <p>A web server provides a different host environment for server-side computation including objects representing requests, clients, and files; and mechanisms to lock and share data. By using browser-side and server-side scripting together, it is possible to distribute computation between the client and server while providing a customized user interface for a Web-based application.</p>
-    <p>Each Web browser and server that supports ECMAScript supplies its own host environment, completing the ECMAScript execution environment.</p>
+    <h1>Web 脚本</h1>
+    <p>web 浏览器提供用于客户端计算的 ECMAScript 宿主环境，包括如代表窗口，菜单，弹出窗口，对话框，文本域，锚点，框架，历史记录，cookies以及输入/输出的实例对象。此外，宿主环境还提供了脚本代码处理如焦点改变、页面和图片的加载、卸载、错误和中断，选择，表单提交和鼠标交互等等事件的能力。通过 HTML 中的脚本代码组合用户接口元素，固定及计算文本，图片来显示页面。脚本代码不需要一个主程序即可对用户交互进行响应。</p>
+    <p>WEB 服务器提供一个不同于客户端的如代表请求，客户端，文件等的对象，以及数据锁定和分享的机制。为基于 Web 的应用程序提供一个定制的用户界面，通过浏览器端脚本及服务端脚本的配合使用，可以在客户端和服务端之间进行分布式计算。</p>
+    <p>支持 ECMAScript 的 WEB 浏览器和服务器都将它们自身的宿主环境作为 ECMAScript 的补充，以使得 ECMAScript 的执行环境变得完整。</p>
   </emu-clause>
-
+  
   <!-- es6num="4.2" -->
   <emu-clause id="sec-ecmascript-overview">
-    <h1>ECMAScript Overview</h1>
-    <p>The following is an informal overview of ECMAScript&mdash;not all parts of the language are described. This overview is not part of the standard proper.</p>
-    <p>ECMAScript is object-based: basic language and host facilities are provided by objects, and an ECMAScript program is a cluster of communicating objects. In ECMAScript, an <em>object</em> is a collection of zero or more <em>properties</em> each with <em>attributes</em> that determine how each property can be used&mdash;for example, when the Writable attribute for a property is set to *false*, any attempt by executed ECMAScript code to assign a different value to the property fails. Properties are containers that hold other objects, <em>primitive values</em>, or <em>functions</em>. A primitive value is a member of one of the following built-in types: <b>Undefined</b>, <b>Null</b>, <b>Boolean</b>, <b>Number</b>, <b>String</b>, and <b>Symbol;</b> an object is a member of the built-in type <b>Object</b>; and a function is a callable object. A function that is associated with an object via a property is called a <em>method</em>.</p>
-    <p>ECMAScript defines a collection of <em>built-in objects</em> that round out the definition of ECMAScript entities. These built-in objects include the global object; objects that are fundamental to the runtime semantics of the language including `Object`, `Function`, `Boolean`, `Symbol`, and various `Error` objects; objects that represent and manipulate numeric values including `Math`, `Number`, and `Date`; the text processing objects `String` and `RegExp`; objects that are indexed collections of values including `Array` and nine different kinds of Typed Arrays whose elements all have a specific numeric data representation; keyed collections including `Map` and `Set` objects; objects supporting structured data including the `JSON` object, `ArrayBuffer`, `SharedArrayBuffer`, and `DataView`; objects supporting control abstractions including generator functions and `Promise` objects; and reflection objects including `Proxy` and `Reflect`.</p>
-    <p>ECMAScript also defines a set of built-in <em>operators</em>. ECMAScript operators include various unary operations, multiplicative operators, additive operators, bitwise shift operators, relational operators, equality operators, binary bitwise operators, binary logical operators, assignment operators, and the comma operator.</p>
-    <p>Large ECMAScript programs are supported by <em>modules</em> which allow a program to be divided into multiple sequences of statements and declarations. Each module explicitly identifies declarations it uses that need to be provided by other modules and which of its declarations are available for use by other modules.</p>
-    <p>ECMAScript syntax intentionally resembles Java syntax. ECMAScript syntax is relaxed to enable it to serve as an easy-to-use scripting language. For example, a variable is not required to have its type declared nor are types associated with properties, and defined functions are not required to have their declarations appear textually before calls to them.</p>
-
+    <h1>ECMAScript 概述</h1>
+    <p>以下是 ECMAScript&mdash; 的非正式概述 —— 描述的只是该语言的一部分。这个概述不是标准的一部分。</p>
+    <p>ECMAScript 是基于对象的：基础语言以及主要能力都是通过对象提供，一个 ECMAScript 程序是一组可通信对象。在 ECMAScript 中，一个<em>对象</em>是零个或多个<em>属性</em>的的集合。每个属性都有确定其如何被使用的<em>特性</em>， 如当一个属性的 Writable 特性设置为 *false* 时，执行任何尝试对该属性分配不同值的的 ECMAScript 代码都将失败。属性是其他对象，<em><abbr title="primitive values">原始值</abbr></em>，<em><abbr title="function">函数</abbr></em>的容器。原始值是以下内置类型成员之一：<b>Undefined</b>, <b>Null</b>, <b>Boolean</b>, <b>Number</b>, <b>String</b>, and <b>Symbol;</b>一个对象是内置类型 <b>Object</b> 成员之一，一个函数是一个可调用对象。对象通过属性调用的函数叫做<em><abbr title="method">方法</abbr></em></p>
+    <p>ECMAScript 定义了一组<em><abbr title="built-in objects">内置对象</abbr></em>，从而勾勒出 ECMAScript 实体的定义。这些内置对象包括<abbr title="global object">全局对象</abbr>；基本的语言运行时语义对象，包括 `Object`, `Function`, `Boolean`, `Symbol`，各种 `Error` 对象；代表和操作的数值对象，包括 `Math`, `Number`, `Date`；文本处理对象，`String`，`RegExp`；索引值集合的 `Array` 对象，以及九种值具有特定数字数据表示的 `Typed Array` 对象；<abbr title="keyed collections">泛型对象</abbr> `Map`, `Set`；支持结构化数据的 `JSON`, `ArrayBuffer`, `SharedArrayBuffer`,`DataView` 等对象；支持控制抽象的 generator 函数，`Promise` 对象；以及反射对象 `Proxy`，`Reflect`。</p>
+    <p>ECMAScript 还定义了一组内置<em><abbr title="operators">运算符</abbr></em>。ECMAScript 运算符包括各种一元运算，乘法运算符，加法运算符，位移运算符，关系运算符，等式运算符，二进制运算符，二进制逻辑运算符，赋值运算符和逗号运算符。</p>
+    <p>大型 ECMAScript 程序通过<em>模块</em>被支持，其允许程序可以被分化为多个语句和定义序列。每个模块明确地标识它所使用的其他模块提供的声明，哪些声明可供其他模块使用。</p>
+    <p>ECMAScript 语法有意地类似于 Java 语法。ECMAScript 语法是松散的，使其能够成为易于使用的脚本语言。例如，一个变量不需要声明其具体类型，也不需要与声明相关联属性类型，在调用定义的函数之前也不需要以文本方式显示的声明。</p>
+  
     <!-- es6num="4.2.1" -->
     <emu-clause id="sec-objects">
       <h1>Objects</h1>
-      <p>Even though ECMAScript includes syntax for class definitions, ECMAScript objects are not fundamentally class-based such as those in C++, Smalltalk, or Java. Instead objects may be created in various ways including via a literal notation or via <em>constructors</em> which create objects and then execute code that initializes all or part of them by assigning initial values to their properties. Each constructor is a function that has a property named `"prototype"` that is used to implement <em>prototype-based inheritance</em> and <em>shared properties</em>. Objects are created by using constructors in <b>new</b> expressions; for example, `new Date(2009,11)` creates a new Date object. Invoking a constructor without using <b>new</b> has consequences that depend on the constructor. For example, `Date()` produces a string representation of the current date and time rather than an object.</p>
-      <p>Every object created by a constructor has an implicit reference (called the object's <em>prototype</em>) to the value of its constructor's `"prototype"` property. Furthermore, a prototype may have a non-null implicit reference to its prototype, and so on; this is called the <em>prototype chain</em>. When a reference is made to a property in an object, that reference is to the property of that name in the first object in the prototype chain that contains a property of that name. In other words, first the object mentioned directly is examined for such a property; if that object contains the named property, that is the property to which the reference refers; if that object does not contain the named property, the prototype for that object is examined next; and so on.</p>
+      <p>尽管 ECMAScript 包含了定义类的语法，但是 ECMAScript 对象从根本上来说并不是像 C++，Smalltalk，Java 那样基于类的。相反，对象可以通过各种方式创建，包括字面符号，或通过<em><attr title="constructors">构造器</attr></em>创建对象然后运行代码初始化其全部或部分属性值，为这些属性分配初始值。每个构造器是一个拥有名为 `"prototype"` 的属性的函数，此属性用于实现<em><abbr title="prototype-based inheritance">基于原型的继承</abbr></em> 和<em><abbr title="shared properties">共享属性</abbr></em>。构造器通过<b> new </b>表达式创建对象：例如,`new Date(2009,11)` 创建一个新 Date 对象。不使用<b>new</b>调用一个构造器的结果由构造器本身决定。例如，`Date()`产生一个表示当前日期时间的字符串，而不是一个对象。</p>
+      <p>每个由构造器创建的对象，都有一个隐式引用(叫做对象的<em><abbr title="prototype">原型</abbr></em>)链接到构造器的 `"prototype"` 属性值。再者，一个原型可能有一个<abbr title="non-null">非空</abbr>隐式引用链接到它的原型，以此类推，这叫做<em><abbr title="prototype chain">原型链</abbr></em>。当向对象的一个属性提出引用时，引用会指向原型链中包含此属性名的第一个对象的属性。换句话说，首先检查直接提及的对象的同名属性，如果对象包含同名的属性，引用即指向此属性，如果该对象不包含同名的属性，则下一步检查对象的原型；以此类推。</p>
       <emu-figure id="figure-1" caption="Object/Prototype Relationships">
         <object data="img/figure-1.svg" height="354" type="image/svg+xml" width="719"> <img alt="An image of lots of boxes and arrows." height="354" src="img/figure-1.png" width="719"> </object>
       </emu-figure>
-      <p>In a class-based object-oriented language, in general, state is carried by instances, methods are carried by classes, and inheritance is only of structure and behaviour. In ECMAScript, the state and methods are carried by objects, while structure, behaviour, and state are all inherited.</p>
-      <p>All objects that do not directly contain a particular property that their prototype contains share that property and its value. Figure 1 illustrates this:</p>
-      <p><b>CF</b> is a constructor (and also an object). Five objects have been created by using `new` expressions: <b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, and <b>cf<sub>5</sub></b>. Each of these objects contains properties named `q1` and `q2`. The dashed lines represent the implicit prototype relationship; so, for example, <b>cf<sub>3</sub></b>'s prototype is <b>CF<sub>p</sub></b>. The constructor, <b>CF</b>, has two properties itself, named `P1` and `P2`, which are not visible to <b>CF<sub>p</sub></b>, <b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, or <b>cf<sub>5</sub></b>. The property named `CFP1` in <b>CF<sub>p</sub></b> is shared by <b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, and <b>cf<sub>5</sub></b> (but not by <b>CF</b>), as are any properties found in <b>CF<sub>p</sub></b>'s implicit prototype chain that are not named `q1`, `q2`, or `CFP1`. Notice that there is no implicit prototype link between <b>CF</b> and <b>CF<sub>p</sub></b>.</p>
-      <p>Unlike most class-based object languages, properties can be added to objects dynamically by assigning values to them. That is, constructors are not required to name or assign values to all or any of the constructed object's properties. In the above diagram, one could add a new shared property for <b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, and <b>cf<sub>5</sub></b> by assigning a new value to the property in <b>CF<sub>p</sub></b>.</p>
-      <p>Although ECMAScript objects are not inherently class-based, it is often convenient to define class-like abstractions based upon a common pattern of constructor functions, prototype objects, and methods. The ECMAScript built-in objects themselves follow such a class-like pattern. Beginning with ECMAScript 2015, the ECMAScript language includes syntactic class definitions that permit programmers to concisely define objects that conform to the same class-like abstraction pattern used by the built-in objects.</p>
+      <p>一般情况下基于类的面向对象语言的实例拥有状态，类拥有方法，并且只能继承结构和行为。在 ECMAScript 中，对象拥有状态和方法，并且结构，行为，状态全都可继承。</p>
+      <p>所有不直接包含特定属性的对象会共享他们原型中包含的此属性及属性值。图 1 说明了这一点：</p>
+      <p><b>CF</b> 是一个构造器（也是一个对象）。五个对象已用 `new` 表达式创建: <b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, <b>cf<sub>5</sub></b>。每个对象都有名为 `q1` 和 `q2` 的属性。虚线表示隐式原型关系；例如：<b>cf<sub>3</sub></b> 的原型是 <b>CF<sub>p</sub></b>。构造器 <b>CF</b> 自己有名为 `P1` 和 `P2` 的两个属性, 这对 <b>CF<sub>p</sub></b>,<b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, <b>cf<sub>5</sub></b> 是不可见的。<b>CF<sub>p</sub></b> 的名为 `CFP1` 的属性共享给 <b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>,<b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>, 以及 <b>cf<sub>5</sub></b> ( 没有<b>CF</b>), 以及在 <b>CF<sub>p</sub></b> 的隐式原型链中找不到任何名为 `q1`, `q2`,或 `CFP1` 的属性。请注意，<b>CF</b> 和 <b>CF<sub>p</sub></b> 之间没有隐式原型链接。</p>
+      <p>不同于基于类的对象语言，属性可以通过赋值的方式动态添加给对象。也就是说，构造器并不是非要对构造的对象的全部或任何属性命名或赋值。上图中，可以给 <b>CF<sub>p</sub></b> 添加新属性值的方式为 <b>cf<sub>1</sub></b>, <b>cf<sub>2</sub></b>, <b>cf<sub>3</sub></b>, <b>cf<sub>4</sub></b>,and <b>cf<sub>5</sub></b> 添加一个新的共享属性。</p>
+      <p>尽管 ECMAScript 对象本质上不是基于类，但是基于构造函数，原型对象和方法通用模式来实现类似于类的抽象是很方便的。ECMAScript 内置对象本身即遵循这样的类模式。从 ECMAScript 2015 开始，ECMAScript 语言包含了类定义语法，允许程序员像内置对象那样简洁的定义对象。</p>
     </emu-clause>
-
+  
     <!-- es6num="4.2.2" -->
     <emu-clause id="sec-strict-variant-of-ecmascript">
-      <h1>The Strict Variant of ECMAScript</h1>
-      <p>The ECMAScript Language recognizes the possibility that some users of the language may wish to restrict their usage of some features available in the language. They might do so in the interests of security, to avoid what they consider to be error-prone features, to get enhanced error checking, or for other reasons of their choosing. In support of this possibility, ECMAScript defines a strict variant of the language. The strict variant of the language excludes some specific syntactic and semantic features of the regular ECMAScript language and modifies the detailed semantics of some features. The strict variant also specifies additional error conditions that must be reported by throwing error exceptions in situations that are not specified as errors by the non-strict form of the language.</p>
-      <p>The strict variant of ECMAScript is commonly referred to as the <em>strict mode</em> of the language. Strict mode selection and use of the strict mode syntax and semantics of ECMAScript is explicitly made at the level of individual ECMAScript source text units. Because strict mode is selected at the level of a syntactic source text unit, strict mode only imposes restrictions that have local effect within such a source text unit. Strict mode does not restrict or modify any aspect of the ECMAScript semantics that must operate consistently across multiple source text units. A complete ECMAScript program may be composed of both strict mode and non-strict mode ECMAScript source text units. In this case, strict mode only applies when actually executing code that is defined within a strict mode source text unit.</p>
-      <p>In order to conform to this specification, an ECMAScript implementation must implement both the full unrestricted ECMAScript language and the strict variant of the ECMAScript language as defined by this specification. In addition, an implementation must support the combination of unrestricted and strict mode source text units into a single composite program.</p>
+      <h1>ECMAScript 严格变体</h1>
+      <p>ECMAScript 语言认识到有的开发者可能希望限制使用语言中的新特性。他们这样做可能是为了安全考虑，避免他们认为是容易出错的功能，获得增强的错误检查，或其他原因。因此，ECMAScript 中定义了语言的严格变体。语言的严格变体，排除了 ECMAScript 语言的某些特定的语法和语义特征，还修改了某些功能的详细语义。严格变体还指定了必须抛出错误异常报告的额外错误条件，即使在非严格的语言形式下这些条件不属于错误。</p>
+      <p>ECMAScript 的严格变体通常被称为语言的<em><abbr title="strict mode">严格模式</abbr></em>。严格模式选择和使用明确地适用于独特 ECMAScript 代码单元级别的，ECMAScript 严格模式语法和语义。由于语法代码单元级别的严格模式被选择，严格模式仅在这个代码单元内施加有局部效果的限制。严格模式不限制或修改任何层面的 ECMAScript 语义，必须一致地操作跨多个代码单元。一个 ECMAScript 程序可同时包含严格模式和非严格模式的代码单元。在这种情况下，严格的模式只适用于严格模式代码单元内实际执行的代码。</p>
+      <p>要符合这一规范，ECMAScript 的实现必须同时实现未限制的 ECMAScript 语言和按照这个规范定义的 ECMAScript 的严格模式变体。此外，实现还必须支持未限制的和严格模式代码单元的在同一个程序中混用。</p>
     </emu-clause>
   </emu-clause>
 
@@ -40325,3 +40325,13 @@ THH:mm:ss.sss
     </li>
   </ol>
 </emu-annex>
+<script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?6f647e0b0f08eff522b7400cd5aa3c90";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+  

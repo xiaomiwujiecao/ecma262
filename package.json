@@ -10,14 +10,16 @@
     "build-travis": "npm run clean && npm run build-master && npm run build-es2017",
     "clean": "rm -rf out",
     "test": "exit 0",
-    "watch": "npm run clean && mkdir out && cp -R img out && ecmarkup --watch --verbose spec.html out/index.html --css out/ecmarkup.css --js out/ecmarkup.js"
+    "watch": "npm run clean && mkdir out && cp -R img out && ecmarkup --watch --verbose spec.html out/index.html --css out/ecmarkup.css --js out/ecmarkup.js",
+    "deploy": "gh-pages -d out"
   },
   "repository": "tc39/ecma262",
   "author": "ECMA TC39",
   "license": "SEE LICENSE IN https://tc39.github.io/ecma262/#sec-copyright-and-software-license",
   "homepage": "https://tc39.github.io/ecma262/",
   "dependencies": {
-    "ecmarkup": "^3.11.5"
+    "ecmarkup": "^3.11.5",
+    "gh-pages": "^1.1.0"
   },
   "devDependencies": {
     "@alrra/travis-scripts": "^2.0.0"
