@@ -1,116 +1,116 @@
   <emu-clause id="sec-ecmascript-specification-types">
-    <h1>ECMAScript Specification Types</h1>
-    <p>A specification type corresponds to meta-values that are used within algorithms to describe the semantics of ECMAScript language constructs and ECMAScript language types. The specification types include Reference, List, Completion, Property Descriptor, Lexical Environment, Environment Record, and Data Block. Specification type values are specification artefacts that do not necessarily correspond to any specific entity within an ECMAScript implementation. Specification type values may be used to describe intermediate results of ECMAScript expression evaluation but such values cannot be stored as properties of objects or values of ECMAScript language variables.</p>
+    <h1>ECMAScript规范类型</h1>
+    <p>规范类型对应那些在算法中用来描述 ECMAScript 语言结构以及 ECMAScript 语言类型语义的元数据。 规范类型包括 Reference，List，Completion，Property Descriptor，Lexical Environment，Environment Record，以及 Data Block。规范类型值是规范中才有的，在一个 ECMAScript 实现中不必对应任何特定的实体。规范类型值可以用来描述 ECMAScript 表达式解析后的中间结果，但是这些值不应该作为 ECMAScript 变量的对象属性或者值储存。</p>
 
     <!-- es6num="6.2.1" -->
     <emu-clause id="sec-list-and-record-specification-type">
-      <h1>The List and Record Specification Types</h1>
-      <p>The <dfn>List</dfn> type is used to explain the evaluation of argument lists (see <emu-xref href="#sec-argument-lists"></emu-xref>) in `new` expressions, in function calls, and in other algorithms where a simple ordered list of values is needed. Values of the List type are simply ordered sequences of list elements containing the individual values. These sequences may be of any length. The elements of a list may be randomly accessed using 0-origin indices. For notational convenience an array-like syntax can be used to access List elements. For example, _arguments_[2] is shorthand for saying the 3<sup>rd</sup> element of the List _arguments_.</p>
-      <p>For notational convenience within this specification, a literal syntax can be used to express a new List value. For example, &laquo; 1, 2 &raquo; defines a List value that has two elements each of which is initialized to a specific value. A new empty List can be expressed as &laquo; &raquo;.</p>
-      <p>The <dfn>Record</dfn> type is used to describe data aggregations within the algorithms of this specification. A Record type value consists of one or more named fields. The value of each field is either an ECMAScript value or an abstract value represented by a name associated with the Record type. Field names are always enclosed in double brackets, for example [[Value]].</p>
-      <p>For notational convenience within this specification, an object literal-like syntax can be used to express a Record value. For example, {[[Field1]]: 42, [[Field2]]: *false*, [[Field3]]: ~empty~} defines a Record value that has three fields, each of which is initialized to a specific value. Field name order is not significant. Any fields that are not explicitly listed are considered to be absent.</p>
-      <p>In specification text and algorithms, dot notation may be used to refer to a specific field of a Record value. For example, if R is the record shown in the previous paragraph then R.[[Field2]] is shorthand for &ldquo;the field of R named [[Field2]]&rdquo;.</p>
-      <p>Schema for commonly used Record field combinations may be named, and that name may be used as a prefix to a literal Record value to identify the specific kind of aggregations that is being described. For example: PropertyDescriptor{[[Value]]: 42, [[Writable]]: *false*, [[Configurable]]: *true*}.</p>
+      <h1>List 以及 Record 规范类型</h1>
+      <p><dfn>List</dfn> 类型用来解释在 `new` 表达式，函数调用，以及其它需要一个简单的有序的值的 list 的算法中的参数列表(见<emu-xref href="#sec-argument-lists"></emu-xref>)的求值，List 类型的值是包含单个值的列表元素的简单有序序列。这些序列可能是任意长度。列表的元素可以通过使用从 0 开始的索引随机访问。为了方便起见，可以使用类似数组的语法来访问 List 元素。 例如，_arguments_[2] 简短的表示 _arguments_ List 的第三个元素。</p>
+      <p>在规范中为了方便，一个字面量语法被用来表达一个新 List 值。 如 &laquo; 1, 2 &raquo; 定义一个新 List 值，它拥有两个元素，每个元素被初始化为一个特定的值。一个空的 List 值可以用 &laquo; &raquo; 表示。</p>
+      <p><dfn>Record</dfn> 类型用来描述在该规范中的算法内的数据聚合。一个 Record 类型值包含一个或多个命名字段。每个字段的值是一个 ECMAScript 值或者通过由与 Record 类型相关联的名称代表的抽象值。字段名称始终用双括号括起来，例如 [[Value]]。</p>
+      <p>在规范中为了方便，使用类似对象字面量的语法来表示一个 Record 值。 如 {[[Field1]]: 42, [[Field2]]: `false`, [[Field3]]: ~empty~} 定义一个拥有3个字段的 Record 值。每个字段被初始化为一个特定的值。字段名称顺序不重要。任何未明确列出的字段都被视为不存在。</p>
+      <p>在规范文本和算法中，点记号可以用于指代记录值的特定字段。例如，如果 R 是上一段所示的记录，则 R.[[Field2]] 是 &ldquo;R 中名称为 [[Field2]] 的字段 &rdquo; 的缩写。</p>
+      <p>应该命名常用记录字段组合的模式， 并且该名称可以用作Record字面量的前缀，以标识特定类型聚合的描述。 例如：PropertyDescriptor{[[Value]]: 42，[[Writable]]: `false`，[[Configurable]]: `true`}。</p>
     </emu-clause>
 
     <emu-clause id="sec-set-and-relation-specification-type">
-      <h1>The Set and Relation Specification Types</h1>
-      <p>The <dfn>Set</dfn> type is used to explain a collection of unordered elements for use in the memory model. Values of the Set type are simple collections of elements, where no element appears more than once. Elements may be added to and removed from Sets. Sets may be unioned, intersected, or subtracted from each other.</p>
-      <p>The <dfn>Relation</dfn> type is used to explain constraints on Sets. Values of the Relation type are Sets of ordered pairs of values from its value domain. For example, a Relation on events is a set of ordered pairs of events. For a Relation _R_ and two values _a_ and _b_ in the value domain of _R_, _a_ _R_ _b_ is shorthand for saying the ordered pair (_a_, _b_) is a member of _R_. A Relation is least with respect to some conditions when it is the smallest Relation that satisfies those conditions.</p>
-      <p>A <dfn>strict partial order</dfn> is a Relation value _R_ that satisfies the following.</p>
+      <h1>Set 和 Relation 规范类型</h1>
+      <p><dfn>Set</dfn> 类型被用来解释在内存模型中无序元素的集合。Set 类型的值是简单的元素的集合，其中没有任何元素出现超过一次。元素可以从 Set 中添加或者删除。不同的 Set 可以合并，相交或者相减。</p>
+      <p><dfn>Relation</dfn> 类型被用来解释在 Set 上的约束。一个关系类型的值是它的的值域中有序对的集合。例如，一个在 event 上的关系是一个有序的的 event 对的集合。对于一个关系 _R_ 以及在 _R_ 的值域中的两个值 _a_ 和 _b_，_a_ _R_ _b_ 是有序对 (_a_, _b_) 是 _R_ 的成员的简写。当 Relation 满足这些条件的最小 Relation 时，Relation 对于某些条件是最小的。</p>
+      <p>严格偏序是指一个 Relation 值 _R_ 满足如下条件。</p>
       <ul>
         <li>
-          <p>For all _a_, _b_, and _c_ in _R_'s domain:</p>
+          <p>对于_R_值域中的 _a_，_b_，_c_：</p>
           <ul>
-            <li>It is not the case that _a_ _R_ _a_, and</li>
-            <li>If _a_ _R_ _b_ and _b_ _R_ _c_, then _a_ _R_ _c_.</li>
+            <li>_a_ _R_ _a_ 不成立，且</li>
+            <li>如果 _a_ _R_ _b_ 并且 _b_ _R_ _c_ 成立，那么 _a_ _R_ _c_ 成立。</li>
           </ul>
         </li>
       </ul>
       <emu-note>
-        <p>The two properties above are called, in order, irreflexivity and transitivity.</p>
+        <p>上述两种关系的特性被称为自反性和传递性。</p>
       </emu-note>
-      <p>A <dfn>strict total order</dfn> is a Relation value _R_ that satisfies the following.</p>
+      <p><dfn>严格全序</dfn>是指一个 Relation 值 _R_ 满足如下条件。</p>
       <ul>
         <li>
-          <p>For all _a_, _b_, and _c_ in _R_'s domain:</p>
+          <p>_R_ 值域中的 _a_，_b_，_c_：</p>
           <ul>
-            <li>_a_ is identical to _b_ or _a_ _R_ _b_ or _b_ _R_ _a_, and</li>
-            <li>It is not the case that _a_ _R_ _a_, and</li>
-            <li>If _a_ _R_ _b_ and _b_ _R_ _c_, then _a_ _R_ _c_.</li>
+            <li>_a_ 全等于 _b_ 或 _a_ _R_ _b_ 或 _b_ _R_ _a_，且</li>
+            <li>_a_ _R_ _a_ 不成立，且</li>
+            <li>如果 _a_ _R_ _b_ 同时 _b_ _R_ _c_，那么 _a_ _R_ _c_。</li>
           </ul>
         </li>
       </ul>
       <emu-note>
-        <p>The three properties above are called, in order, totality, irreflexivity, and transitivity.</p>
+        <p>上述三种关系的特性，按顺序被称为完全性，自反性，传递性</p>
       </emu-note>
     </emu-clause>
 
     <!-- es6num="6.2.2" -->
     <emu-clause id="sec-completion-record-specification-type" aoid="Completion">
-      <h1>The Completion Record Specification Type</h1>
-      <p>The Completion type is a Record used to explain the runtime propagation of values and control flow such as the behaviour of statements (`break`, `continue`, `return` and `throw`) that perform nonlocal transfers of control.</p>
-      <p>Values of the Completion type are Record values whose fields are defined as by <emu-xref href="#table-8"></emu-xref>. Such values are referred to as <dfn>Completion Record</dfn>s.</p>
+      <h1>Completion Record 规范类型</h1>
+      <p>Completion 类型是一个用来解释运行时数值和控制流传播的 Record，如执行非局部转移控制语句(`break`，`continue`，`return` 和 `throw`)的行为。</p>
+      <p>Completion 类型值是字段名为表<emu-xref href="#table-8"></emu-xref>中的Record值。这些值被称为<dfn>Completion Record</dfn>。</p>
       <emu-table id="table-8" caption="Completion Record Fields">
         <table>
           <tbody>
-          <tr>
-            <th>
-              Field Name
-            </th>
-            <th>
-              Value
-            </th>
-            <th>
-              Meaning
-            </th>
-          </tr>
-          <tr>
-            <td>
-              [[Type]]
-            </td>
-            <td>
-              One of ~normal~, ~break~, ~continue~, ~return~, or ~throw~
-            </td>
-            <td>
-              The type of completion that occurred.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              [[Value]]
-            </td>
-            <td>
-              any ECMAScript language value or ~empty~
-            </td>
-            <td>
-              The value that was produced.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              [[Target]]
-            </td>
-            <td>
-              any ECMAScript string or ~empty~
-            </td>
-            <td>
-              The target label for directed control transfers.
-            </td>
-          </tr>
+            <tr>
+              <th>
+                字段名
+              </th>
+              <th>
+                值
+              </th>
+              <th>
+                意义
+              </th>
+            </tr>
+            <tr>
+              <td>
+                [[Type]]
+              </td>
+              <td>
+                ~normal~，~break~，~continue~，~return~，~throw~ 之一
+              </td>
+              <td>
+                结束发生的完成类型
+              </td>
+            </tr>
+            <tr>
+              <td>
+                [[Value]]
+              </td>
+              <td>
+                任何 ECMAScript 语言值或 ~empty~
+              </td>
+              <td>
+                产生的值
+              </td>
+            </tr>
+            <tr>
+              <td>
+                [[Target]]
+              </td>
+              <td>
+                任何 ECMAScript 字符串或 ~empty~
+              </td>
+              <td>
+                用于定向控制传输的目标标签。
+              </td>
+            </tr>
           </tbody>
         </table>
       </emu-table>
-      <p>The term &ldquo;<dfn>abrupt completion</dfn>&rdquo; refers to any completion with a [[Type]] value other than ~normal~.</p>
+      <p>术语 &ldquo;<dfn><abbr title="abrupt completion">异常结束</abbr></dfn>&rdquo; 是指 [[Type]] 值为除 ~normal~ 之外的值。</p>
 
       <!-- es6num="6.2.2.1" -->
       <emu-clause id="sec-normalcompletion" aoid="NormalCompletion">
         <h1>NormalCompletion</h1>
-        <p>The abstract operation NormalCompletion with a single _argument_, such as:</p>
+        <p>抽象操作 NormalCompletion 具有单一 _argument_，如:</p>
         <emu-alg>
           1. Return NormalCompletion(_argument_).
         </emu-alg>
-        <p>Is a shorthand that is defined as follows:</p>
+        <p>是下面定义的简写:</p>
         <emu-alg>
           1. Return Completion{[[Type]]: ~normal~, [[Value]]: _argument_, [[Target]]: ~empty~}.
         </emu-alg>
@@ -119,7 +119,7 @@
       <!-- es6num="6.2.2.5" -->
       <emu-clause id="sec-updateempty" aoid="UpdateEmpty">
         <h1>UpdateEmpty ( _completionRecord_, _value_ )</h1>
-        <p>The abstract operation UpdateEmpty with arguments _completionRecord_ and _value_ performs the following steps:</p>
+        <p>抽象操作 UpdateEmpty 有参数 _completionRecord_ 和_value_，他的执行步骤如下:</p>
         <emu-alg>
           1. Assert: If _completionRecord_.[[Type]] is either ~return~ or ~throw~, then _completionRecord_.[[Value]] is not ~empty~.
           1. If _completionRecord_.[[Value]] is not ~empty~, return Completion(_completionRecord_).
@@ -130,13 +130,13 @@
 
     <!-- es6num="6.2.3" -->
     <emu-clause id="sec-reference-specification-type">
-      <h1>The Reference Specification Type</h1>
+      <h1>Reference 规范类型</h1>
       <emu-note>
-        <p>The Reference type is used to explain the behaviour of such operators as `delete`, `typeof`, the assignment operators, the `super` keyword and other language features. For example, the left-hand operand of an assignment is expected to produce a reference.</p>
+        <p>Reference 类型用于解释如 `delete`，`typeof`，分配操作，`super` 关键字以及其他语言功能的操作的行为。例如，分配一个左操作数预计将产生一个<abbr title="reference">引用</abbr>。</p>
       </emu-note>
-      <p>A <dfn>Reference</dfn> is a resolved name or property binding. A Reference consists of three components, the base value component, the referenced name component, and the Boolean-valued strict reference flag. The base value component is either *undefined*, an Object, a Boolean, a String, a Symbol, a Number, or an Environment Record. A base value component of *undefined* indicates that the Reference could not be resolved to a binding. The referenced name component is a String or Symbol value.</p>
-      <p>A <dfn id="super-reference">Super Reference</dfn> is a Reference that is used to represents a name binding that was expressed using the super keyword. A Super Reference has an additional thisValue component, and its base value component will never be an Environment Record.</p>
-      <p>The following abstract operations are used in this specification to operate on references:</p>
+      <p>一个 <dfn>Reference</dfn> 是一个解析后的名称或者属性组合。一个 Reference 包含3个组件，基值组件，引用名组件，以及一个 Boolean 值的严格引用标志。一个基值组件可以是 *undefined*，Object， Boolean，String，Symbol，Number, 或 Environment Record。一个基值组件为 *undefined* 表示 Reference 解析为一个组合。引用名组件是一个 String，或 Symbol。</p>
+      <p>一个 <dfn id="super-reference">Super Reference</dfn> 是指，用于表示使用 super 关键字表示一个名称组合的 Reference。一个 Super Reference 有一个额外的 thisValue 组件，且他的基值组件永远不会是一个 Environment Record。</p>
+      <p>以下抽象操作在本规范中用于操作引用：</p>
 
       <emu-clause id="sec-getbase" aoid="GetBase" oldids="ao-getbase">
         <h1>GetBase ( _V_ )</h1>
@@ -211,7 +211,7 @@
             1. Return ? _base_.GetBindingValue(GetReferencedName(_V_), IsStrictReference(_V_)) (see <emu-xref href="#sec-environment-records"></emu-xref>).
         </emu-alg>
         <emu-note>
-          <p>The object that may be created in step 5.a.ii is not accessible outside of the above abstract operation and the ordinary object [[Get]] internal method. An implementation might choose to avoid the actual creation of the object.</p>
+          <p>在步骤 5.a.ii 中创建的对象在上面抽象方法和普通对象 [[GET]] 内部方法 之外是不可访问的。实现可以选择避免实际创建对象。</p>
         </emu-note>
       </emu-clause>
 
@@ -221,25 +221,25 @@
         <emu-alg>
           1. ReturnIfAbrupt(_V_).
           1. ReturnIfAbrupt(_W_).
-          1. If Type(_V_) is not Reference, throw a *ReferenceError* exception.
+          1. If Type(_V_) is not Reference, throw a `ReferenceError` exception.
           1. Let _base_ be GetBase(_V_).
-          1. If IsUnresolvableReference(_V_) is *true*, then
-            1. If IsStrictReference(_V_) is *true*, then
-              1. Throw a *ReferenceError* exception.
+          1. If IsUnresolvableReference(_V_) is `true`, then
+            1. If IsStrictReference(_V_) is `true`, then
+              1. Throw a `ReferenceError` exception.
             1. Let _globalObj_ be GetGlobalObject().
-            1. Return ? Set(_globalObj_, GetReferencedName(_V_), _W_, *false*).
-          1. Else if IsPropertyReference(_V_) is *true*, then
-            1. If HasPrimitiveBase(_V_) is *true*, then
-              1. Assert: In this case, _base_ will never be *undefined* or *null*.
+            1. Return ? Set(_globalObj_, GetReferencedName(_V_), _W_, `false`).
+          1. Else if IsPropertyReference(_V_) is `true`, then
+            1. If HasPrimitiveBase(_V_) is `true`, then
+              1. Assert: In this case, _base_ will never be `undefined` or `null`.
               1. Set _base_ to ! ToObject(_base_).
             1. Let _succeeded_ be ? _base_.[[Set]](GetReferencedName(_V_), _W_, GetThisValue(_V_)).
-            1. If _succeeded_ is *false* and IsStrictReference(_V_) is *true*, throw a *TypeError* exception.
+            1. If _succeeded_ is `false` and IsStrictReference(_V_) is `true`, throw a `TypeError` exception.
             1. Return.
           1. Else _base_ must be an Environment Record,
             1. Return ? _base_.SetMutableBinding(GetReferencedName(_V_), _W_, IsStrictReference(_V_)) (see <emu-xref href="#sec-environment-records"></emu-xref>).
         </emu-alg>
         <emu-note>
-          <p>The object that may be created in step 6.a.ii is not accessible outside of the above algorithm and the ordinary object [[Set]] internal method. An implementation might choose to avoid the actual creation of that object.</p>
+          <p>在步骤 6.a.ii 中创建的对象在上面抽象方法和普通对象 [[SET]] 内部方法 之外是不可访问的。实现可以选择避免实际创建对象。</p>
         </emu-note>
       </emu-clause>
 
@@ -271,26 +271,26 @@
 
     <!-- es6num="6.2.4" -->
     <emu-clause id="sec-property-descriptor-specification-type">
-      <h1>The Property Descriptor Specification Type</h1>
-      <p>The <dfn>Property Descriptor</dfn> type is used to explain the manipulation and reification of Object property attributes. Values of the Property Descriptor type are Records. Each field's name is an attribute name and its value is a corresponding attribute value as specified in <emu-xref href="#sec-property-attributes"></emu-xref>. In addition, any field may be present or absent. The schema name used within this specification to tag literal descriptions of Property Descriptor records is &ldquo;PropertyDescriptor&rdquo;.</p>
-      <p>Property Descriptor values may be further classified as data Property Descriptors and accessor Property Descriptors based upon the existence or use of certain fields. A data Property Descriptor is one that includes any fields named either [[Value]] or [[Writable]]. An accessor Property Descriptor is one that includes any fields named either [[Get]] or [[Set]]. Any Property Descriptor may have fields named [[Enumerable]] and [[Configurable]]. A Property Descriptor value may not be both a data Property Descriptor and an accessor Property Descriptor; however, it may be neither. A generic Property Descriptor is a Property Descriptor value that is neither a data Property Descriptor nor an accessor Property Descriptor. A fully populated Property Descriptor is one that is either an accessor Property Descriptor or a data Property Descriptor and that has all of the fields that correspond to the property attributes defined in either <emu-xref href="#table-2"></emu-xref> or <emu-xref href="#table-3"></emu-xref>.</p>
-      <p>The following abstract operations are used in this specification to operate upon Property Descriptor values:</p>
+      <h1>Property Descriptor 规范类型</h1>
+      <p><dfn>Property Descriptor</dfn> 类型用来解释对象属性的特性的操作和具体化。Property Descriptor 的值为 Record 类型。每个字段的名称都是一个特性名称，其值是 <emu-xref href="#sec-property-attributes"></emu-xref> 相应的特性值。另外，任何字段都可以存在或不存在。在本规范中用于标记 Property Descriptor 记录的字面量描述是 &ldquo;PropertyDescriptor&rdquo;。</p>
+      <p>Property Descriptor 值可以根据某些字段的存在或使用进一步分类为数据 Property Descriptor 和访问器 Property Descriptor。包含字段 [[Value]] 或 [[Writable]] 的是数据 Property Descriptor。包含字段 [[Get]] 或 [[Set]] 的是访问器 Property Descriptor。所有的 Property Descriptor 都可能包含 [[Enumerable]]，[[Configurable]] 字段名。一个 Property Descriptor 值可能不会同时为一个数据 Property Descriptor 和一个访问器 Property Descriptor。然而，也不一定，一个通用 Property Descriptor 是一个既不是数据 Property Descriptor 也不是访问器 Property Descriptor 的 Property Descriptor值。一个完全填充的 Property Descriptor 既是一个数据 Property Descriptor 也是一个访问器 Property Descriptor， 他有所有符合表 <emu-xref href="#table-2"></emu-xref> 和 <emu-xref href="#table-3"></emu-xref> 定义的属性特性字段。</p>
+      <p>在本规范中使用以下抽象操作用来操作 Property Descriptor值：</p>
 
       <!-- es6num="6.2.4.1" -->
       <emu-clause id="sec-isaccessordescriptor" aoid="IsAccessorDescriptor">
         <h1>IsAccessorDescriptor ( _Desc_ )</h1>
-        <p>When the abstract operation IsAccessorDescriptor is called with Property Descriptor _Desc_, the following steps are taken:</p>
+        <p>当用 Property Descriptor _Desc_ 作为参数调用抽象操作 IsAccessorDescriptor 时，采取以下步骤：</p>
         <emu-alg>
-          1. If _Desc_ is *undefined*, return *false*.
-          1. If both _Desc_.[[Get]] and _Desc_.[[Set]] are absent, return *false*.
-          1. Return *true*.
+          1. If _Desc_ is `undefined`, return `false`.
+          1. If both _Desc_.[[Get]] and _Desc_.[[Set]] are absent, return `false`.
+          1. Return `true`.
         </emu-alg>
       </emu-clause>
 
       <!-- es6num="6.2.4.2" -->
       <emu-clause id="sec-isdatadescriptor" aoid="IsDataDescriptor">
         <h1>IsDataDescriptor ( _Desc_ )</h1>
-        <p>When the abstract operation IsDataDescriptor is called with Property Descriptor _Desc_, the following steps are taken:</p>
+        <p>当用 Property Descriptor _Desc_ 作为参数调用抽象操作 IsDataDescriptor 时，采取以下步骤：</p>
         <emu-alg>
           1. If _Desc_ is *undefined*, return *false*.
           1. If both _Desc_.[[Value]] and _Desc_.[[Writable]] are absent, return *false*.
@@ -301,18 +301,18 @@
       <!-- es6num="6.2.4.3" -->
       <emu-clause id="sec-isgenericdescriptor" aoid="IsGenericDescriptor">
         <h1>IsGenericDescriptor ( _Desc_ )</h1>
-        <p>When the abstract operation IsGenericDescriptor is called with Property Descriptor _Desc_, the following steps are taken:</p>
+        <p>当用 Property Descriptor _Desc_ 作为参数调用抽象操作 IsGenericDescriptor 时，采取以下步骤：</p>
         <emu-alg>
-          1. If _Desc_ is *undefined*, return *false*.
-          1. If IsAccessorDescriptor(_Desc_) and IsDataDescriptor(_Desc_) are both *false*, return *true*.
-          1. Return *false*.
+          1. If _Desc_ is `undefined`, return `false`.
+          1. If IsAccessorDescriptor(_Desc_) and IsDataDescriptor(_Desc_) are both `false`, return `true`.
+          1. Return `false`.
         </emu-alg>
       </emu-clause>
 
       <!-- es6num="6.2.4.4" -->
       <emu-clause id="sec-frompropertydescriptor" aoid="FromPropertyDescriptor">
         <h1>FromPropertyDescriptor ( _Desc_ )</h1>
-        <p>When the abstract operation FromPropertyDescriptor is called with Property Descriptor _Desc_, the following steps are taken:</p>
+        <p>当用Property Descriptor _Desc_作为参数调用抽象操作 FromPropertyDescriptor 时，采取以下步骤：</p>
         <emu-alg>
           1. If _Desc_ is *undefined*, return *undefined*.
           1. Let _obj_ be ObjectCreate(%ObjectPrototype%).
@@ -337,7 +337,7 @@
       <!-- es6num="6.2.4.5" -->
       <emu-clause id="sec-topropertydescriptor" aoid="ToPropertyDescriptor">
         <h1>ToPropertyDescriptor ( _Obj_ )</h1>
-        <p>When the abstract operation ToPropertyDescriptor is called with object _Obj_, the following steps are taken:</p>
+        <p>当用一个对象 _Obj_ 作为参数调用抽象操作 ToPropertyDescriptor 时，采取以下步骤：</p>
         <emu-alg>
           1. If Type(_Obj_) is not Object, throw a *TypeError* exception.
           1. Let _desc_ be a new Property Descriptor that initially has no fields.
@@ -376,7 +376,7 @@
       <!-- es6num="6.2.4.6" -->
       <emu-clause id="sec-completepropertydescriptor" aoid="CompletePropertyDescriptor">
         <h1>CompletePropertyDescriptor ( _Desc_ )</h1>
-        <p>When the abstract operation CompletePropertyDescriptor is called with Property Descriptor _Desc_, the following steps are taken:</p>
+        <p>当用 Property Descriptor _Desc_ 作为参数调用抽象操作 CompletePropertyDescriptor 时，采取以下步骤：</p>
         <emu-alg>
           1. Assert: _Desc_ is a Property Descriptor.
           1. Let _like_ be Record{[[Value]]: *undefined*, [[Writable]]: *false*, [[Get]]: *undefined*, [[Set]]: *undefined*, [[Enumerable]]: *false*, [[Configurable]]: *false*}.
@@ -395,24 +395,24 @@
 
     <!-- es6num="6.2.5" -->
     <emu-clause id="sec-lexical-environment-and-environment-record-specification-types">
-      <h1>The Lexical Environment and Environment Record Specification Types</h1>
-      <p>The Lexical Environment and Environment Record types are used to explain the behaviour of name resolution in nested functions and blocks. These types and the operations upon them are defined in <emu-xref href="#sec-lexical-environments"></emu-xref>.</p>
+      <h1>Lexical Environment 和 Environment Record 规范类型</h1>
+      <p>Lexical Environment and Environment Record 是用来解释在嵌套的函数和块中的名称解析行为。这些类型以及他们的操作在 <emu-xref href="#sec-lexical-environments"></emu-xref> 中定义。</p>
     </emu-clause>
 
     <!-- es6num="6.2.6" -->
     <emu-clause id="sec-data-blocks">
       <h1>Data Blocks</h1>
-      <p>The <dfn>Data Block</dfn> specification type is used to describe a distinct and mutable sequence of byte-sized (8 bit) numeric values. A Data Block value is created with a fixed number of bytes that each have the initial value 0.</p>
-      <p>For notational convenience within this specification, an array-like syntax can be used to access the individual bytes of a Data Block value. This notation presents a Data Block value as a 0-origined integer indexed sequence of bytes. For example, if _db_ is a 5 byte Data Block value then _db_[2] can be used to access its 3<sup>rd</sup> byte.</p>
-      <p>A data block that resides in memory that can be referenced from multiple agents concurrently is designated a <dfn>Shared Data Block</dfn>. A Shared Data Block has an identity (for the purposes of equality testing Shared Data Block values) that is <em>address-free</em>: it is tied not to the virtual addresses the block is mapped to in any process, but to the set of locations in memory that the block represents. Two data blocks are equal only if the sets of the locations they contain are equal; otherwise, they are not equal and the intersection of the sets of locations they contain is empty.  Finally, Shared Data Blocks can be distinguished from Data Blocks.</p>
-      <p>The semantics of Shared Data Blocks is defined using Shared Data Block events by the memory model. Abstract operations below introduce Shared Data Block events and act as the interface between evaluation semantics and the event semantics of the memory model. The events form a candidate execution, on which the memory model acts as a filter. Please consult the memory model for full semantics.</p>
-      <p>Shared Data Block events are modeled by Records, defined in the memory model.</p>
-      <p>The following abstract operations are used in this specification to operate upon Data Block values:</p>
+      <p><dfn>Data Block</dfn> 规范类型用来描述不同且可变的字节(8 bit)大小的数字值序列。一个 Data Block 值由初始值为 0，固定数量的字节构成。</p>
+      <p>在本规范中为了方便，可以使用类似数组的语法来访问一个 Data Block 值的各个字节。这些符号将 Data Block 值的这些字节表示为一个从 0 开始的索引队列。 例如，如果 _db_ 是一个 5 字节的 Data Block 值，那么 _db_[2] 可以用来访问第三字节。</p>
+      <p>驻留在内存中，可以被多个代理并发引用的数据块被称为 <dfn>Shared Data Block</dfn>。一个 Shared Data Block 有一个 <em>空地址</em> 的标识（目的是平等检测 Shared Data Block 值）： 它不依赖于所述块在任何进程中映射到的虚拟地址，而是用该块来表示内存中的位置集合。只有当两个块包含的位置集合相等时他们才相等。否则，他们地址集合的交集为空，他们是不相等的。最后，可以从 Data Block 区分 Shared Data Blocks。</p>
+      <p>Shared Data Block 的语义由内存模型中的 Shared Data Block 事件来定义。下方的抽象操作介绍了 Shared Data Block 事件，以及在内存模型上解析语义和事件语义的接口的行为。事件形成了一个候选执行，内存模型扮演了一个过滤器的角色。请查看内存模型来了解完整的语义。</p>
+      <p>Shared Data Block 事件由 Record 建模, 通过内存模型定义。</p>
+      <p>下列抽象操作在本规范中用于对 Data Block 值进行操作：</p>
 
       <!-- es6num="6.2.6.1" -->
       <emu-clause id="sec-createbytedatablock" aoid="CreateByteDataBlock">
         <h1>CreateByteDataBlock ( _size_ )</h1>
-        <p>When the abstract operation CreateByteDataBlock is called with integer argument _size_, the following steps are taken:</p>
+        <p>当用整数参数 _size_ 调用抽象操作 CreateByteDataBlock 时，采取以下步骤：</p>
         <emu-alg>
           1. Assert: _size_&ge;0.
           1. Let _db_ be a new Data Block value consisting of _size_ bytes. If it is impossible to create such a Data Block, throw a *RangeError* exception.
@@ -423,7 +423,7 @@
 
       <emu-clause id="sec-createsharedbytedatablock" aoid="CreateSharedByteDataBlock">
         <h1>CreateSharedByteDataBlock( _size_ )</h1>
-        <p>When the abstract operation CreateSharedByteDataBlock is called with integer argument _size_, the following steps are taken:</p>
+        <p>当用整数参数 _size_ 调用抽象操作 CreateByteDataBlock 时，采取以下步骤：</p>
         <emu-alg>
           1. Assert: _size_&ge;0.
           1. Let _db_ be a new Shared Data Block value consisting of _size_ bytes. If it is impossible to create such a Shared Data Block, throw a *RangeError* exception.
@@ -439,7 +439,7 @@
       <!-- es6num="6.2.6.2" -->
       <emu-clause id="sec-copydatablockbytes" aoid="CopyDataBlockBytes">
         <h1>CopyDataBlockBytes ( _toBlock_, _toIndex_, _fromBlock_, _fromIndex_, _count_ )</h1>
-        <p>When the abstract operation CopyDataBlockBytes is called, the following steps are taken:</p>
+        <p>当抽象操作 CreateByteDataBlock 被调用时，采取以下步骤：</p>
         <emu-alg>
           1. Assert: _fromBlock_ and _toBlock_ are distinct Data Block or Shared Data Block values.
           1. Assert: _fromIndex_, _toIndex_, and _count_ are integer values &ge; 0.
