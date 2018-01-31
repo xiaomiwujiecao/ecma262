@@ -3334,18 +3334,18 @@
 
 <!-- es6num="7" -->
 <emu-clause id="sec-abstract-operations">
-  <h1>Abstract Operations</h1>
-  <p>These operations are not a part of the ECMAScript language; they are defined here to solely to aid the specification of the semantics of the ECMAScript language. Other, more specialized abstract operations are defined throughout this specification.</p>
+  <h1><abbr title="Abstract Operations">抽象操作</abbr></h1>
+  <p>这些操作不是 ECMAScript 语言的一部分；在这里定义他们只是为了规范 ECMAScript 语言的语义。另外，本规范中还定义了其他特定的抽象操作。</p>
 
   <!-- es6num="7.1" -->
   <emu-clause id="sec-type-conversion">
-    <h1>Type Conversion</h1>
-    <p>The ECMAScript language implicitly performs automatic type conversion as needed. To clarify the semantics of certain constructs it is useful to define a set of conversion abstract operations. The conversion abstract operations are polymorphic; they can accept a value of any ECMAScript language type. But no other specification types are used with these operations.</p>
+    <h1>类型转换</h1>
+    <p>ECMAScript 语言根据需要会自动执行类型转换。为了解释清楚某些结构的语义，定义一组转换抽象操作是很有用的。转换抽象操作是多态的；他们可以接受一个任意 ECMAScript 类型的值。但是这些操作中没有使用其他相应的规范类型。</p>
 
     <!-- es6num="7.1.1" -->
     <emu-clause id="sec-toprimitive" aoid="ToPrimitive" oldids="table-9">
       <h1>ToPrimitive ( _input_ [ , _PreferredType_ ] )</h1>
-      <p>The abstract operation ToPrimitive takes an _input_ argument and an optional argument _PreferredType_. The abstract operation ToPrimitive converts its _input_ argument to a non-Object type. If an object is capable of converting to more than one primitive type, it may use the optional hint _PreferredType_ to favour that type. Conversion occurs according to the following algorithm:</p>
+      <p>抽象操作 ToPrimitive 接受一个 _input_ 参数和一个可选的 _PreferredType_ 参数。ToPrimitive 负责把 _input_ 参数转换为一个非对象类型。如果一个对象可以转换为多个原始类型，则应该根据可选提示 _PreferredType_ 来判断转换的类型。根据以下算法进行转换：</p>
       <emu-alg>
         1. Assert: _input_ is an ECMAScript language value.
         1. If Type(_input_) is Object, then
@@ -3362,12 +3362,12 @@
         1. Return _input_.
       </emu-alg>
       <emu-note>
-        <p>When ToPrimitive is called with no hint, then it generally behaves as if the hint were Number. However, objects may over-ride this behaviour by defining a @@toPrimitive method. Of the objects defined in this specification only Date objects (see <emu-xref href="#sec-date.prototype-@@toprimitive"></emu-xref>) and Symbol objects (see <emu-xref href="#sec-symbol.prototype-@@toprimitive"></emu-xref>) over-ride the default ToPrimitive behaviour. Date objects treat no hint as if the hint were String.</p>
+        <p>当调用 ToPrimitive 没有提示参数时，通常表现和提示为 Number 类型一样。然而，对象可能通过定义一个 @@toPrimitive 方法，来覆盖这一行为。在本规范中的对象只有 Date 对象 (见 <emu-xref href="#sec-date.prototype-@@toprimitive"></emu-xref>) 和 Symbol(见 <emu-xref href="#sec-symbol.prototype-@@toprimitive"></emu-xref>) 会覆盖默认的 ToPrimitive 行为。Date 对象处理没有提示的调用就像提示为 String 类型一样。</p>
       </emu-note>
 
       <emu-clause id="sec-ordinarytoprimitive" aoid="OrdinaryToPrimitive">
         <h1>OrdinaryToPrimitive ( _O_, _hint_ )</h1>
-        <p>When the abstract operation OrdinaryToPrimitive is called with arguments _O_ and _hint_, the following steps are taken:</p>
+        <p>当使用参数 _O_ 和 _hint_ 调用抽象操作 OrdinaryToPrimitive 时，执行以下步骤：</p>
         <emu-alg>
           1. Assert: Type(_O_) is Object.
           1. Assert: Type(_hint_) is String and its value is either `"string"` or `"number"`.
@@ -3388,16 +3388,16 @@
     <!-- es6num="7.1.2" -->
     <emu-clause id="sec-toboolean" aoid="ToBoolean">
       <h1>ToBoolean ( _argument_ )</h1>
-      <p>The abstract operation ToBoolean converts _argument_ to a value of type Boolean according to <emu-xref href="#table-10"></emu-xref>:</p>
+      <p>抽象操作 ToBoolean 把参数 _argument_ 转换为一个 Boolean 类型的值，见表 <emu-xref href="#table-10"></emu-xref>：</p>
       <emu-table id="table-10" caption="ToBoolean Conversions">
         <table>
           <tbody>
           <tr>
             <th>
-              Argument Type
+              参数类型
             </th>
             <th>
-              Result
+              结果
             </th>
           </tr>
           <tr>
@@ -3405,7 +3405,7 @@
               Undefined
             </td>
             <td>
-              Return *false*.
+              返回 *false*。
             </td>
           </tr>
           <tr>
@@ -3413,7 +3413,7 @@
               Null
             </td>
             <td>
-              Return *false*.
+              返回 *false*。
             </td>
           </tr>
           <tr>
@@ -3421,7 +3421,7 @@
               Boolean
             </td>
             <td>
-              Return _argument_.
+              返回 _argument_。
             </td>
           </tr>
           <tr>
@@ -3429,7 +3429,7 @@
               Number
             </td>
             <td>
-              If _argument_ is *+0*, *-0*, or *NaN*, return *false*; otherwise return *true*.
+              如果 _argument_ 为 *+0*，*-0*，or *NaN*，返回 *false*; 否则返回 *true*。
             </td>
           </tr>
           <tr>
@@ -3437,7 +3437,7 @@
               String
             </td>
             <td>
-              If _argument_ is the empty String (its length is zero), return *false*; otherwise return *true*.
+              如果 _argument_ 是一个空字符串 (长度为0的字符串)， 返回 *false*; 否则返回 *true*。
             </td>
           </tr>
           <tr>
@@ -3445,7 +3445,7 @@
               Symbol
             </td>
             <td>
-              Return *true*.
+              返回 *true*。
             </td>
           </tr>
           <tr>
@@ -3453,7 +3453,7 @@
               Object
             </td>
             <td>
-              Return *true*.
+              返回 *true*。
             </td>
           </tr>
           </tbody>
@@ -3464,16 +3464,16 @@
     <!-- es6num="7.1.3" -->
     <emu-clause id="sec-tonumber" aoid="ToNumber">
       <h1>ToNumber ( _argument_ )</h1>
-      <p>The abstract operation ToNumber converts _argument_ to a value of type Number according to <emu-xref href="#table-11"></emu-xref>:</p>
+      <p>抽象操作把 _argument_ 转换为一个 Number 类型的值，转换结果见表 <emu-xref href="#table-11"></emu-xref>：</p>
       <emu-table id="table-11" caption="ToNumber Conversions">
         <table>
           <tbody>
           <tr>
             <th>
-              Argument Type
+              参数类型
             </th>
             <th>
-              Result
+              结果
             </th>
           </tr>
           <tr>
@@ -3481,7 +3481,7 @@
               Undefined
             </td>
             <td>
-              Return *NaN*.
+              返回 *NaN*。
             </td>
           </tr>
           <tr>
@@ -3489,7 +3489,7 @@
               Null
             </td>
             <td>
-              Return *+0*.
+              返回 *+0*。
             </td>
           </tr>
           <tr>
@@ -3497,7 +3497,7 @@
               Boolean
             </td>
             <td>
-              If _argument_ is *true*, return 1. If _argument_ is *false*, return *+0*.
+              如果 _argument_ 是 *true*，返回 1。如果 _argument_ 是 *false*，返回 *+0*。
             </td>
           </tr>
           <tr>
@@ -3505,7 +3505,7 @@
               Number
             </td>
             <td>
-              Return _argument_ (no conversion).
+              返回 _argument_ (不转换)。
             </td>
           </tr>
           <tr>
@@ -3513,7 +3513,7 @@
               String
             </td>
             <td>
-              See grammar and conversion algorithm below.
+              见下面语法和转换算法。
             </td>
           </tr>
           <tr>
@@ -3521,7 +3521,7 @@
               Symbol
             </td>
             <td>
-              Throw a *TypeError* exception.
+              抛出一个 *TypeError* 异常。
             </td>
           </tr>
           <tr>
@@ -3529,7 +3529,7 @@
               Object
             </td>
             <td>
-              <p>Apply the following steps:</p>
+              <p>应用以下步骤：</p>
               <emu-alg>
                 1. Let _primValue_ be ? ToPrimitive(_argument_, hint Number).
                 1. Return ? ToNumber(_primValue_).
@@ -3542,10 +3542,10 @@
 
       <!-- es6num="7.1.3.1" -->
       <emu-clause id="sec-tonumber-applied-to-the-string-type">
-        <h1>ToNumber Applied to the String Type</h1>
-        <p>ToNumber applied to Strings applies the following grammar to the input String interpreted as a sequence of UTF-16 encoded code points (<emu-xref href="#sec-ecmascript-language-types-string-type"></emu-xref>). If the grammar cannot interpret the String as an expansion of |StringNumericLiteral|, then the result of ToNumber is *NaN*.</p>
+        <h1>应用于 String 类型的 ToNumber</h1>
+        <p>应用 ToNumber 的字符串使用如下语法把字符串解释为一个 UTF-16 的编码码点 (<emu-xref href="#sec-ecmascript-language-types-string-type"></emu-xref>)。如果语法不能解释字符串为一个 |StringNumericLiteral| 终结符的扩展，那么 ToNumber 的结果是 *NaN*。</p>
         <emu-note>
-          <p>The terminal symbols of this grammar are all composed of Unicode BMP code points so the result will be *NaN* if the string contains the UTF-16 encoding of any supplementary code points or any unpaired surrogate code points.</p>
+          <p>这个语法的终结符都由 Unicode BMP 码点组成，所以如果字符串包含任何补充码点或任何未配对替代码点的 UTF-16 编码，那么结果就会是 NaN。</p>
         </emu-note>
         <h2>Syntax</h2>
         <emu-grammar type="definition">
@@ -3577,98 +3577,98 @@
             `.` DecimalDigits ExponentPart?
             DecimalDigits ExponentPart?
         </emu-grammar>
-        <p>All grammar symbols not explicitly defined above have the definitions used in the Lexical Grammar for numeric literals (<emu-xref href="#sec-literals-numeric-literals"></emu-xref>)</p>
+        <p>以上所有未明确定义的语法符号都在数字字面量词法定义(<emu-xref href="#sec-literals-numeric-literals"></emu-xref>)</p>
         <emu-note>
-          <p>Some differences should be noted between the syntax of a |StringNumericLiteral| and a |NumericLiteral|:</p>
+          <p>应该注意 |StringNumericLiteral| 和 |NumericLiteral| 语法之间的一些区别：</p>
           <ul>
             <li>
-              A |StringNumericLiteral| may include leading and/or trailing white space and/or line terminators.
+              |StringNumericLiteral| 可能包含前导和(或)结尾的空白和(或)行终止符。
             </li>
             <li>
-              A |StringNumericLiteral| that is decimal may have any number of leading `0` digits.
+              十进制的 |StringNumericLiteral| 可能包含多位前导 `0` 的数字。
             </li>
             <li>
-              A |StringNumericLiteral| that is decimal may include a `+` or `-` to indicate its sign.
+              十进制的 |StringNumericLiteral| 可能包含一个 `+` 或 `-` 以指示其符号。
             </li>
             <li>
-              A |StringNumericLiteral| that is empty or contains only white space is converted to *+0*.
+              空的或者只有空格的 |StringNumericLiteral| 会被转换为 *+0*。
             </li>
             <li>
-              `Infinity` and `-Infinity` are recognized as a |StringNumericLiteral| but not as a |NumericLiteral|.
+              `Infinity` 和 `-Infinity` 公认是 |StringNumericLiteral| 而不是 |NumericLiteral|。
             </li>
           </ul>
         </emu-note>
 
         <!-- es6num="7.1.3.1.1" -->
         <emu-clause id="sec-runtime-semantics-mv-s">
-          <h1>Runtime Semantics: MV</h1>
-          <p>The conversion of a String to a Number value is similar overall to the determination of the Number value for a numeric literal (see <emu-xref href="#sec-literals-numeric-literals"></emu-xref>), but some of the details are different, so the process for converting a String numeric literal to a value of Number type is given here. This value is determined in two steps: first, a mathematical value (MV) is derived from the String numeric literal; second, this mathematical value is rounded as described below. The MV on any grammar symbol, not provided below, is the MV for that symbol defined in <emu-xref href="#sec-static-semantics-mv"></emu-xref>.</p>
+          <h1>运行时语义: MV</h1>
+          <p>字符串到 Number 值的转换和一个的数字字面量 Number 值的确定总体上来说是相似的(见 <emu-xref href="#sec-literals-numeric-literals"></emu-xref>)，但是也有一些细微的差别，因此在这里给出了转换一个 String 类型的数字字面量为一个 Number 类型的值的过程。这个数字由以下两个步骤确定：首先，从 String 类型的数字字面量导出数值(MV)由数学值(MV，以下简称数值)；然后，这个数字像下面描述的那样舍入。很多语法符号的数值不在下面提供，在 <emu-xref href="#sec-static-semantics-mv"></emu-xref> 定义。</p>
           <ul>
             <li>
-              The MV of <emu-grammar>StringNumericLiteral ::: [empty]</emu-grammar> is 0.
+              <emu-grammar>StringNumericLiteral ::: [empty]</emu-grammar> 的数值 0.
             </li>
             <li>
-              The MV of <emu-grammar>StringNumericLiteral ::: StrWhiteSpace</emu-grammar> is 0.
+              <emu-grammar>StringNumericLiteral ::: StrWhiteSpace</emu-grammar> 的数值是 0.
             </li>
             <li>
-              The MV of <emu-grammar>StringNumericLiteral ::: StrWhiteSpace? StrNumericLiteral StrWhiteSpace?</emu-grammar> is the MV of |StrNumericLiteral|, no matter whether white space is present or not.
+              <emu-grammar>StringNumericLiteral ::: StrWhiteSpace? StrNumericLiteral StrWhiteSpace?</emu-grammar>的数值是 |StrNumericLiteral| 的数值, 无论是否存在空格.
             </li>
             <li>
-              The MV of <emu-grammar>StrNumericLiteral ::: StrDecimalLiteral</emu-grammar> is the MV of |StrDecimalLiteral|.
+              <emu-grammar>StrNumericLiteral ::: StrDecimalLiteral</emu-grammar>的数值是 |StrDecimalLiteral| 的数值.
             </li>
             <li>
-              The MV of <emu-grammar>StrNumericLiteral ::: BinaryIntegerLiteral</emu-grammar> is the MV of |BinaryIntegerLiteral|.
+              <emu-grammar>StrNumericLiteral ::: BinaryIntegerLiteral</emu-grammar>的数值是 |BinaryIntegerLiteral| 的数值.
             </li>
             <li>
-              The MV of <emu-grammar>StrNumericLiteral ::: OctalIntegerLiteral</emu-grammar> is the MV of |OctalIntegerLiteral|.
+              <emu-grammar>StrNumericLiteral ::: OctalIntegerLiteral</emu-grammar>的数值是 |OctalIntegerLiteral| 的数值.
             </li>
             <li>
-              The MV of <emu-grammar>StrNumericLiteral ::: HexIntegerLiteral</emu-grammar> is the MV of |HexIntegerLiteral|.
+              <emu-grammar>StrNumericLiteral ::: HexIntegerLiteral</emu-grammar>的数值是 |HexIntegerLiteral| 的数值.
             </li>
             <li>
-              The MV of <emu-grammar>StrDecimalLiteral ::: StrUnsignedDecimalLiteral</emu-grammar> is the MV of |StrUnsignedDecimalLiteral|.
+              <emu-grammar>StrDecimalLiteral ::: StrUnsignedDecimalLiteral</emu-grammar>的数值是 |StrUnsignedDecimalLiteral| 的数值.
             </li>
             <li>
-              The MV of <emu-grammar>StrDecimalLiteral ::: `+` StrUnsignedDecimalLiteral</emu-grammar> is the MV of |StrUnsignedDecimalLiteral|.
+              <emu-grammar>StrDecimalLiteral ::: `+` StrUnsignedDecimalLiteral</emu-grammar>的数值是 |StrUnsignedDecimalLiteral| 的数值.
             </li>
             <li>
-              The MV of <emu-grammar>StrDecimalLiteral ::: `-` StrUnsignedDecimalLiteral</emu-grammar> is the negative of the MV of |StrUnsignedDecimalLiteral|. (Note that if the MV of |StrUnsignedDecimalLiteral| is 0, the negative of this MV is also 0. The rounding rule described below handles the conversion of this signless mathematical zero to a floating-point *+0* or *-0* as appropriate.)
+              <emu-grammar>StrDecimalLiteral ::: `-` StrUnsignedDecimalLiteral</emu-grammar>的数值是 |StrUnsignedDecimalLiteral| 的数值的负数.(注意，如果 |StrUnsignedDecimalLiteral| 的数值是 0，那么这个数值的负数也是 0。下面的舍入规则描述了合理的处理转换无符号数字 0 为一个浮点数 *+0* 或 *-0*。)
             </li>
             <li>
-              The MV of <emu-grammar>StrUnsignedDecimalLiteral ::: `Infinity`</emu-grammar> is 10<sup>10000</sup> (a value so large that it will round to *+&infin;*).
+              <emu-grammar>StrUnsignedDecimalLiteral ::: `Infinity`</emu-grammar>的数值是 10<sup>10000</sup> (一个这么大的数字将舍入为 `+&infin;`).
             </li>
             <li>
-              The MV of <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits `.`</emu-grammar> is the MV of |DecimalDigits|.
+              <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits `.`</emu-grammar>的数值是 |DecimalDigits| 的数值.
             </li>
             <li>
-              The MV of <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits `.` DecimalDigits</emu-grammar> is the MV of the first |DecimalDigits| plus (the MV of the second |DecimalDigits| times 10<sup>-_n_</sup>), where _n_ is the number of code points in the second |DecimalDigits|.
+              <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits `.` DecimalDigits</emu-grammar>的数值是第一个 |DecimalDigits| 的数值加上(第二个 |DecimalDigits| 的数值乘上 10<sup>-_n_</sup>), 这里的 _n_ 是第二个 |DecimalDigits| 的码点数.
             </li>
             <li>
-              The MV of <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits `.` ExponentPart</emu-grammar> is the MV of |DecimalDigits| times 10<sup>_e_</sup>, where _e_ is the MV of |ExponentPart|.
+              <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits `.` ExponentPart</emu-grammar>的数值是 |DecimalDigits| 的数值乘上 10<sup>_e_</sup>, 这里的 _e_ 是 |ExponentPart| 的数值.
             </li>
             <li>
-              The MV of <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits `.` DecimalDigits ExponentPart</emu-grammar> is (the MV of the first |DecimalDigits| plus (the MV of the second |DecimalDigits| times 10<sup>-_n_</sup>)) times 10<sup>_e_</sup>, where _n_ is the number of code points in the second |DecimalDigits| and _e_ is the MV of |ExponentPart|.
+              <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits `.` DecimalDigits ExponentPart</emu-grammar>的数值是(第一个 |DecimalDigits| 的数值加上(第二个 |DecimalDigits| 的数值乘以 10<sup>-_n_</sup>))乘以 10<sup>_e_</sup>, 这里 _n_ 第二个 |DecimalDigits| 码点数，_e_ 是 |ExponentPart| 的数值.
             </li>
             <li>
-              The MV of <emu-grammar>StrUnsignedDecimalLiteral ::: `.` DecimalDigits</emu-grammar> is the MV of |DecimalDigits| times 10<sup>-_n_</sup>, where _n_ is the number of code points in |DecimalDigits|.
+              <emu-grammar>StrUnsignedDecimalLiteral ::: `.` DecimalDigits</emu-grammar>的数值是 |DecimalDigits| 的数值乘上 10<sup>-_n_</sup>, 这里的 _n_ 是 |DecimalDigits| 码点数.
             </li>
             <li>
-              The MV of <emu-grammar>StrUnsignedDecimalLiteral ::: `.` DecimalDigits ExponentPart</emu-grammar> is the MV of |DecimalDigits| times 10<sup>_e_-_n_</sup>, where _n_ is the number of code points in |DecimalDigits| and _e_ is the MV of |ExponentPart|.
+              <emu-grammar>StrUnsignedDecimalLiteral ::: `.` DecimalDigits ExponentPart</emu-grammar>的数值是 |DecimalDigits| 的数值乘以 10<sup>_e_-_n_</sup>, 这里 _n_ 是 |DecimalDigits| 的码点数，_e_ 是 |ExponentPart| 的数值.
             </li>
             <li>
-              The MV of <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits</emu-grammar> is the MV of |DecimalDigits|.
+              <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits</emu-grammar>的数值是 |DecimalDigits| 的数值.
             </li>
             <li>
-              The MV of <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits ExponentPart</emu-grammar> is the MV of |DecimalDigits| times 10<sup>_e_</sup>, where _e_ is the MV of |ExponentPart|.
+              <emu-grammar>StrUnsignedDecimalLiteral ::: DecimalDigits ExponentPart</emu-grammar>的数值是 |DecimalDigits| 的数值乘上 10<sup>_e_</sup>, _e_ 是 |ExponentPart| 的数值.
             </li>
           </ul>
-          <p>Once the exact MV for a String numeric literal has been determined, it is then rounded to a value of the Number type. If the MV is 0, then the rounded value is *+0* unless the first non white space code point in the String numeric literal is `"-"`, in which case the rounded value is *-0*. Otherwise, the rounded value must be the Number value for the MV (in the sense defined in <emu-xref href="#sec-ecmascript-language-types-number-type"></emu-xref>), unless the literal includes a |StrUnsignedDecimalLiteral| and the literal has more than 20 significant digits, in which case the Number value may be either the Number value for the MV of a literal produced by replacing each significant digit after the 20th with a 0 digit or the Number value for the MV of a literal produced by replacing each significant digit after the 20th with a 0 digit and then incrementing the literal at the 20th digit position. A digit is significant if it is not part of an |ExponentPart| and</p>
+          <p>一旦确定了字符串数字字面量确切的数值，它将被舍入为一个 Number 类型的值。如果数值为 0，那么它舍入的值为 *+0*，除非字符串数字字面量的第一个非空格码点是 `"-"`，这种情况舍入值为 *-0*。否则，舍入的值必须为一个数字类型的数值（定义在 <emu-xref href="#sec-ecmascript-language-types-number-type"></emu-xref> ）除非这个字面量包含一个 |StrUnsignedDecimalLiteral| 并且拥有超过 20 位的有效数值，这种情况下，这个数值可以是由 0 替换字面量第 20 位后面的每个有效数字的字面量数值，也可以是在替换后从第 20 位数位递增的字面量数值。如果数字不是一个 |ExponentPart| 的部分，并且</p>
           <ul>
             <li>
-              it is not `0`; or
+              这个数字不是 `0`; 或者
             </li>
             <li>
-              there is a nonzero digit to its left and there is a nonzero digit, not in the |ExponentPart|, to its right.
+              数字的左侧是一个非零的数字且他的右边是一个不在 |ExponentPart| 的非零数字。那么这个数字是有效的。
             </li>
           </ul>
         </emu-clause>
@@ -3678,7 +3678,7 @@
     <!-- es6num="7.1.4" -->
     <emu-clause id="sec-tointeger" aoid="ToInteger">
       <h1>ToInteger ( _argument_ )</h1>
-      <p>The abstract operation ToInteger converts _argument_ to an integral numeric value. This abstract operation functions as follows:</p>
+      <p>抽象操作 ToInteger 把 _argument_ 转换为整数数值。这个抽象操作算法如下：</p>
       <emu-alg>
         1. Let _number_ be ? ToNumber(_argument_).
         1. If _number_ is *NaN*, return *+0*.
@@ -3690,7 +3690,7 @@
     <!-- es6num="7.1.5" -->
     <emu-clause id="sec-toint32" aoid="ToInt32">
       <h1>ToInt32 ( _argument_ )</h1>
-      <p>The abstract operation ToInt32 converts _argument_ to one of 2<sup>32</sup> integer values in the range <emu-eqn>-2<sup>31</sup></emu-eqn> through <emu-eqn>2<sup>31</sup>-1</emu-eqn>, inclusive. This abstract operation functions as follows:</p>
+      <p>抽象操作 ToInt32 把 _argument_ 转换为范围为 <emu-eqn>-2<sup>31</sup></emu-eqn> 到 <emu-eqn>2<sup>31</sup>-1</emu-eqn>的 2<sup>32</sup> 个整数之一,这个抽象操作算法如下：</p>
       <emu-alg>
         1. Let _number_ be ? ToNumber(_argument_).
         1. If _number_ is *NaN*, *+0*, *-0*, *+&infin;*, or *-&infin;*, return *+0*.
@@ -3699,16 +3699,16 @@
         1. If _int32bit_ &ge; 2<sup>31</sup>, return _int32bit_ - 2<sup>32</sup>; otherwise return _int32bit_.
       </emu-alg>
       <emu-note>
-        <p>Given the above definition of ToInt32:</p>
+        <p>鉴于以上 ToInt32 的定义:</p>
         <ul>
           <li>
-            The ToInt32 abstract operation is idempotent: if applied to a result that it produced, the second application leaves that value unchanged.
+            ToInt32 是等幂的: 其作用在同一个元素上产生的结果相同。
           </li>
           <li>
-            ToInt32(ToUint32(_x_)) is equal to ToInt32(_x_) for all values of _x_. (It is to preserve this latter property that *+&infin;* and *-&infin;* are mapped to *+0*.)
+            对于任意 _x_，ToInt32(ToUint32(_x_)) 等于 ToInt32(_x_)。 (这是为了保证 *+&infin;* 和 *-&infin;* 会被映射为 *+0*。)
           </li>
           <li>
-            ToInt32 maps *-0* to *+0*.
+            ToInt32 把 *-0* 映射为 *+0*.
           </li>
         </ul>
       </emu-note>
