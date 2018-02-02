@@ -1,19 +1,19 @@
-  <emu-clause id="sec-testing-and-comparison-operations">
-    <h1>Testing and Comparison Operations</h1>
+<emu-clause id="sec-testing-and-comparison-operations">
+    <h1>测试与比较操作</h1>
 
     <!-- es6num="7.2.1" -->
     <emu-clause id="sec-requireobjectcoercible" aoid="RequireObjectCoercible">
       <h1>RequireObjectCoercible ( _argument_ )</h1>
-      <p>The abstract operation RequireObjectCoercible throws an error if _argument_ is a value that cannot be converted to an Object using ToObject. It is defined by <emu-xref href="#table-14"></emu-xref>:</p>
+      <p>抽象操作 RequireObjectCoercible 尝试使用 ToObject 将 _argument_ 转换为一个对象，如果转换失败，则抛出一个错误，成功则返回 _argument_。如下表<emu-xref href="#table-14"></emu-xref>中定义的：</p>
       <emu-table id="table-14" caption="RequireObjectCoercible Results">
         <table>
           <tbody>
           <tr>
             <th>
-              Argument Type
+              参数类型
             </th>
             <th>
-              Result
+              结果
             </th>
           </tr>
           <tr>
@@ -21,7 +21,7 @@
               Undefined
             </td>
             <td>
-              Throw a *TypeError* exception.
+              抛出一个 *TypeError* 异常。
             </td>
           </tr>
           <tr>
@@ -29,7 +29,7 @@
               Null
             </td>
             <td>
-              Throw a *TypeError* exception.
+              抛出一个 *TypeError* 异常。
             </td>
           </tr>
           <tr>
@@ -37,7 +37,7 @@
               Boolean
             </td>
             <td>
-              Return _argument_.
+              返回 _argument_.
             </td>
           </tr>
           <tr>
@@ -45,7 +45,7 @@
               Number
             </td>
             <td>
-              Return _argument_.
+              返回 _argument_.
             </td>
           </tr>
           <tr>
@@ -53,7 +53,7 @@
               String
             </td>
             <td>
-              Return _argument_.
+              返回 _argument_.
             </td>
           </tr>
           <tr>
@@ -61,7 +61,7 @@
               Symbol
             </td>
             <td>
-              Return _argument_.
+              返回 _argument_.
             </td>
           </tr>
           <tr>
@@ -69,7 +69,7 @@
               Object
             </td>
             <td>
-              Return _argument_.
+              返回 _argument_.
             </td>
           </tr>
           </tbody>
@@ -80,7 +80,7 @@
     <!-- es6num="7.2.2" -->
     <emu-clause id="sec-isarray" aoid="IsArray">
       <h1>IsArray ( _argument_ )</h1>
-      <p>The abstract operation IsArray takes one argument _argument_, and performs the following steps:</p>
+      <p>抽象操作 IsArray 接受一个参数 _argument_，他的执行步骤如下：</p>
       <emu-alg>
         1. If Type(_argument_) is not Object, return *false*.
         1. If _argument_ is an Array exotic object, return *true*.
@@ -95,7 +95,7 @@
     <!-- es6num="7.2.3" -->
     <emu-clause id="sec-iscallable" aoid="IsCallable">
       <h1>IsCallable ( _argument_ )</h1>
-      <p>The abstract operation IsCallable determines if _argument_, which must be an ECMAScript language value, is a callable function with a [[Call]] internal method.</p>
+      <p>抽象操作 IsCallable 用于判断 _argument_ 是否为一个拥有 [[call]] 内部方法的可调用函数，_argument_ 必须是 ECMAScript 语言值。</p>
       <emu-alg>
         1. If Type(_argument_) is not Object, return *false*.
         1. If _argument_ has a [[Call]] internal method, return *true*.
@@ -106,7 +106,7 @@
     <!-- es6num="7.2.4" -->
     <emu-clause id="sec-isconstructor" aoid="IsConstructor">
       <h1>IsConstructor ( _argument_ )</h1>
-      <p>The abstract operation IsConstructor determines if _argument_, which must be an ECMAScript language value, is a function object with a [[Construct]] internal method.</p>
+      <p>抽象操作 IsConstructor 用于判断 _argument_ 是否为一个拥有 [[Construct]] 内部方法的函数对象，_argument_ 必须是 ECMAScript 语言值。</p>
       <emu-alg>
         1. If Type(_argument_) is not Object, return *false*.
         1. If _argument_ has a [[Construct]] internal method, return *true*.
@@ -117,7 +117,7 @@
     <!-- es6num="7.2.5" -->
     <emu-clause id="sec-isextensible-o" aoid="IsExtensible">
       <h1>IsExtensible ( _O_ )</h1>
-      <p>The abstract operation IsExtensible is used to determine whether additional properties can be added to the object that is _O_. A Boolean value is returned. This abstract operation performs the following steps:</p>
+      <p>抽象操作 IsExtensible 用于判断对象 _O_ 是否可以添加新的属性，返回一个 Boolean 值。该抽象操作的执行步骤如下：</p>
       <emu-alg>
         1. Assert: Type(_O_) is Object.
         1. Return ? _O_.[[IsExtensible]]().
