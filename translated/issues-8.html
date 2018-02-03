@@ -1,8 +1,8 @@
   <emu-clause id="sec-algorithm-conventions">
     <h1><abbr title="Algorithm Conventions">算法约定</abbr></h1>
     <p>此规范通常使用带编号的列表来指定算法的步骤。这些算法是用来精确地指定 ECMAScript 语言结构所需的语义。该算法无意暗示任何具体实现使用的技术。在实践中，也许可用更有效的算法实现一个给定功能。</p>
-    <p>算法也许被显式的参数化，在这些案例中参数的名称和用法必须作为算法定义的一部分提高。</p>
-    <p>算法步骤也许被细分成多个连续的子步骤。子步骤需要用缩进表示，并且也许会进一步被划分成更小的缩进的子步骤。大纲编号约定被用作标识有小写字母字符标签的一级子步骤以及有小写罗马数字标签的二级子步骤。如果超过步骤3级，那么这些规则从第四级开始用数字标签进行重复。例如：</p>
+    <p>算法可能被显式参数化，在这种情况下，参数名和用法必须作为算法定义的一部分提供。</p>
+    <p>算法步骤可以细分为多个连续的子步骤。子步骤需要用缩进表示，可以进一步被划分成缩进的子步骤。大纲编号约定用作标识子步骤，第一级子步骤使用小写字母字符标记，第二级小步骤用小写罗马数字标记。如果步骤超过三级，那么这些规则从第四级开始从数字重复进行标记。例如：</p>
     <emu-alg>
       1. Top-level step
         1. Substep.
@@ -14,27 +14,27 @@
     </emu-alg>
     <p>一个步骤或者子步骤也许会使用 &ldquo;if&rdquo; 去断言它的子步骤的条件。在这样的案例中，这些子步骤只能适用于 &ldquo;if&rdquo; 断言为真的情况。如果一个步骤或者子步骤以 &ldquo;else&rdquo; 开始，那么表示这是之前的 &ldquo;if&rdquo; 断言的同一级的否定断言。</p>
     <p>一个步骤也许会指定它的子步骤的迭代程序。</p>
-    <p>一个以 &ldquo;<dfn id="assert">Assert</dfn>:&rdquo; 开头的步骤断言一个它的算法里不变的条件。这样的断言被用作使算法不变量显式地展示，否则它将是隐式的。这样的断言不增加额外的语义需求，因此在实现中不需要被检查。它们被使用只是为了使算法更清晰。</p>
-    <p>对于任意形如 &ldquo;Let _x_ be _someValue_&rdquo; 的值，算法步骤也许会声明命名别名。这些别名即可能通过 _x_ 也可能通过 _someValue_ 引用，它们指向同一个潜在的数据，并且修改其中任意一个对另一个都是可见的。那些想避免这样的类似引用的算法步骤需要显式地复制一份右值：即 &ldquo;Let_x_ be a copy of _someValue_&rdquo; 创建了一个 _someValue_ 的浅复制。</p>
-    <p>一旦声明完毕，别名也许会在随后的任意步骤或者子步骤中被引用，但是它们也许不会在最高级步骤中被引用。别名也许会通过形如 &ldquo;Set _x_ to _someOtherValue_&rdquo; 这样的形式被修改。</p>
+    <p>一个以 &ldquo;<dfn id="assert">Assert</dfn>:&rdquo; 开头的步骤断言一个它的算法里不变的条件。这样的断言被用作使算法不变量显式地展示，否则它将是隐式的。这样的断言不增加额外的语义需求，因此实现不必检查。它们被使用只是为了使算法更清晰。</p>
+    <p>对于任意形如 &ldquo;Let _x_ be _someValue_&rdquo; 的值，算法步骤也许会声明命名别名。这些别名都是类似类型的，即 x 和 someValue 指向同样的基础数据，对它们的修改是互相可见的。那些想避免这样的类似引用的算法步骤需要显式地复制一份右值：即 &ldquo;Let_x_ be a copy of _someValue_&rdquo; 创建了一个 _someValue_ 的浅复制。</p>
+    <p>一旦声明完毕，别名可以在任何后续步骤中引用，而不能在别名声明前的步骤中使用。别名也许会通过形如 &ldquo;Set _x_ to _someOtherValue_&rdquo; 这样的形式被修改。</p>
 
     <emu-clause id=sec-algorithm-conventions-abstract-operations>
       <h1><abbr title="Abstract Operations">抽象操作</abbr></h1>
-      <p>为了促进它们在本规范的多个地方使用，一些算法，我们称之为<dfn><abbr title="abstract operations">抽象操作</abbr></dfn>，在参数化的函数形式中中命名和书写，以便它们能够在其它算法中通过名称来引用。抽象操作通常是被通过一个功能化的应用风格引用，如 OperationName(_arg1_, _arg2_)。一些抽象操作被当作像类规范里抽象的多态发送一样。这样的类似类的方法抽象操作通常通过一个方法应用风格被引用，如 _someValue_.OperationName(_arg1_, _arg2_)。</p>
+      <p>为了便于它们在本规范的多个地方使用，一些算法，我们称之为<dfn><abbr title="abstract operations">抽象操作</abbr></dfn>，以参数化函数形式命名和书写，以便它们能够在其它算法中通过名称来引用。抽象操作通常使用函数应用风格被引用，如 OperationName(_arg1_, _arg2_)。一些抽象操作被当作像类规范里抽象的多态发送一样。这样的类似类的方法抽象操作通常通过一个方法应用风格被引用，如 _someValue_.OperationName(_arg1_, _arg2_)。</p>
     </emu-clause>
 
     <emu-clause id=sec-algorithm-conventions-syntax-directed-operations namespace=algorithm-conventions>
       <h1><abbr title="Syntax-Directed Operations">语法导向操作</abbr></h1>
       <p>一个<dfn><abbr title="syntax-Directed operations">语法导向操作</abbr></dfn>是一个具名操作，它的定义包含了一系列算法，每个算法与一个或者多个 ECMAScript 文法的产生式相关联。一个有多个可选定义的产生式通常对于每个可选部分都有一个独立的算法。当一个算法与一个文法产生式相关联的时候，它也许会引用这个产生式可选部分的终结符或者非终结符，就好像它们是这个算法的参数一样。当出现这种情况时，非终结符指向实际的源代码中与之匹配的可选部分的定义。</p>
       <p>当一个算法与一个产生式的可选部分关联的时候，这个可选部分通常不会带上 &ldquo;[ ]&rdquo; 文法注释。这样的注释只应该影响可选部分的语法识别，不应该对相关的可选部分的语义有影响。</p>
-      <p>语法导向操作同一个解析节点一起被调用，还可以在步骤 1，3，4 中使用这个约定的其它参数:</p>
+      <p>语法导向操作同一个解析节点一起被调用，还可以在以下算法步骤 1，3，4 中使用这个约定的其它参数:</p>
       <emu-alg>
         1. Let _status_ be the result of performing SyntaxDirectedOperation of |SomeNonTerminal|.
         2. Let _someParseNode_ be the parse of some source text.
         2. Perform SyntaxDirectedOperation of _someParseNode_.
         2. Perform SyntaxDirectedOperation of _someParseNode_ passing `"value"` as the argument.
       </emu-alg>
-      <p>除非显式地指定，否则，所有相关联的产生式对于每个也许会被应用到这个产生式左值的非终结符的操作都有一个隐式的定义。如果存在的话，这个隐式的定义简单地再次对同样的参数运用这个相同的定义，对于这些相关联的产生式唯一的右值非终结符，随后返回处理结果。例如，假设一些算法有如下形式的步骤： &ldquo;Return the result of evaluating |Block|&rdquo;，并且这里有一个产生式：</p>
+      <p>除非另有明确说明，否则，所有相关联的产生式对于每个也许会被应用到这个产生式左值的非终结符的操作都有一个隐式的定义。如果存在的话，这个隐式的定义简单地再次对同样的参数运用这个相同的定义，对于这些相关联的产生式唯一的右值非终结符，随后返回处理结果。例如，假设一些算法有如下形式的步骤： &ldquo;Return the result of evaluating |Block|&rdquo;，并且这里有一个产生式：</p>
       <emu-grammar type="example">
         Block :
           `{` StatementList `}`
@@ -57,7 +57,7 @@
         <emu-alg>
           1. Return `"Infinity"`.
         </emu-alg>
-        <p>与下面的是同一个含义:</p>
+        <p>与下面的是同一个含义：</p>
         <emu-alg>
           1. Return NormalCompletion(`"Infinity"`).
         </emu-alg>
@@ -79,9 +79,9 @@
         <h1><abbr title="Throw an Exception">抛出一个异常</abbr></h1>
         <p>描述抛出一个异常的算法步骤，例如：</p>
         <emu-alg>
-          1. Throw a `TypeError` exception.
+          1. Throw a *TypeError* exception.
         </emu-alg>
-        <p>意思就是：</p>
+        <p>与下面的是同一个含义：</p>
         <emu-alg>
           1. Return Completion{[[Type]]: <emu-const>throw</emu-const>, [[Value]]: a newly created `TypeError` object, [[Target]]: <emu-const>empty</emu-const>}.
         </emu-alg>
@@ -103,7 +103,7 @@
         <emu-alg>
           1. ReturnIfAbrupt(AbstractOperation()).
         </emu-alg>
-        <p>意思就是:</p>
+        <p>与下面的是同一个含义：</p>
         <emu-alg>
           1. Let _hygienicTemp_ be AbstractOperation().
           1. If _hygienicTemp_ is an abrupt completion, return _hygienicTemp_.
@@ -114,7 +114,7 @@
         <emu-alg>
           1. Let _result_ be AbstractOperation(ReturnIfAbrupt(_argument_)).
         </emu-alg>
-        <p>意思就是：</p>
+        <p>与下面的是同一个含义：</p>
         <emu-alg>
           1. If _argument_ is an abrupt completion, return _argument_.
           1. If _argument_ is a Completion Record, let _argument_ be _argument_.[[Value]].
