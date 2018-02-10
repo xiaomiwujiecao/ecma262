@@ -95,6 +95,6 @@ Pull requests:
 
 ## 联系我们
 
-<img src=http://p0zn8l0vm.bkt.clouddn.com/group.JPG width=200 height=278>
+![81518255655_ pic](https://user-images.githubusercontent.com/10306332/36060706-c33e4e56-0e89-11e8-9488-ad103be18a3b.jpg)
 
 如果二维码过期，请加微信号：liu762022369
