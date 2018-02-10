@@ -1,11 +1,11 @@
   <emu-clause id="sec-operations-on-iterator-objects">
-    <h1>Operations on Iterator Objects</h1>
-    <p>See Common Iteration Interfaces (<emu-xref href="#sec-iteration"></emu-xref>).</p>
+    <h1>迭代器对象具有的操作</h1>
+    <p>参考常见的迭代接口 (<emu-xref href="#sec-iteration"></emu-xref>).</p>
 
     <!-- es6num="7.4.1" -->
     <emu-clause id="sec-getiterator" aoid="GetIterator">
       <h1>GetIterator ( _obj_ [ , _method_ ] )</h1>
-      <p>The abstract operation GetIterator with argument _obj_ and optional argument _method_ performs the following steps:</p>
+      <p>参数为 _obj_ 和可选参数 _method_ 的抽象操作 GetIterator 执行以下步骤：</p>
       <emu-alg>
         1. If _method_ is not present, then
           1. Set _method_ to ? GetMethod(_obj_, @@iterator).
@@ -20,7 +20,7 @@
     <!-- es6num="7.4.2" -->
     <emu-clause id="sec-iteratornext" aoid="IteratorNext">
       <h1>IteratorNext ( _iteratorRecord_ [ , _value_ ] )</h1>
-      <p>The abstract operation IteratorNext with argument _iteratorRecord_ and optional argument _value_ performs the following steps:</p>
+      <p>参数为 _iteratorRecord_ 和可选参数 _value_ 的抽象操作 IteratorNext 执行以下步骤：</p>
       <emu-alg>
         1. If _value_ is not present, then
           1. Let _result_ be ? Call(_iteratorRecord_.[[NextMethod]], _iteratorRecord_.[[Iterator]], &laquo; &raquo;).
@@ -34,7 +34,7 @@
     <!-- es6num="7.4.3" -->
     <emu-clause id="sec-iteratorcomplete" aoid="IteratorComplete">
       <h1>IteratorComplete ( _iterResult_ )</h1>
-      <p>The abstract operation IteratorComplete with argument _iterResult_ performs the following steps:</p>
+      <p>参数为 _iterResult_ 的抽象操作 IteratorComplete 执行以下步骤：</p>
       <emu-alg>
         1. Assert: Type(_iterResult_) is Object.
         1. Return ToBoolean(? Get(_iterResult_, `"done"`)).
@@ -44,7 +44,7 @@
     <!-- es6num="7.4.4" -->
     <emu-clause id="sec-iteratorvalue" aoid="IteratorValue">
       <h1>IteratorValue ( _iterResult_ )</h1>
-      <p>The abstract operation IteratorValue with argument _iterResult_ performs the following steps:</p>
+      <p>使用参数为 _iterResult_ 的抽象操作 IteratorValue 执行以下步骤：</p>
       <emu-alg>
         1. Assert: Type(_iterResult_) is Object.
         1. Return ? Get(_iterResult_, `"value"`).
@@ -54,7 +54,7 @@
     <!-- es6num="7.4.5" -->
     <emu-clause id="sec-iteratorstep" aoid="IteratorStep">
       <h1>IteratorStep ( _iteratorRecord_ )</h1>
-      <p>The abstract operation IteratorStep with argument _iteratorRecord_ requests the next value from _iteratorRecord_.[[Iterator]] by calling _iteratorRecord_.[[NextMethod]] and returns either *false* indicating that the iterator has reached its end or the IteratorResult object if a next value is available. IteratorStep performs the following steps:</p>
+      <p>使用参数 _iteratorRecord_ 的抽象操作 IteratorStep 通过调用 _iteratorRecord_.[[NextMethod]] 从 _iteratorRecord_.[[Iterator]] 中请求 next 值，并返回 *false* 或一个 IteratorResult 对象。*false* 表示迭代结束，IteratorResult 对象是一个可用的 next 值。其执行步骤如下：</p>
       <emu-alg>
         1. Let _result_ be ? IteratorNext(_iteratorRecord_).
         1. Let _done_ be ? IteratorComplete(_result_).
@@ -66,7 +66,7 @@
     <!-- es6num="7.4.6" -->
     <emu-clause id="sec-iteratorclose" aoid="IteratorClose">
       <h1>IteratorClose ( _iteratorRecord_, _completion_ )</h1>
-      <p>The abstract operation IteratorClose with arguments _iteratorRecord_ and _completion_ is used to notify an iterator that it should perform any actions it would normally perform when it has reached its completed state:</p>
+      <p>参数为 _iteratorRecord_ 和 _completion_ 的抽象操作 IteratorClose 用于通知迭代器，它应该执行它在达到其完成状态时通常会执行的一些操作：</p>
       <emu-alg>
         1. Assert: Type(_iteratorRecord_.[[Iterator]]) is Object.
         1. Assert: _completion_ is a Completion Record.
@@ -84,7 +84,7 @@
     <!-- es6num="7.4.7" -->
     <emu-clause id="sec-createiterresultobject" aoid="CreateIterResultObject">
       <h1>CreateIterResultObject ( _value_, _done_ )</h1>
-      <p>The abstract operation CreateIterResultObject with arguments _value_ and _done_ creates an object that supports the IteratorResult interface by performing the following steps:</p>
+      <p>参数为 _value_ 和 _done_ 的抽象操作 CreateIterResultObject 创建一个支持 IteratorResult 接口的对象，它执行以下操作：</p>
       <emu-alg>
         1. Assert: Type(_done_) is Boolean.
         1. Let _obj_ be ObjectCreate(%ObjectPrototype%).
@@ -97,7 +97,7 @@
     <!-- es6num="7.4.8" -->
     <emu-clause id="sec-createlistiteratorRecord" oldids="sec-createlistiterator" aoid="CreateListIteratorRecord">
       <h1>CreateListIteratorRecord ( _list_ )</h1>
-      <p>The abstract operation CreateListIteratorRecord with argument _list_ creates an Iterator (<emu-xref href="#sec-iterator-interface"></emu-xref>) object record whose next method returns the successive elements of _list_. It performs the following steps:</p>
+      <p>参数为 _list_ 的抽象操作 CreateListIteratorRecord 创建一个迭代器 (<emu-xref href="#sec-iterator-interface"></emu-xref>) 对象记录，其 next 方法返回元素连续的 _list_。该抽象操作执行以下步骤：</p>
       <emu-alg>
         1. Let _iterator_ be ObjectCreate(%IteratorPrototype%, &laquo; [[IteratedList]], [[ListIteratorNextIndex]] &raquo;).
         1. Set _iterator_.[[IteratedList]] to _list_.
@@ -106,13 +106,13 @@
         1. Return Record { [[Iterator]]: _iterator_, [[NextMethod]]: _next_, [[Done]]: *false* }.
       </emu-alg>
       <emu-note>
-        <p>The list iterator object is never directly accessible to ECMAScript code.</p>
+        <p>这个迭代器对象列表从不直接通过 ECMAScript 代码访问。</p>
       </emu-note>
 
       <!-- es6num="7.4.8.1" -->
       <emu-clause id="sec-listiterator-next">
         <h1>ListIterator next( )</h1>
-        <p>The ListIterator `next` method is a standard built-in function object (clause <emu-xref href="#sec-ecmascript-standard-built-in-objects"></emu-xref>) that performs the following steps:</p>
+        <p>ListIterator `next` 方法是一个标准的内置函数方法(章节 <emu-xref href="#sec-ecmascript-standard-built-in-objects"></emu-xref>)，它执行以下步骤：</p>
         <emu-alg>
           1. Let _O_ be the *this* value.
           1. Assert: Type(_O_) is Object.
