@@ -1,6 +1,6 @@
     <emu-clause id="sec-touint32" aoid="ToUint32">
       <h1>ToUint32 ( _argument_ )</h1>
-      <p>The abstract operation ToUint32 converts _argument_ to one of 2<sup>32</sup> integer values in the range 0 through <emu-eqn>2<sup>32</sup>-1</emu-eqn>, inclusive. This abstract operation functions as follows:</p>
+      <p>抽象操作 ToUint32 将 _argument_ 转换为 0 到 <emu-eqn>2<sup>32</sup>-1</emu-eqn> 的 2<sup>32</sup> 个整数之一。该抽象操作算法如下：</p>
       <emu-alg>
         1. Let _number_ be ? ToNumber(_argument_).
         1. If _number_ is *NaN*, *+0*, *-0*, *+&infin;*, or *-&infin;*, return *+0*.
@@ -9,19 +9,19 @@
         1. Return _int32bit_.
       </emu-alg>
       <emu-note>
-        <p>Given the above definition of ToUint32:</p>
+        <p>鉴于以上 ToUint32 的定义：</p>
         <ul>
           <li>
-            Step 5 is the only difference between ToUint32 and ToInt32.
+            ToUint32 与ToInt32 只有第五步不同。
           </li>
           <li>
-            The ToUint32 abstract operation is idempotent: if applied to a result that it produced, the second application leaves that value unchanged.
+            ToUint32 是等幂的: 其作用在同一个元素上产生的结果相同。
           </li>
           <li>
-            ToUint32(ToInt32(_x_)) is equal to ToUint32(_x_) for all values of _x_. (It is to preserve this latter property that *+&infin;* and *-&infin;* are mapped to *+0*.)
+            对于任意 _x_，ToUint32(ToInt32(_x_)) 等于 ToUint32(_x_)。 (这是为了保证 *+&infin;* 和 *-&infin;* 会被映射为 *+0*。)
           </li>
           <li>
-            ToUint32 maps *-0* to *+0*.
+            ToUint32 把 *-0* 映射为 *+0*。
           </li>
         </ul>
       </emu-note>
@@ -30,7 +30,7 @@
     <!-- es6num="7.1.7" -->
     <emu-clause id="sec-toint16" aoid="ToInt16">
       <h1>ToInt16 ( _argument_ )</h1>
-      <p>The abstract operation ToInt16 converts _argument_ to one of 2<sup>16</sup> integer values in the range -32768 through 32767, inclusive. This abstract operation functions as follows:</p>
+      <p>抽象操作 ToInt16 将 _argument_ 转换为 -32768 到 32767 的 2<sup>16</sup> 个整数之一。这个抽象操作算法如下：</p>
       <emu-alg>
         1. Let _number_ be ? ToNumber(_argument_).
         1. If _number_ is *NaN*, *+0*, *-0*, *+&infin;*, or *-&infin;*, return *+0*.
@@ -43,7 +43,7 @@
     <!-- es6num="7.1.8" -->
     <emu-clause id="sec-touint16" aoid="ToUint16">
       <h1>ToUint16 ( _argument_ )</h1>
-      <p>The abstract operation ToUint16 converts _argument_ to one of 2<sup>16</sup> integer values in the range 0 through <emu-eqn>2<sup>16</sup>-1</emu-eqn>, inclusive. This abstract operation functions as follows:</p>
+      <p>抽象操作 ToUint16 将 _argument_ 转换为 0 到 <emu-eqn>2<sup>16</sup>-1</emu-eqn> 的 2<sup>16</sup> 个整数之一。这个抽象操作算法如下：</p>
       <emu-alg>
         1. Let _number_ be ? ToNumber(_argument_).
         1. If _number_ is *NaN*, *+0*, *-0*, *+&infin;*, or *-&infin;*, return *+0*.
@@ -52,13 +52,13 @@
         1. Return _int16bit_.
       </emu-alg>
       <emu-note>
-        <p>Given the above definition of ToUint16:</p>
+        <p>鉴于以上 ToUint16 的定义：</p>
         <ul>
           <li>
-            The substitution of 2<sup>16</sup> for 2<sup>32</sup> in step 4 is the only difference between ToUint32 and ToUint16.
+            ToUint32 与 ToUint16 不同之处在于第四步时用 2<sup>16</sup> 替换了 2<sup>32</sup>。
           </li>
           <li>
-            ToUint16 maps *-0* to *+0*.
+            ToUint16 把 *-0* 映射为 *+0*.
           </li>
         </ul>
       </emu-note>
@@ -67,7 +67,7 @@
     <!-- es6num="7.1.9" -->
     <emu-clause id="sec-toint8" aoid="ToInt8">
       <h1>ToInt8 ( _argument_ )</h1>
-      <p>The abstract operation ToInt8 converts _argument_ to one of 2<sup>8</sup> integer values in the range -128 through 127, inclusive. This abstract operation functions as follows:</p>
+      <p>抽象操作 ToInt8 负责将 _argument_ 转换为 -128 到 127 的 2<sup>8</sup> 个整数之一。这个抽象操作算法如下：</p>
       <emu-alg>
         1. Let _number_ be ? ToNumber(_argument_).
         1. If _number_ is *NaN*, *+0*, *-0*, *+&infin;*, or *-&infin;*, return *+0*.
@@ -80,7 +80,7 @@
     <!-- es6num="7.1.10" -->
     <emu-clause id="sec-touint8" aoid="ToUint8">
       <h1>ToUint8 ( _argument_ )</h1>
-      <p>The abstract operation ToUint8 converts _argument_ to one of 2<sup>8</sup> integer values in the range 0 through 255, inclusive. This abstract operation functions as follows:</p>
+      <p>抽象操作 ToUint8 负责将 _argument_ 转换为 0 到 255 的 2<sup>8</sup> 个整数之一。这个抽象操作算法如下：</p>
       <emu-alg>
         1. Let _number_ be ? ToNumber(_argument_).
         1. If _number_ is *NaN*, *+0*, *-0*, *+&infin;*, or *-&infin;*, return *+0*.
@@ -93,7 +93,7 @@
     <!-- es6num="7.1.11" -->
     <emu-clause id="sec-touint8clamp" aoid="ToUint8Clamp">
       <h1>ToUint8Clamp ( _argument_ )</h1>
-      <p>The abstract operation ToUint8Clamp converts _argument_ to one of 2<sup>8</sup> integer values in the range 0 through 255, inclusive. This abstract operation functions as follows:</p>
+      <p>抽象操作 ToUint8Clamp 负责将 _argument_ 转换为 0 到 255 的 2<sup>8</sup> 个整数之一。这个抽象操作算法如下：</p>
       <emu-alg>
         1. Let _number_ be ? ToNumber(_argument_).
         1. If _number_ is *NaN*, return *+0*.
@@ -106,23 +106,23 @@
         1. Return _f_.
       </emu-alg>
       <emu-note>
-        <p>Unlike the other ECMAScript integer conversion abstract operation, ToUint8Clamp rounds rather than truncates non-integer values and does not convert *+&infin;* to 0. ToUint8Clamp does &ldquo;round half to even&rdquo; tie-breaking. This differs from `Math.round` which does &ldquo;round half up&rdquo; tie-breaking.</p>
+        <p>与其他 ECMAScript 整数转换抽象操作不同。 ToUint8Clamp 对非整数值使用取整而不是截断，并且不会把 *+&infin;* 转换为 0。</p>
       </emu-note>
     </emu-clause>
 
     <!-- es6num="7.1.12" -->
     <emu-clause id="sec-tostring" aoid="ToString">
       <h1>ToString ( _argument_ )</h1>
-      <p>The abstract operation ToString converts _argument_ to a value of type String according to <emu-xref href="#table-12"></emu-xref>:</p>
+      <p>抽象操作 ToString 负责将 _argument_ 转换为一个 String 类型值，如下<emu-xref href="#table-12"></emu-xref>:</p>
       <emu-table id="table-12" caption="ToString Conversions">
         <table>
           <tbody>
           <tr>
             <th>
-              Argument Type
+              参数类型
             </th>
             <th>
-              Result
+              结果
             </th>
           </tr>
           <tr>
@@ -130,7 +130,7 @@
               Undefined
             </td>
             <td>
-              Return `"undefined"`.
+              返回 `"undefined"`.
             </td>
           </tr>
           <tr>
@@ -138,7 +138,7 @@
               Null
             </td>
             <td>
-              Return `"null"`.
+              返回 `"null"`.
             </td>
           </tr>
           <tr>
@@ -146,8 +146,8 @@
               Boolean
             </td>
             <td>
-              <p>If _argument_ is *true*, return `"true"`.</p>
-              <p>If _argument_ is *false*, return `"false"`.</p>
+              <p>如果 _argument_ 是 *true*, 返回 `"true"`.</p>
+              <p>如果 _argument_ 是 *false*, 返回 `"false"`.</p>
             </td>
           </tr>
           <tr>
@@ -155,7 +155,7 @@
               Number
             </td>
             <td>
-              Return NumberToString(_argument_).
+              返回 NumberToString(_argument_).
             </td>
           </tr>
           <tr>
@@ -163,7 +163,7 @@
               String
             </td>
             <td>
-              Return _argument_.
+              返回 _argument_.
             </td>
           </tr>
           <tr>
@@ -171,7 +171,7 @@
               Symbol
             </td>
             <td>
-              Throw a *TypeError* exception.
+              抛出一个 *TypeError* 异常.
             </td>
           </tr>
           <tr>
@@ -179,7 +179,7 @@
               Object
             </td>
             <td>
-              <p>Apply the following steps:</p>
+              <p>应用如下步骤：</p>
               <emu-alg>
                 1. Let _primValue_ be ? ToPrimitive(_argument_, hint String).
                 1. Return ? ToString(_primValue_).
@@ -193,7 +193,7 @@
       <!-- es6num="7.1.12.1" -->
       <emu-clause id="sec-tostring-applied-to-the-number-type" aoid="NumberToString">
         <h1>NumberToString ( _m_ )</h1>
-        <p>The abstract operation NumberToString converts a Number _m_ to String format as follows:</p>
+        <p>抽象操作 NumberToString 负责将一个 Number 类型值 _m_ 转换为 String 类型，步骤如下：</p>
         <emu-alg>
           1. If _m_ is *NaN*, return the String `"NaN"`.
           1. If _m_ is *+0* or *-0*, return the String `"0"`.
@@ -226,31 +226,31 @@
             * the code units of the decimal representation of the integer abs(_n_-1) (with no leading zeroes)
         </emu-alg>
         <emu-note>
-          <p>The following observations may be useful as guidelines for implementations, but are not part of the normative requirements of this Standard:</p>
+          <p>以下结论作为实现的参考可能是有用的，不过他们并不作为规范的要求。</p>
           <ul>
             <li>
-              If x is any Number value other than *-0*, then ToNumber(ToString(x)) is exactly the same Number value as x.
+              对于任何非 *-0* 的 Number 类型值 x，他的 ToNumber(ToString(x)) 结果恰好为 Number 值 x。
             </li>
             <li>
-              The least significant digit of s is not always uniquely determined by the requirements listed in step 5.
+              s 的最少有效数位并不总是由第五步中的要求列表唯一确定。
             </li>
           </ul>
         </emu-note>
         <emu-note>
-          <p>For implementations that provide more accurate conversions than required by the rules above, it is recommended that the following alternative version of step 5 be used as a guideline:</p>
+          <p>对于提供了比上述转换规则更准确的实现，建议其中第五步参考下面的另一个版本：</p>
           <emu-alg>
             5. Otherwise, let _n_, _k_, and _s_ be integers such that _k_ &ge; 1, 10<sup>_k_-1</sup> &le; _s_ &lt; 10<sup>_k_</sup>, the Number value for _s_ &times; 10<sup>_n_-_k_</sup> is _m_, and _k_ is as small as possible. If there are multiple possibilities for _s_, choose the value of _s_ for which _s_ &times; 10<sup>_n_-_k_</sup> is closest in value to _m_. If there are two such possible values of _s_, choose the one that is even. Note that _k_ is the number of digits in the decimal representation of _s_ and that _s_ is not divisible by 10.
           </emu-alg>
         </emu-note>
         <emu-note>
-          <p>Implementers of ECMAScript may find useful the paper and code written by David M. Gay for binary-to-decimal conversion of floating-point numbers:</p>
-          <p>Gay, David M. Correctly Rounded Binary-Decimal and Decimal-Binary Conversions. Numerical Analysis, Manuscript 90-10. AT&amp;T Bell Laboratories (Murray Hill, New Jersey). November 30, 1990. Available as
+          <p>David M. Gay 编写的二进制转换为十进制中关于浮点数的文章和代码对于 ECMAScript 实现者可能会有帮助：</p>
+          <p>Gay, David M. Correctly Rounded Binary-Decimal and Decimal-Binary Conversions. Numerical Analysis, Manuscript 90-10. AT&amp;T Bell Laboratories (Murray Hill, New Jersey). November 30, 1990. 相关文章可以在
             <br>
-            <a href="http://ampl.com/REFS/abstracts.html#rounding">http://ampl.com/REFS/abstracts.html#rounding</a>. Associated code available as
+            <a href="http://ampl.com/REFS/abstracts.html#rounding">http://ampl.com/REFS/abstracts.html#rounding</a> 找到. 相关代码在
             <br>
-            <a href="http://netlib.sandia.gov/fp/dtoa.c">http://netlib.sandia.gov/fp/dtoa.c</a> and as
+            <a href="http://netlib.sandia.gov/fp/dtoa.c">http://netlib.sandia.gov/fp/dtoa.c</a> 和
             <br>
-            <a href="http://netlib.sandia.gov/fp/g_fmt.c">http://netlib.sandia.gov/fp/g_fmt.c</a> and may also be found at the various `netlib` mirror sites.</p>
+            <a href="http://netlib.sandia.gov/fp/g_fmt.c">http://netlib.sandia.gov/fp/g_fmt.c</a> ，这些代码也可以在其他 `netlib` 镜像网站找到。</p>
         </emu-note>
       </emu-clause>
     </emu-clause>
@@ -258,16 +258,16 @@
     <!-- es6num="7.1.13" -->
     <emu-clause id="sec-toobject" aoid="ToObject">
       <h1>ToObject ( _argument_ )</h1>
-      <p>The abstract operation ToObject converts _argument_ to a value of type Object according to <emu-xref href="#table-13"></emu-xref>:</p>
+      <p>抽象操作 ToObject 负责将 _argument_ 转换为 Object 类型的值，见表<emu-xref href="#table-13"></emu-xref>：</p>
       <emu-table id="table-13" caption="ToObject Conversions">
         <table>
           <tbody>
           <tr>
             <th>
-              Argument Type
+              参数类型
             </th>
             <th>
-              Result
+              结果
             </th>
           </tr>
           <tr>
@@ -275,7 +275,7 @@
               Undefined
             </td>
             <td>
-              Throw a *TypeError* exception.
+              抛出一个 *TypeError* 异常。
             </td>
           </tr>
           <tr>
@@ -283,7 +283,7 @@
               Null
             </td>
             <td>
-              Throw a *TypeError* exception.
+              抛出一个 *TypeError* 异常。
             </td>
           </tr>
           <tr>
@@ -291,7 +291,7 @@
               Boolean
             </td>
             <td>
-              Return a new Boolean object whose [[BooleanData]] internal slot is set to _argument_. See <emu-xref href="#sec-boolean-objects"></emu-xref> for a description of Boolean objects.
+              返回一个内部槽 [[BooleanData]] 为 _argument_ 的新 Boolean 对象。见 <emu-xref href="#sec-boolean-objects"></emu-xref> 关于 Boolean 对象的描述。
             </td>
           </tr>
           <tr>
@@ -299,7 +299,7 @@
               Number
             </td>
             <td>
-              Return a new Number object whose [[NumberData]] internal slot is set to _argument_. See <emu-xref href="#sec-number-objects"></emu-xref> for a description of Number objects.
+              返回一个内部槽 [[NumberData]] 为 _argument_ 的新 Number 对象。见 <emu-xref href="#sec-number-objects"></emu-xref> 关于 Number 对象的描述。
             </td>
           </tr>
           <tr>
@@ -307,7 +307,7 @@
               String
             </td>
             <td>
-              Return a new String object whose [[StringData]] internal slot is set to _argument_. See <emu-xref href="#sec-string-objects"></emu-xref> for a description of String objects.
+              返回一个内部槽 [[StringData]] 为 _argument_ 的新 String 对象。见 <emu-xref href="#sec-string-objects"></emu-xref> 关于 String 对象的描述。
             </td>
           </tr>
           <tr>
@@ -315,7 +315,7 @@
               Symbol
             </td>
             <td>
-              Return a new Symbol object whose [[SymbolData]] internal slot is set to _argument_. See <emu-xref href="#sec-symbol-objects"></emu-xref> for a description of Symbol objects.
+              返回一个内部槽 [[SymbolData]] 为 _argument_ 的新 Symbol 对象。见 <emu-xref href="#sec-symbol-objects"></emu-xref> 关于 Symbol 对象的描述。
             </td>
           </tr>
           <tr>
@@ -323,7 +323,7 @@
               Object
             </td>
             <td>
-              Return _argument_.
+              返回 _argument_。
             </td>
           </tr>
           </tbody>
@@ -334,7 +334,7 @@
     <!-- es6num="7.1.14" -->
     <emu-clause id="sec-topropertykey" aoid="ToPropertyKey">
       <h1>ToPropertyKey ( _argument_ )</h1>
-      <p>The abstract operation ToPropertyKey converts _argument_ to a value that can be used as a property key by performing the following steps:</p>
+      <p>抽象操作 ToPropertyKey 负责将 _argument_ 转换为一个可用作属性 key 的值，其步骤如下：</p>
       <emu-alg>
         1. Let _key_ be ? ToPrimitive(_argument_, hint String).
         1. If Type(_key_) is Symbol, then
@@ -346,7 +346,7 @@
     <!-- es6num="7.1.15" -->
     <emu-clause id="sec-tolength" aoid="ToLength">
       <h1>ToLength ( _argument_ )</h1>
-      <p>The abstract operation ToLength converts _argument_ to an integer suitable for use as the length of an array-like object. It performs the following steps:</p>
+      <p>抽象操作 ToLength 负责将 _argument_ 转换为一个可用作类数组的长度的整数，其步骤如下：</p>
       <emu-alg>
         1. Let _len_ be ? ToInteger(_argument_).
         1. If _len_ &le; *+0*, return *+0*.
@@ -356,23 +356,23 @@
 
     <!-- es6num="7.1.16" -->
     <emu-clause id="sec-canonicalnumericindexstring" aoid="CanonicalNumericIndexString">
-      <h1>CanonicalNumericIndexString ( _argument_ )</h1>
-      <p>The abstract operation CanonicalNumericIndexString returns _argument_ converted to a numeric value if it is a String representation of a Number that would be produced by ToString, or the string `"-0"`. Otherwise, it returns *undefined*. This abstract operation functions as follows:</p>
+      <h1>CanonicalNumericIndexString ( _argument_ )</h1><p>
+        如果 _argument_ 为是一可以通过 ToString 产生的数字字符串，或者是一个为 `"-0"` 的字符串，则抽象操作 CanonicalNumericIndexString 返回转换 _argument_ 得到的一个数字。否则，返回 `undefined`。这个抽象操作算法如下：</p>
       <emu-alg>
         1. Assert: Type(_argument_) is String.
         1. If _argument_ is `"-0"`, return *-0*.
         1. Let _n_ be ! ToNumber(_argument_).
-        1. If SameValue(! ToString(_n_), _argument_) is *false*, return *undefined*.
+        1. If SameValue(! ToString(_n_), _argument_) is `false`, return `undefined`.
         1. Return _n_.
       </emu-alg>
-      <p>A <em>canonical numeric string</em> is any String value for which the CanonicalNumericIndexString abstract operation does not return *undefined*.</p>
+      <p>一个<em>规范的数字字符串</em>是指 CanonicalNumericIndexString 抽象操作返回值不为 *undefined* 的字符串。</p>
     </emu-clause>
 
     <emu-clause id="sec-toindex" aoid="ToIndex">
       <h1>ToIndex ( _value_ )</h1>
-      <p>The abstract operation ToIndex returns _value_ argument converted to a numeric value if it is a valid integer index value. This abstract operation functions as follows:</p>
+      <p>抽象操作 ToIndex 负责将 _value_ 参数转换为一个有效的整数索引值。这个抽象操作算法如下：</p>
       <emu-alg>
-        1. If _value_ is *undefined*, then
+        1. If _value_ is `undefined`, then
           1. Let _index_ be 0.
         1. Else,
           1. Let _integerIndex_ be ? ToInteger(_value_).
