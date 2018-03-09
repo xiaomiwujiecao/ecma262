@@ -1,201 +1,200 @@
 <emu-clause id="sec-ecmascript-data-types-and-values" aoid="Type">
-  <h1>ECMAScript Data Types and Values</h1>
-  <p>Algorithms within this specification manipulate values each of which has an associated type. The possible value types are exactly those defined in this clause. Types are further subclassified into ECMAScript language types and specification types.</p>
-  <p>Within this specification, the notation &ldquo;Type(_x_)&rdquo; is used as shorthand for &ldquo;the <dfn id="type">type</dfn> of _x_&rdquo; where &ldquo;type&rdquo; refers to the ECMAScript language and specification types defined in this clause. When the term &ldquo;empty&rdquo; is used as if it was naming a value, it is equivalent to saying &ldquo;no value of any type&rdquo;.</p>
-
+  <h1><abbr title="ECMAScript Data Types and Values">ECMAScript 数据类型和值</abbr></h1>
+  <p>本规范中算法控制每个具有相关类型的值。可能的值类型直接定义在本章节中。这些类型进一步分为 ECMAScript 语言类型与规范类型。</p>
+  <p>在本规范中，&ldquo;Type(_x_)&rdquo;表示法是&ldquo;the <dfn id="type">type</dfn> of _x_&rdquo;的简写， 其中&ldquo;type&rdquo;指的是在本章节中定义的 ECMAScript 语言类型与规范类型。当一个值使用术语&ldquo;empty&rdquo;命名值时，它相当于说&ldquo;没有任何类型的值&rdquo;。</p>
   <!-- es6num="6.1" -->
   <emu-clause id="sec-ecmascript-language-types">
-    <h1>ECMAScript Language Types</h1>
-    <p>An <dfn>ECMAScript language type</dfn> corresponds to values that are directly manipulated by an ECMAScript programmer using the ECMAScript language. The ECMAScript language types are Undefined, Null, Boolean, String, Symbol, Number, and Object. An <dfn>ECMAScript language value</dfn> is a value that is characterized by an ECMAScript language type.</p>
+    <h1>ECMAScript 语言类型</h1>
+    <p>一个 <dfn>ECMAScript 语言类型</dfn>对应那些 ECMAScript 程序员在 ECMAScript 语言中直接使用的值。 ECMAScript 语言类型有 Undefined, Null, Boolean, String,Symbol, Number, Object。 一个<dfn>ECMAScript 语言值</dfn>是指拥有一个 ECMAScript 语言类型特点的值。</p>
 
     <!-- es6num="6.1.1" -->
     <emu-clause id="sec-ecmascript-language-types-undefined-type">
-      <h1>The Undefined Type</h1>
-      <p>The Undefined type has exactly one value, called *undefined*. Any variable that has not been assigned a value has the value *undefined*.</p>
+      <h1>Undefined 类型</h1>
+      <p>Undefined 类型仅仅只有一个值，`undefined`。 任何尚未分配值的变量值都为 `undefined`。</p>
     </emu-clause>
 
     <!-- es6num="6.1.2" -->
     <emu-clause id="sec-ecmascript-language-types-null-type">
-      <h1>The Null Type</h1>
-      <p>The Null type has exactly one value, called *null*.</p>
+      <h1>Null 类型</h1>
+      <p>Null 类型只有一个值, `null`.</p>
     </emu-clause>
 
     <!-- es6num="6.1.3" -->
     <emu-clause id="sec-ecmascript-language-types-boolean-type">
-      <h1>The Boolean Type</h1>
-      <p>The Boolean type represents a logical entity having two values, called *true* and *false*.</p>
+      <h1>Boolean 类型</h1>
+      <p>Boolean 类型表示具有 `true` 和 `false` 两个值的一个逻辑实体。</p>
     </emu-clause>
 
     <!-- es6num="6.1.4" -->
     <emu-clause id="sec-ecmascript-language-types-string-type">
-      <h1>The String Type</h1>
-      <p>The String type is the set of all ordered sequences of zero or more 16-bit unsigned integer values (&ldquo;elements&rdquo;) up to a maximum length of 2<sup>53</sup>-1 elements. The String type is generally used to represent textual data in a running ECMAScript program, in which case each element in the String is treated as a UTF-16 code unit value. Each element is regarded as occupying a position within the sequence. These positions are indexed with nonnegative integers. The first element (if any) is at index 0, the next element (if any) at index 1, and so on. The length of a String is the number of elements (i.e., 16-bit values) within it. The empty String has length zero and therefore contains no elements.</p>
-      <p>Where ECMAScript operations interpret String values, each element is interpreted as a single UTF-16 code unit. However, ECMAScript does not place any restrictions or requirements on the sequence of code units in a String value, so they may be ill-formed when interpreted as UTF-16 code unit sequences. Operations that do not interpret String contents treat them as sequences of undifferentiated 16-bit unsigned integers. The function `String.prototype.normalize` (see <emu-xref href="#sec-string.prototype.normalize"></emu-xref>) can be used to explicitly normalize a String value. `String.prototype.localeCompare` (see <emu-xref href="#sec-string.prototype.localecompare"></emu-xref>) internally normalizes String values, but no other operations implicitly normalize the strings upon which they operate. Only operations that are explicitly specified to be language or locale sensitive produce language-sensitive results.</p>
+      <h1>String 类型</h1>
+      <p>String 类型是零个或多个 16 位无符号整数值（&ldquo;元素&rdquo;）的所有有序序列的集合，最大长度为 2<sup>53</sup>-1 个元素。字符串类型通常用于表示正在运行的 ECMAScript 程序中的文本数据，在这种情况下，String中的每个元素都被视为一个 UTF-16 <abbr title="code unit">码元</abbr>。 每个元素被认为占据该序列内的一个位置。 这些位置用非负整数索引。 第一个元素（如果有）在索引 0 处，下一个元素（如果有的话）在索引 1 处，以此类推。 String 的长度是序列中的元素个数（例如，十六位值）。空字符串的长度为零，因此不包含元素。</p>
+      <p>ECMAScript 操作在解释字符串值时，每个元素都被认为是一个单独的 UTF-16 码元。但是，ECMAScript 对 String 值中的码元序列没有任何限制或要求，因此当按照 UTF-16 码元序列解释时， 它们可能是<abbr title="ill-formed">不正确</abbr>的。（因为）不解释字符串内容的操作将它们当做无差别的 16-bit 无符号整数序列。可以使用函数 `String.prototype.normalize` (见<emu-xref href="#sec-string.prototype.normalize"></emu-xref>)显式的把一个 String 值标准化。 `String.prototype.localeCompare`(见<emu-xref href="#sec-string.prototype.localecompare"></emu-xref>) 方法在函数内部（隐式地）标准化了 String 值，除此之外的其它方法都没有隐式地标准化字符串。 只有明确指定语言或区域敏感的操作才会产生语言敏感的结果。</p>
       <emu-note>
-        <p>The rationale behind this design was to keep the implementation of Strings as simple and high-performing as possible. If ECMAScript source text is in Normalized Form C, string literals are guaranteed to also be normalized, as long as they do not contain any Unicode escape sequences.</p>
+        <p>这种设计背后的理由是尽可能的保持 String 的实现简单和高效。 如果 ECMAScript 源文本符合 Normalized Form C，只要它们不包含任何 Unicode 转义序列，则字符串字面量保证也是标准化的。</p>
       </emu-note>
-      <p>Some operations interpret String contents as UTF-16 encoded Unicode code points. In that case the interpretation is:</p>
+      <p>一些操作将字符串内容解释为 UTF-16 编码的 Unicode 码点。 在这种情况下，解释过程是：</p>
       <ul>
         <li>
-          A code unit in the range 0 to 0xD7FF or in the range 0xE000 to 0xFFFF is interpreted as a code point with the same value.
+          在范围 0 到 0xD7FF 或 0xE000 到 0xFFFF 范围内的码元被解释为具有相同值的码点。
         </li>
         <li>
-          A sequence of two code units, where the first code unit _c1_ is in the range 0xD800 to 0xDBFF and the second code unit _c2_ is in the range 0xDC00 to 0xDFFF, is a surrogate pair and is interpreted as a code point with the value (_c1_ - 0xD800) &times; 0x400 + (_c2_ - 0xDC00) + 0x10000. (See <emu-xref href="#sec-utf16decode"></emu-xref>)
+          两个码元序列，第一个码元 _c1_ 范围为 0xD800 到 0xDBFF，第二个码元 _c2_ 范围为 0xDC00 到 0xDFFF， 这样的两个码元，被称为<attr title="surrogate pair">代理对</attr>， 被解释为一个值为 (_c1_ - 0xD800) &times; 0x400 + (_c2_ - 0xDC00) + 0x10000 的码点。(见 <emu-xref href="#sec-utf16decode"></emu-xref>)
         </li>
         <li>
-          A code unit that is in the range 0xD800 to 0xDFFF, but is not part of a surrogate pair, is interpreted as a code point with the same value.
+          一个在 0xD800 到 0xDFFF 范围内，但不是代理对的一部分的码元被解释为具有相同值的码点。
         </li>
       </ul>
-      <p>In this specification, the phrase "the <dfn>string-concatenation</dfn> of _A_, _B_, ..." (where each argument is a String value, a code unit, or a sequence of code units) denotes the String value whose sequence of code units is the concatenation of the code units (in order) of each of the arguments (in order).</p>
+      <p>在本规范中，短语"the <dfn>string-concatenation</dfn> of _A_,_B_,..."表示字符串代码单元的序列是每个参数的代码单元的连接。</p>
     </emu-clause>
 
     <!-- es6num="6.1.5" -->
     <emu-clause id="sec-ecmascript-language-types-symbol-type">
-      <h1>The Symbol Type</h1>
-      <p>The Symbol type is the set of all non-String values that may be used as the key of an Object property (<emu-xref href="#sec-object-type"></emu-xref>).</p>
-      <p>Each possible Symbol value is unique and immutable.</p>
-      <p>Each Symbol value immutably holds an associated value called [[Description]] that is either *undefined* or a String value.</p>
+      <h1>Symbol 类型</h1>
+      <p>Symbol 类型是所有可以用于作为 Object 属性 key 值的非字符串值的集合。(<emu-xref href="#sec-object-type"></emu-xref>)。</p>
+      <p>每个可能的 Symbol 值都是唯一的和不可变的。</p>
+      <p>每个 Symbol 值永远地保持一个与之关联的叫做 [[Description]] 的值（它要么是 *undefined* 要么是一个 String 值）。</p>
 
       <!-- es6num="6.1.5.1" -->
       <emu-clause id="sec-well-known-symbols">
-        <h1>Well-Known Symbols</h1>
-        <p>Well-known symbols are built-in Symbol values that are explicitly referenced by algorithms of this specification. They are typically used as the keys of properties whose values serve as extension points of a specification algorithm. Unless otherwise specified, well-known symbols values are shared by all realms (<emu-xref href="#sec-code-realms"></emu-xref>).</p>
-        <p>Within this specification a well-known symbol is referred to by using a notation of the form @@name, where &ldquo;name&rdquo; is one of the values listed in <emu-xref href="#table-1"></emu-xref>.</p>
+        <h1>总所周知的 Symbol</h1>
+        <p>总所周知的 Symbol 是那些被本规范中算法明确引用的内置 Symbol 值。它们通常被用作属性的 key，这些 key 的值作为规范的算法扩展点。除非另有说明，总所周知的 Symbol 的值被所有域(<emu-xref href="#sec-code-realms"></emu-xref>)共享。</p>
+        <p>在本规范内，一个总所周知的 Symbol 值通过形如 @@name 的形式被引用，这里的 &ldquo;name&rdquo; 是表 <emu-xref href="#table-1"></emu-xref> 列出的值之一。</p>
         <emu-table id="table-1" caption="Well-known Symbols">
           <table>
             <tbody>
-            <tr>
-              <th>
-                Specification Name
-              </th>
-              <th>
-                [[Description]]
-              </th>
-              <th>
-                Value and Purpose
-              </th>
-            </tr>
-            <tr>
-              <td>
-                @@hasInstance
-              </td>
-              <td>
-                `"Symbol.hasInstance"`
-              </td>
-              <td>
-                A method that determines if a constructor object recognizes an object as one of the constructor's instances. Called by the semantics of the `instanceof` operator.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                @@isConcatSpreadable
-              </td>
-              <td>
-                `"Symbol.isConcatSpreadable"`
-              </td>
-              <td>
-                A Boolean valued property that if true indicates that an object should be flattened to its array elements by <emu-xref href="#sec-array.prototype.concat">`Array.prototype.concat`</emu-xref>.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                @@iterator
-              </td>
-              <td>
-                `"Symbol.iterator"`
-              </td>
-              <td>
-                A method that returns the default Iterator for an object. Called by the semantics of the for-of statement.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                @@match
-              </td>
-              <td>
-                `"Symbol.match"`
-              </td>
-              <td>
-                A regular expression method that matches the regular expression against a string. Called by the <emu-xref href="#sec-string.prototype.match">`String.prototype.match`</emu-xref> method.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                @@replace
-              </td>
-              <td>
-                `"Symbol.replace"`
-              </td>
-              <td>
-                A regular expression method that replaces matched substrings of a string. Called by the <emu-xref href="#sec-string.prototype.replace">`String.prototype.replace`</emu-xref> method.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                @@search
-              </td>
-              <td>
-                `"Symbol.search"`
-              </td>
-              <td>
-                A regular expression method that returns the index within a string that matches the regular expression. Called by the <emu-xref href="#sec-string.prototype.search">`String.prototype.search`</emu-xref> method.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                @@species
-              </td>
-              <td>
-                `"Symbol.species"`
-              </td>
-              <td>
-                A function valued property that is the constructor function that is used to create derived objects.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                @@split
-              </td>
-              <td>
-                `"Symbol.split"`
-              </td>
-              <td>
-                A regular expression method that splits a string at the indices that match the regular expression. Called by the <emu-xref href="#sec-string.prototype.split">`String.prototype.split`</emu-xref> method.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                @@toPrimitive
-              </td>
-              <td>
-                `"Symbol.toPrimitive"`
-              </td>
-              <td>
-                A method that converts an object to a corresponding primitive value. Called by the ToPrimitive abstract operation.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                @@toStringTag
-              </td>
-              <td>
-                `"Symbol.toStringTag"`
-              </td>
-              <td>
-                A String valued property that is used in the creation of the default string description of an object. Accessed by the built-in method <emu-xref href="#sec-object.prototype.tostring">`Object.prototype.toString`</emu-xref>.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                @@unscopables
-              </td>
-              <td>
-                `"Symbol.unscopables"`
-              </td>
-              <td>
-                An object valued property whose own and inherited property names are property names that are excluded from the `with` environment bindings of the associated object.
-              </td>
-            </tr>
+              <tr>
+                <th>
+                  规范名称
+                </th>
+                <th>
+                  [[Description]]
+                </th>
+                <th>
+                  值和目的
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  @@hasInstance
+                </td>
+                <td>
+                  `"Symbol.hasInstance"`
+                </td>
+                <td>
+                  确定构造函数对象是否识别对象为构造函数实例之一的方法。由 `instanceof` 运算符语义来调用。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  @@isConcatSpreadable
+                </td>
+                <td>
+                  `"Symbol.isConcatSpreadable"`
+                </td>
+                <td>
+                  一个 Boolean 值，如果为 true， 表示一个对象应该被 <emu-xref href="#sec-array.prototype.concat">`Array.prototype.concat`</emu-xref> 扁平化的加入到数组元素中。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  @@iterator
+                </td>
+                <td>
+                  `"Symbol.iterator"`
+                </td>
+                <td>
+                  返回一个对象的默认 Iterator 的方法。由 for-of 声明的语义来调用。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  @@match
+                </td>
+                <td>
+                  `"Symbol.match"`
+                </td>
+                <td>
+                  将字符串与正则表达式匹配的正则表达式方法。 由 <emu-xref href="#sec-string.prototype.match">`String.prototype.match`</emu-xref> 方法调用。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  @@replace
+                </td>
+                <td>
+                  `"Symbol.replace"`
+                </td>
+                <td>
+                  替换匹配字符串子串的正则表达式方法。 由 <emu-xref href="#sec-string.prototype.replace">`String.prototype.replace`</emu-xref> 方法调用。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  @@search
+                </td>
+                <td>
+                  `"Symbol.search"`
+                </td>
+                <td>
+                  一个正则表达式方法，它返回正则表达式匹配到的内容在字符串中的索引。 由<emu-xref href="#sec-string.prototype.search">`String.prototype.search`</emu-xref>方法调用。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  @@species
+                </td>
+                <td>
+                  `"Symbol.species"`
+                </td>
+                <td>
+                  作为构造函数的函数值属性，用来创建派生对象。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  @@split
+                </td>
+                <td>
+                  `"Symbol.split"`
+                </td>
+                <td>
+                  一个正则表达式方法，它在正则表达式匹配的索引位置拆分字符串。 由 <emu-xref href="#sec-string.prototype.split">`String.prototype.split`</emu-xref> 方法调用。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  @@toPrimitive
+                </td>
+                <td>
+                  `"Symbol.toPrimitive"`
+                </td>
+                <td>
+                  将一个对象转换为相应原始值的方法。由抽象操作 ToPrimitive 调用。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  @@toStringTag
+                </td>
+                <td>
+                  `"Symbol.toStringTag"`
+                </td>
+                <td>
+                  用于创建对象的默认字符串描述的 String 值属性。通过内置方法 <emu-xref href="#sec-object.prototype.tostring">`Object.prototype.toString`</emu-xref> 访问。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  @@unscopables
+                </td>
+                <td>
+                  `"Symbol.unscopables"`
+                </td>
+                <td>
+                  一个对象值属性，其自身和继承的属性名是从相关对象的 with 环境绑定中排除的属性名。
+                </td>
+              </tr>
             </tbody>
           </table>
         </emu-table>
@@ -204,235 +203,235 @@
 
     <!-- es6num="6.1.6" -->
     <emu-clause id="sec-ecmascript-language-types-number-type">
-      <h1>The Number Type</h1>
-      <p>The Number type has exactly 18437736874454810627 (that is, <emu-eqn>2<sup>64</sup>-2<sup>53</sup>+3</emu-eqn>) values, representing the double-precision 64-bit format IEEE 754-2008 values as specified in the IEEE Standard for Binary Floating-Point Arithmetic, except that the 9007199254740990 (that is, <emu-eqn>2<sup>53</sup>-2</emu-eqn>) distinct &ldquo;Not-a-Number&rdquo; values of the IEEE Standard are represented in ECMAScript as a single special *NaN* value. (Note that the *NaN* value is produced by the program expression `NaN`.) In some implementations, external code might be able to detect a difference between various Not-a-Number values, but such behaviour is implementation-dependent; to ECMAScript code, all *NaN* values are indistinguishable from each other.</p>
+      <h1>Number 类型</h1>
+      <p>Number 类型有 18437736874454810627 (即，<emu-eqn>2<sup>64</sup>-2<sup>53</sup>+3</emu-eqn>)个值，表示双精度 64 位格式的 IEEE 754-2008 值由 IEEE 二进制浮点数标准规定，除了 9007199254740990 (即，<emu-eqn>2<sup>53</sup>-2</emu-eqn>)这个在 IEEE 标准中独特的 &ldquo;Not-a-Number&rdquo; 值，其在 ECMAScript 中表示为一个特殊的 *NaN* 值。(注意 *NaN* 值在程序中由 *NaN* 表达式产生)在某些实现中，外部代码可能能够检测各种 Not-a-Number 值之间的差异，但这种行为依赖于实现; 对于 ECMAScript 代码，所有的 *NaN* 值彼此是不可区分。</p>
       <emu-note>
-        <p>The bit pattern that might be observed in an ArrayBuffer (see <emu-xref href="#sec-arraybuffer-objects"></emu-xref>) or a SharedArrayBuffer (see <emu-xref href="#sec-sharedarraybuffer-objects"></emu-xref>) after a Number value has been stored into it is not necessarily the same as the internal representation of that Number value used by the ECMAScript implementation.</p>
+        <p>在一个 Number 数值被存入之后，在一个 ArrayBuffer(见<emu-xref href="#sec-arraybuffer-objects"></emu-xref>) 或一个 SharedArrayBuffer(见<emu-xref href="#sec-sharedarraybuffer-objects"></emu-xref>) 中可能观察到的位模式不一定和 ECMAScript 实现所使用的那个 Number 数值的内部表示相同。</p>
       </emu-note>
-      <p>There are two other special values, called *positive Infinity* and *negative Infinity*. For brevity, these values are also referred to for expository purposes by the symbols *+&infin;* and *-&infin;*, respectively. (Note that these two infinite Number values are produced by the program expressions `+Infinity` (or simply `Infinity`) and `-Infinity`.)</p>
-      <p>The other 18437736874454810624 (that is, <emu-eqn>2<sup>64</sup>-2<sup>53</sup></emu-eqn>) values are called the finite numbers. Half of these are positive numbers and half are negative numbers; for every finite positive Number value there is a corresponding negative value having the same magnitude.</p>
-      <p>Note that there is both a *positive zero* and a *negative zero*. For brevity, these values are also referred to for expository purposes by the symbols *+0* and *-0*, respectively. (Note that these two different zero Number values are produced by the program expressions `+0` (or simply `0`) and `-0`.)</p>
-      <p>The 18437736874454810622 (that is, <emu-eqn>2<sup>64</sup>-2<sup>53</sup>-2</emu-eqn>) finite nonzero values are of two kinds:</p>
-      <p>18428729675200069632 (that is, <emu-eqn>2<sup>64</sup>-2<sup>54</sup></emu-eqn>) of them are normalized, having the form</p>
+      <p>还有另外两个特殊的值，叫做<abbr title="positive Infinity">*正无穷*</abbr>和<abbr title="*negative Infinity*">*负无穷*</abbr>。 为了简洁起见，这些值分别由符号 *+&infin;* 和 *-&infin;* 表示。（请注意，这两个无穷数值由程序表达式 *+Infinity*（或 *Infinity* ）和 *-Infinity* 产生。）</p>
+      <p>其他 18437736874454810624（即，<emu-eqn>2<sup>64</sup>-2<sup>53</sup></emu-eqn>）个值称为有限值。 其中一半为正数，一般为负数；每个有限正数存在相同大小的对应负数。</p>
+      <p>注意其中有一个*正零*，一个*负零*。为了简洁，他们也分别用 *+0* 和 *-0* 来说明。（注意这两个不同的 0，通过程序表达式 *+0*(或 *0*) 和 *-0* 产生。）</p>
+      <p>18437736874454810622（即 <emu-eqn>2<sup>64</sup>-2<sup>53</sup>-2</emu-eqn>）个有限非 0 值有两种：</p>
+      <p>其中 18428729675200069632 (即 <emu-eqn>2<sup>64</sup>-2<sup>54</sup></emu-eqn>) 个值是标准的, 具有如下格式</p>
       <div class="math-display">
         _s_ &times; _m_ &times; 2<sup>_e_</sup>
       </div>
-      <p>where _s_ is +1 or -1, _m_ is a positive integer less than 2<sup>53</sup> but not less than 2<sup>52</sup>, and _e_ is an integer ranging from -1074 to 971, inclusive.</p>
-      <p>The remaining 9007199254740990 (that is, <emu-eqn>2<sup>53</sup>-2</emu-eqn>) values are denormalized, having the form</p>
+      <p>其中 _s_ 为 +1 或 -1，_m_ 是一个小于 2<sup>53</sup> 但大于等于 2<sup>52</sup> 的整数，_e_ 是从 -1074 到 971 的整数。</p>
+      <p>其余 9007199254740990 (即 <emu-eqn>2<sup>53</sup>-2</emu-eqn>) 个值是非标准的, 有如下格式</p>
       <div class="math-display">
         _s_ &times; _m_ &times; 2<sup>_e_</sup>
       </div>
-      <p>where _s_ is +1 or -1, _m_ is a positive integer less than 2<sup>52</sup>, and _e_ is -1074.</p>
-      <p>Note that all the positive and negative integers whose magnitude is no greater than 2<sup>53</sup> are representable in the Number type (indeed, the integer 0 has two representations, *+0* and *-0*).</p>
-      <p>A finite number has an <em>odd significand</em> if it is nonzero and the integer _m_ used to express it (in one of the two forms shown above) is odd. Otherwise, it has an <em>even significand</em>.</p>
-      <p>In this specification, the phrase &ldquo;the Number value for _x_&rdquo; where _x_ represents an exact real mathematical quantity (which might even be an irrational number such as &pi;) means a Number value chosen in the following manner. Consider the set of all finite values of the Number type, with *-0* removed and with two additional values added to it that are not representable in the Number type, namely 2<sup>1024</sup> (which is <emu-eqn>+1 &times; 2<sup>53</sup> &times; 2<sup>971</sup></emu-eqn>) and <emu-eqn>-2<sup>1024</sup></emu-eqn> (which is <emu-eqn>-1 &times; 2<sup>53</sup> &times; 2<sup>971</sup></emu-eqn>). Choose the member of this set that is closest in value to _x_. If two values of the set are equally close, then the one with an even significand is chosen; for this purpose, the two extra values 2<sup>1024</sup> and <emu-eqn>-2<sup>1024</sup></emu-eqn> are considered to have even significands. Finally, if 2<sup>1024</sup> was chosen, replace it with *+&infin;*; if <emu-eqn>-2<sup>1024</sup></emu-eqn> was chosen, replace it with *-&infin;*; if *+0* was chosen, replace it with *-0* if and only if _x_ is less than zero; any other chosen value is used unchanged. The result is the Number value for _x_. (This procedure corresponds exactly to the behaviour of the IEEE 754-2008 &ldquo;round to nearest, ties to even&rdquo; mode.)</p>
-      <p>Some ECMAScript operators deal only with integers in specific ranges such as <emu-eqn>-2<sup>31</sup></emu-eqn> through <emu-eqn>2<sup>31</sup>-1</emu-eqn>, inclusive, or in the range 0 through <emu-eqn>2<sup>16</sup>-1</emu-eqn>, inclusive. These operators accept any value of the Number type but first convert each such value to an integer value in the expected range. See the descriptions of the numeric conversion operations in <emu-xref href="#sec-type-conversion"></emu-xref>.</p>
+      <p>其中 s 是 +1 或 -1 ，m 是小于 52 的正整数，e 是 -1074。</p>
+      <p>注意，大小不大于 2<sup>53</sup> 的所有正整数和负整数可以在 Number 类型中表示（实际上，整数 0 具有两个表示，*+0* 和 *-0*）。</p>
+      <p>如果一个有限的数值非零且用来表达它（上文两种形式之一）的整数 m 是奇数，则该数值有<em><abbr title="odd significand">奇数意义</abbr></em>。否则，它有<em><abbr title="even significand">偶数意义</abbr></em>。</p>
+      <p>在本规范中，当 _x_ 表示一个精确的非零实数数学量（甚至可以是无理数，比如&pi;）时，&ldquo;the Number value for _x_&rdquo; 意为，以下面的方式选择一个 Number 值。考虑 Number 类型中除了 *-0* 和两个被加入在数值类型中但不可呈现的值，2<sup>1024</sup> (<emu-eqn>+1 &times; 2<sup>53</sup> &times; 2<sup>971</sup></emu-eqn>) 以及 <emu-eqn>-2<sup>1024</sup></emu-eqn>(<emu-eqn>-1 &times; 2<sup>53</sup> &times; 2<sup>971</sup></emu-eqn>)的所有有限值的集合。选择此集合中值最接近 _x_ 的一员。若集合中的两值近似相等，那么选择有偶数意义的那个；为此，2<sup>1024</sup>和<emu-eqn>-2<sup>1024</sup></emu-eqn>这两个超额值被认为有偶数意义。最终，若选择 2<sup>1024</sup> ，用 *+&infin;* 替换它；若选择 <emu-eqn>-2<sup>1024</sup></emu-eqn>， 用 *-&infin;* 替换它；若选择 *+0*，有且只有 _x_ 小于零时，用 *-0* 替换它；其它任何被选取的值都不用改变。结果就是 _x_ 的 Number 值。（此过程正是IEEE 754-2008&ldquo;round to nearest, ties to even&rdquo;模式对应的行为。）</p>
+      <p>某些 ECMAScript 运算符仅处理闭区间 <emu-eqn>-2<sup>31</sup></emu-eqn> 到 <emu-eqn>2<sup>31</sup>-1</emu-eqn>，或者 0 到 <emu-eqn>2<sup>16</sup>-1</emu-eqn> 的整数。 这些操作符接收任意 Number 类型的值，首先会将它们转换成像上面提到的这些范围内的值。参考<emu-xref href="#sec-type-conversion"></emu-xref>的数字转换操作。</p>
     </emu-clause>
 
     <!-- es6num="6.1.7" -->
     <emu-clause id="sec-object-type">
-      <h1>The Object Type</h1>
-      <p>An Object is logically a collection of properties. Each property is either a data property, or an accessor property:</p>
+      <h1>Object 类型</h1>
+      <p>对象在逻辑上是属性的集合。每个属性都是一个数据属性或一个访问器属性：</p>
       <ul>
         <li>
-          A <em>data property</em> associates a key value with an ECMAScript language value and a set of Boolean attributes.
+          <em>数据属性</em>关联 key 值和一个 ECMAScript 语言值以及一组值为 Boolean 类型的特性。
         </li>
         <li>
-          An <em>accessor property</em> associates a key value with one or two accessor functions, and a set of Boolean attributes. The accessor functions are used to store or retrieve an ECMAScript language value that is associated with the property.
+          <em>访问器属性</em>关联 key 值和一个或两个访问器函数以及一组值为 Boolean 类型的特性。访问器函数用于存储或检索与该属性相关联的 ECMAScript 语言值。
         </li>
       </ul>
-      <p>Properties are identified using key values. A property key value is either an ECMAScript String value or a Symbol value. All String and Symbol values, including the empty string, are valid as property keys. A <em>property name</em> is a property key that is a String value.</p>
-      <p>An <em>integer index</em> is a String-valued property key that is a canonical numeric String (see <emu-xref href="#sec-canonicalnumericindexstring"></emu-xref>) and whose numeric value is either *+0* or a positive integer &le; 2<sup>53</sup>-1. An <dfn id="array-index">array index</dfn> is an integer index whose numeric value _i_ is in the range <emu-eqn>+0 &le; _i_ &lt; 2<sup>32</sup>-1</emu-eqn>.</p>
-      <p>Property keys are used to access properties and their values. There are two kinds of access for properties: <em>get</em> and <em>set</em>, corresponding to value retrieval and assignment, respectively. The properties accessible via get and set access includes both <em>own properties</em> that are a direct part of an object and <em>inherited properties</em> which are provided by another associated object via a property inheritance relationship. Inherited properties may be either own or inherited properties of the associated object. Each own property of an object must each have a key value that is distinct from the key values of the other own properties of that object.</p>
-      <p>All objects are logically collections of properties, but there are multiple forms of objects that differ in their semantics for accessing and manipulating their properties. <em>Ordinary objects</em> are the most common form of objects and have the default object semantics. An <em>exotic object</em> is any form of object whose property semantics differ in any way from the default semantics.</p>
+      <p>属性使用 key 值来标识。一个属性的 key 值是 ECMAScript String 值或 Symbol 值。所有 String 值（包括空字符串） 和 Symbol 值作为属性的 key 都是有效的。一个属性的 key 为 String 值时，<em>属性名称</em>为属性的 key 。</p>
+      <p>一个值为 `+0` 或者一个 &le; 2<sup>53</sup>-1 的整数作为属性 key 字符串值的<em>整数索引</em>是一个以典型的数字 String。 一个<dfn id="array-index">数组索引</dfn>是范围在 <emu-eqn>+0 &le; _i_ &lt; 2<sup>32</sup>-1</emu-eqn> 的整数。</p>
+      <p>属性的 key 用来访问属性以及其值。属性有两种访问方式：<em>get</em> 和 <em>set</em> ，分别对应值的检索和赋值。通过 get 和 set 可访问的属性既包括直接属于的<em>自身属性</em>，也包括通过继承关系由其它相关对象提供的<em>继承属性</em>。继承属性也可能是另一个对象的自身属性或者继承属性。对象的每个自身属性必须有一个与对象的其他自身属性 key 值不同 key 值。</p>
+      <p>所有的对象都是逻辑上的属性集合，但是在用于访问和操纵它们的属性的语义中存在多种形式的对象。<em>普通对象</em>是对象的最常见形式，拥有默认的对象语义。<em>奇异对象</em>是指其属性语义与默认语义的各个方面都有区别的对象。</p>
 
       <!-- es6num="6.1.7.1" -->
       <emu-clause id="sec-property-attributes">
-        <h1>Property Attributes</h1>
-        <p>Attributes are used in this specification to define and explain the state of Object properties. A data property associates a key value with the attributes listed in <emu-xref href="#table-2"></emu-xref>.</p>
+        <h1><abbr title="Property Attributes">属性特性</abbr></h1>
+        <p>在本规范中特性用来定义和解释对象属性的状态。数据属性 key 值与表<emu-xref href="#table-2"></emu-xref>中列出的特性关联。</p>
         <emu-table id="table-2" caption="Attributes of a Data Property">
           <table>
             <tbody>
-            <tr>
-              <th>
-                Attribute Name
-              </th>
-              <th>
-                Value Domain
-              </th>
-              <th>
-                Description
-              </th>
-            </tr>
-            <tr>
-              <td>
-                [[Value]]
-              </td>
-              <td>
-                Any ECMAScript language type
-              </td>
-              <td>
-                The value retrieved by a get access of the property.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Writable]]
-              </td>
-              <td>
-                Boolean
-              </td>
-              <td>
-                If *false*, attempts by ECMAScript code to change the property's [[Value]] attribute using [[Set]] will not succeed.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Enumerable]]
-              </td>
-              <td>
-                Boolean
-              </td>
-              <td>
-                If *true*, the property will be enumerated by a for-in enumeration (see <emu-xref href="#sec-for-in-and-for-of-statements"></emu-xref>). Otherwise, the property is said to be non-enumerable.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Configurable]]
-              </td>
-              <td>
-                Boolean
-              </td>
-              <td>
-                If *false*, attempts to delete the property, change the property to be an accessor property, or change its attributes (other than [[Value]], or changing [[Writable]] to *false*) will fail.
-              </td>
-            </tr>
+              <tr>
+                <th>
+                  特性名称
+                </th>
+                <th>
+                  值域
+                </th>
+                <th>
+                  描述
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  [[Value]]
+                </td>
+                <td>
+                  任何 ECMAScript 语言类型
+                </td>
+                <td>
+                  get 访问检索到的属性值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Writable]]
+                </td>
+                <td>
+                  Boolean
+                </td>
+                <td>
+                  如果为 *false*，尝试通过 [[Set]] 去改变属性的 [[Value]] 特性的 ECMAScript 代码将不会成功。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Enumerable]]
+                </td>
+                <td>
+                  Boolean
+                </td>
+                <td>
+                  如果为 *true*, 这个属性被 for-in 枚举时将会是可枚举的(见<emu-xref href="#sec-for-in-and-for-of-statements"></emu-xref>)。否则，这个属性就是不可枚举的。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Configurable]]
+                </td>
+                <td>
+                  Boolean
+                </td>
+                <td>
+                  如果为 *false*，尝试删除这个属性，把这个属性改为访问器属性，或者改变它的的特性(除了修改 [[Value]]，或修改 [[Writable]] 为 false 之外)都会失败。
+                </td>
+              </tr>
             </tbody>
           </table>
         </emu-table>
-        <p>An accessor property associates a key value with the attributes listed in <emu-xref href="#table-3"></emu-xref>.</p>
+        <p>访问器属性关联表<emu-xref href="#table-3"></emu-xref>中的列出一个值。</p>
         <emu-table id="table-3" caption="Attributes of an Accessor Property">
           <table>
             <tbody>
-            <tr>
-              <th>
-                Attribute Name
-              </th>
-              <th>
-                Value Domain
-              </th>
-              <th>
-                Description
-              </th>
-            </tr>
-            <tr>
-              <td>
-                [[Get]]
-              </td>
-              <td>
-                Object | Undefined
-              </td>
-              <td>
-                If the value is an Object it must be a function object. The function's [[Call]] internal method (<emu-xref href="#table-6"></emu-xref>) is called with an empty arguments list to retrieve the property value each time a get access of the property is performed.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Set]]
-              </td>
-              <td>
-                Object | Undefined
-              </td>
-              <td>
-                If the value is an Object it must be a function object. The function's [[Call]] internal method (<emu-xref href="#table-6"></emu-xref>) is called with an arguments list containing the assigned value as its sole argument each time a set access of the property is performed. The effect of a property's [[Set]] internal method may, but is not required to, have an effect on the value returned by subsequent calls to the property's [[Get]] internal method.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Enumerable]]
-              </td>
-              <td>
-                Boolean
-              </td>
-              <td>
-                If *true*, the property is to be enumerated by a for-in enumeration (see <emu-xref href="#sec-for-in-and-for-of-statements"></emu-xref>). Otherwise, the property is said to be non-enumerable.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Configurable]]
-              </td>
-              <td>
-                Boolean
-              </td>
-              <td>
-                If *false*, attempts to delete the property, change the property to be a data property, or change its attributes will fail.
-              </td>
-            </tr>
+              <tr>
+                <th>
+                  特性名称
+                </th>
+                <th>
+                  值域
+                </th>
+                <th>
+                  描述
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  [[Get]]
+                </td>
+                <td>
+                  Object | Undefined
+                </td>
+                <td>
+                  如果这个值是一个对象，那么它必须是一个函数对象。在每次取值(get 访问该属性被执行)时，这个函数的内部 [[Call]] 方法(<emu-xref href="#table-6"></emu-xref>)将会以一个空 arguments 列表调用获取属性值。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Set]]
+                </td>
+                <td>
+                  Object | Undefined
+                </td>
+                <td>
+                  如果这个值是一个对象，那么它必须是一个函数对象。在每次赋值(set 访问该属性被执行)时，这个函数的内部 [[Call]] 方法(<emu-xref href="#table-6"></emu-xref>)将会以一个包含分配的值为参数的 arguments 调用。内部方法 [[Set]] 应该会对后续的内部方法 [[Get]] 调用产生的返回值产生影响，但不是必须的。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Enumerable]]
+                </td>
+                <td>
+                  Boolean
+                </td>
+                <td>
+                  如果为 *true*,这个属性被 for-in 枚举时将会是可枚举的(见<emu-xref href="#sec-for-in-and-for-of-statements"></emu-xref>)。 否则，这个属性就是不可枚举的。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Configurable]]
+                </td>
+                <td>
+                  Boolean
+                </td>
+                <td>
+                  如果为 *false*，任何尝试删除这个属性，把这个属性改为数据属性，或者改变它的其它特性的操作都会失败。
+                </td>
+              </tr>
             </tbody>
           </table>
         </emu-table>
-        <p>If the initial values of a property's attributes are not explicitly specified by this specification, the default value defined in <emu-xref href="#table-4"></emu-xref> is used.</p>
+        <p>如果一个属性的特性的初始值没有被本规范显式地指定的，那么使用在表<emu-xref href="#table-4"></emu-xref>中定义的默认值。</p>
         <emu-table id="table-4" caption="Default Attribute Values">
           <table>
             <tbody>
-            <tr>
-              <th>
-                Attribute Name
-              </th>
-              <th>
-                Default Value
-              </th>
-            </tr>
-            <tr>
-              <td>
-                [[Value]]
-              </td>
-              <td>
-                *undefined*
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Get]]
-              </td>
-              <td>
-                *undefined*
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Set]]
-              </td>
-              <td>
-                *undefined*
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Writable]]
-              </td>
-              <td>
-                *false*
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Enumerable]]
-              </td>
-              <td>
-                *false*
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Configurable]]
-              </td>
-              <td>
-                *false*
-              </td>
-            </tr>
+              <tr>
+                <th>
+                  特性名
+                </th>
+                <th>
+                  默认值
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  [[Value]]
+                </td>
+                <td>
+                  *undefined*
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Get]]
+                </td>
+                <td>
+                  *undefined*
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Set]]
+                </td>
+                <td>
+                  *undefined*
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Writable]]
+                </td>
+                <td>
+                  *false*
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Enumerable]]
+                </td>
+                <td>
+                  *false*
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Configurable]]
+                </td>
+                <td>
+                  *false*
+                </td>
+              </tr>
             </tbody>
           </table>
         </emu-table>
@@ -440,1513 +439,1516 @@
 
       <!-- es6num="6.1.7.2" -->
       <emu-clause id="sec-object-internal-methods-and-internal-slots">
-        <h1>Object Internal Methods and Internal Slots</h1>
-        <p>The actual semantics of objects, in ECMAScript, are specified via algorithms called <em>internal methods</em>. Each object in an ECMAScript engine is associated with a set of internal methods that defines its runtime behaviour. These internal methods are not part of the ECMAScript language. They are defined by this specification purely for expository purposes. However, each object within an implementation of ECMAScript must behave as specified by the internal methods associated with it. The exact manner in which this is accomplished is determined by the implementation.</p>
-        <p>Internal method names are polymorphic. This means that different object values may perform different algorithms when a common internal method name is invoked upon them. That actual object upon which an internal method is invoked is the &ldquo;target&rdquo; of the invocation. If, at runtime, the implementation of an algorithm attempts to use an internal method of an object that the object does not support, a *TypeError* exception is thrown.</p>
-        <p>Internal slots correspond to internal state that is associated with objects and used by various ECMAScript specification algorithms. Internal slots are not object properties and they are not inherited. Depending upon the specific internal slot specification, such state may consist of values of any ECMAScript language type or of specific ECMAScript specification type values. Unless explicitly specified otherwise, internal slots are allocated as part of the process of creating an object and may not be dynamically added to an object. Unless specified otherwise, the initial value of an internal slot is the value *undefined*. Various algorithms within this specification create objects that have internal slots. However, the ECMAScript language provides no direct way to associate internal slots with an object.</p>
-        <p>Internal methods and internal slots are identified within this specification using names enclosed in double square brackets [[ ]].</p>
-        <p><emu-xref href="#table-5"></emu-xref> summarizes the <em>essential internal methods</em> used by this specification that are applicable to all objects created or manipulated by ECMAScript code. Every object must have algorithms for all of the essential internal methods. However, all objects do not necessarily use the same algorithms for those methods.</p>
-        <p>The &ldquo;Signature&rdquo; column of <emu-xref href="#table-5"></emu-xref> and other similar tables describes the invocation pattern for each internal method. The invocation pattern always includes a parenthesized list of descriptive parameter names. If a parameter name is the same as an ECMAScript type name then the name describes the required type of the parameter value. If an internal method explicitly returns a value, its parameter list is followed by the symbol &ldquo;&rarr;&rdquo; and the type name of the returned value. The type names used in signatures refer to the types defined in clause <emu-xref href="#sec-ecmascript-data-types-and-values"></emu-xref> augmented by the following additional names. &ldquo;<em>any</em>&rdquo; means the value may be any ECMAScript language type. An internal method implicitly returns a Completion Record. In addition to its parameters, an internal method always has access to the object that is the target of the method invocation.</p>
+        <h1>对象的<abbr title="Internal Methods">内部方法</abbr>以及<abbr title="Internal Slots">内部槽</abbr></h1>
+        <p>在 ECMAScript 中，对象的实际语义是通过算法来调用<em>内部方法</em>指定的。在 ECMAScript 引擎中的每个对象都与一系列的定义它的运行时行为的内部方法相关联。这些内部方法不属于 ECMAScript 语言的一部分。本规范定义它们纯粹是为了说明目的。但是，在 ECMAScript 具体实现中的每个对象必须表现得与其相关关联的内部方法一致。其中确切的方式由实现者来决定。</p>
+        <p>内部方法名称是多态的。这意味着当一个通用内部方法被调用的时候，不同的对象值可能会执行不同的算法。调用内部方法实际的对象是这个调用 &ldquo;target&rdquo;。如果在运行时，实现的算法尝试使用一个对象不支持的内部方法，抛出一个`TypeError`异常。</p>
+        <p>内部槽对应于相关对象的内部状态，用于各种 ECMAScript 规范算法。内部槽不是对象的属性，也不会被继承。根据具体的内部槽规范，内部状态可能由任意 ECMAScript 语言类型的值或者指定的 ECMAScript 规范类型的值组成。除非另有指定，否则分配内部槽应作为创建一个对象的过程的部分，并且不应该动态地添加到对象上。除非另有指定，否则一个内部槽的初始值是 *undefined*。本规范内很多算法都会创建有内部槽的对象。然而，ECMAScript 语言不提供直接去访问一个对象内部槽的方法。</p>
+        <p>本规范内的内部方法和内部槽使用闭合的双方括号 [[]] 来标识。</p>
+        <p>表 <emu-xref href="#table-5"></emu-xref> 总结了本规范中适用于所有通过 ECMAScript 代码创建或者操作的对象的<em><abbr title="essential internal methods">基本内部方法</abbr></em>。每个对象必须有所有基本内部方法的算法。不过，对于那些方法不必所有的对象都用一样的算法。</p>
+        <p>表 <emu-xref href="#table-5"></emu-xref> 中的 &ldquo;Signature&rdquo; 列以及其它相似的表格描述了每个内部方法的调用模式。调用模式总是包含一个括起来的描述参数名的列表。如果一个参数名与 ECMAScript 类型的名字一样，则该名称描述了参数值的所需类型。如果一个内部方法显式地返回了一个值，则它的参数列表接着是一个 &ldquo;&rarr;&rdquo; 符号，以及返回值的类型名称。 在 &ldquo;Signature&rdquo; 列中使用的类型名称指向在<emu-xref href="#sec-ecmascript-data-types-and-values"></emu-xref>中定义的类型，以及一些附加的名称。 &ldquo;<em>any</em>&rdquo; 意味着这个值可以是任意的 ECMAScript 语言值。一个内部方法会隐式地返回一个 Completion Record。 除了它的参数，一个内部方法还总会访问调用这个方法的目标对象。</p>
         <emu-table id="table-5" caption="Essential Internal Methods">
           <table>
             <tbody>
-            <tr>
-              <th>
-                Internal Method
-              </th>
-              <th>
-                Signature
-              </th>
-              <th>
-                Description
-              </th>
-            </tr>
-            <tr>
-              <td>
-                [[GetPrototypeOf]]
-              </td>
-              <td>
-                ( ) <b>&rarr;</b> Object | Null
-              </td>
-              <td>
-                Determine the object that provides inherited properties for this object. A *null* value indicates that there are no inherited properties.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[SetPrototypeOf]]
-              </td>
-              <td>
-                (Object | Null) <b>&rarr;</b> Boolean
-              </td>
-              <td>
-                Associate this object with another object that provides inherited properties. Passing *null* indicates that there are no inherited properties. Returns *true* indicating that the operation was completed successfully or *false* indicating that the operation was not successful.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[IsExtensible]]
-              </td>
-              <td>
-                ( ) <b>&rarr;</b> Boolean
-              </td>
-              <td>
-                Determine whether it is permitted to add additional properties to this object.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[PreventExtensions]]
-              </td>
-              <td>
-                ( ) <b>&rarr;</b> Boolean
-              </td>
-              <td>
-                Control whether new properties may be added to this object. Returns *true* if the operation was successful or *false* if the operation was unsuccessful.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[GetOwnProperty]]
-              </td>
-              <td>
-                (_propertyKey_) <b>&rarr;</b> Undefined | Property Descriptor
-              </td>
-              <td>
-                Return a Property Descriptor for the own property of this object whose key is _propertyKey_, or *undefined* if no such property exists.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[DefineOwnProperty]]
-              </td>
-              <td>
-                (_propertyKey_, _PropertyDescriptor_) <b>&rarr;</b> Boolean
-              </td>
-              <td>
-                Create or alter the own property, whose key is _propertyKey_, to have the state described by _PropertyDescriptor_. Return *true* if that property was successfully created/updated or *false* if the property could not be created or updated.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[HasProperty]]
-              </td>
-              <td>
-                (_propertyKey_) <b>&rarr;</b> Boolean
-              </td>
-              <td>
-                Return a Boolean value indicating whether this object already has either an own or inherited property whose key is _propertyKey_.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Get]]
-              </td>
-              <td>
-                (_propertyKey_, _Receiver_) <b>&rarr;</b> <em>any</em>
-              </td>
-              <td>
-                Return the value of the property whose key is _propertyKey_ from this object. If any ECMAScript code must be executed to retrieve the property value, _Receiver_ is used as the *this* value when evaluating the code.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Set]]
-              </td>
-              <td>
-                (_propertyKey_, _value_, _Receiver_) <b>&rarr;</b> Boolean
-              </td>
-              <td>
-                Set the value of the property whose key is _propertyKey_ to _value_. If any ECMAScript code must be executed to set the property value, _Receiver_ is used as the *this* value when evaluating the code. Returns *true* if the property value was set or *false* if it could not be set.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Delete]]
-              </td>
-              <td>
-                (_propertyKey_) <b>&rarr;</b> Boolean
-              </td>
-              <td>
-                Remove the own property whose key is _propertyKey_ from this object. Return *false* if the property was not deleted and is still present. Return *true* if the property was deleted or is not present.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[OwnPropertyKeys]]
-              </td>
-              <td>
-                ( ) <b>&rarr;</b> List of propertyKey
-              </td>
-              <td>
-                Return a List whose elements are all of the own property keys for the object.
-              </td>
-            </tr>
+              <tr>
+                <th>
+                  Internal Method
+                </th>
+                <th>
+                  Signature
+                </th>
+                <th>
+                  Description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  [[GetPrototypeOf]]
+                </td>
+                <td>
+                  ( ) <b>&rarr;</b> Object | Null
+                </td>
+                <td>
+                  确定为对象提供继承属性的对象。*null* 值表示没有继承属性。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[SetPrototypeOf]]
+                </td>
+                <td>
+                  (Object | Null) <b>&rarr;</b> Boolean
+                </td>
+                <td>
+                  关联这个对象与提供继承属性的对象。传递 *null* 表示没有继承属性。返回 true 表示操作成功完成，返回 false 表示操作失败。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[IsExtensible]]
+                </td>
+                <td>
+                  ( ) <b>&rarr;</b> Boolean
+                </td>
+                <td>
+                  决定是否允许添加额外的属性到这个对象上。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[PreventExtensions]]
+                </td>
+                <td>
+                  ( ) <b>&rarr;</b> Boolean
+                </td>
+                <td>
+                  控制一个新的属性是否能加到这个对象上。返回 true 表示操作成功，返回 false 表示操作失败。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[GetOwnProperty]]
+                </td>
+                <td>
+                  (_propertyKey_) <b>&rarr;</b> Undefined | Property Descriptor
+                </td>
+                <td>
+                  返回对象自身属性中 key 值为 _propertyKey_ 的属性的<abbr title="Property Descriptor">属性描述符</abbr>，如果没有这个属性返回`undefined`。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[DefineOwnProperty]]
+                </td>
+                <td>
+                  (_propertyKey_, _PropertyDescriptor_) <b>&rarr;</b> Boolean
+                </td>
+                <td>
+                  创建或者改变 key 值为 _propertyKey_ 的自身属性状态为 _PropertyDescriptor_。返回 true 表示属性被成功创建/更新，返回 false 表示属性不能被创建/更新。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[HasProperty]]
+                </td>
+                <td>
+                  (_propertyKey_) <b>&rarr;</b> Boolean
+                </td>
+                <td>
+                  返回一个 Boolean 值，代表这个对象自身或者继承了一个 key 值为 _propertyKey_ 的属性。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Get]]
+                </td>
+                <td>
+                  (_propertyKey_, _Receiver_) <b>&rarr;</b> <em>any</em>
+                </td>
+                <td>
+                  返回这个对象里 key 值为 _propertyKey_ 的属性的值。如果必须运行一些的 ECMAScript 代码来检索这个属性值，_Receiver_ 就会作为解析代码时的 *this* 值。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Set]]
+                </td>
+                <td>
+                  (_propertyKey_, _value_, _Receiver_) <b>&rarr;</b> Boolean
+                </td>
+                <td>
+                  设置这个对象 key 值为 _propertyKey_ 的属性的值为 _value_。如果必须运行一些的 ECMAScript 代码来检索这个属性值，_Receiver_ 就会作为解析代码时的 *this* 值。返回 *true* 表示这个属性值已经设置，返回 *false* 表示不能被设置。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Delete]]
+                </td>
+                <td>
+                  (_propertyKey_) <b>&rarr;</b> Boolean
+                </td>
+                <td>
+                  移除这个对象 key 值为 _propertyKey_ 的自身属性。 如果这个属性没有被移除，仍然存在，则返回 *false*。 如果属性被移除，或不存在，则返回 *true*。
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[OwnPropertyKeys]]
+                </td>
+                <td>
+                  ( ) <b>&rarr;</b> List of propertyKey
+                </td>
+                <td>
+                  返回一个包含所有自身属性 key 值的 List。
+                </td>
+              </tr>
             </tbody>
           </table>
         </emu-table>
-        <p><emu-xref href="#table-6"></emu-xref> summarizes additional essential internal methods that are supported by objects that may be called as functions. A <dfn id="function-object">function object</dfn> is an object that supports the [[Call]] internal method. A <dfn id="constructor">constructor</dfn> (also referred to as a <em>constructor function</em>) is a function object that supports the [[Construct]] internal method.</p>
+        <p>表 <emu-xref href="#table-6"></emu-xref> 总结了用来支持对象被作为函数调用的其他基础内部方法。 <dfn id="function-object">函数对象</dfn>是支持内部方法 [[Call]] 的对象。 <dfn id="constructor">构造器</dfn>（也叫作<em>构造函数</em>）是支持内部方法 [[Construct]] 的函数对象。</p>
         <emu-table id="table-6" caption="Additional Essential Internal Methods of Function Objects">
           <table>
             <tbody>
-            <tr>
-              <th>
-                Internal Method
-              </th>
-              <th>
-                Signature
-              </th>
-              <th>
-                Description
-              </th>
-            </tr>
-            <tr>
-              <td>
-                [[Call]]
-              </td>
-              <td>
-                (<em>any</em>, a List of <em>any</em>) <b>&rarr;</b> <em>any</em>
-              </td>
-              <td>
-                Executes code associated with this object. Invoked via a function call expression. The arguments to the internal method are a *this* value and a list containing the arguments passed to the function by a call expression. Objects that implement this internal method are <em>callable</em>.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                [[Construct]]
-              </td>
-              <td>
-                (a List of <em>any</em>, Object) <b>&rarr;</b> Object
-              </td>
-              <td>
-                Creates an object. Invoked via the `new` or `super` operators. The first argument to the internal method is a list containing the arguments of the operator. The second argument is the object to which the `new` operator was initially applied. Objects that implement this internal method are called <em>constructors</em>. A function object is not necessarily a constructor and such non-constructor function objects do not have a [[Construct]] internal method.
-              </td>
-            </tr>
+              <tr>
+                <th>
+                  Internal Method
+                </th>
+                <th>
+                  Signature
+                </th>
+                <th>
+                  Description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  [[Call]]
+                </td>
+                <td>
+                  (<em>any</em>, a List of <em>any</em>) <b>&rarr;</b> <em>any</em>
+                </td>
+                <td>
+                  执行这个对象相关联的代码。通过一个函数表达式来调用。通过调用表达式，传递给内部函数的 arguments 为一个 *this* 值，和一个包含传递给函数的参数列表，实现该内部方法的对象是<em>可调用的</em>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  [[Construct]]
+                </td>
+                <td>
+                  (a List of <em>any</em>, Object) <b>&rarr;</b> Object
+                </td>
+                <td>
+                  创建一个对象。通过 `new` 或者 `super` 操作符调用。这个内部方法的第一个参数是一个包含操作符的参数的列表。第二个参数是 `new` 操作符初始化时应用的对象。实现这个内部方法的对象被称为<em>构造函数</em>。一个函数对象不一定是构造函数，这样的非构造函数的函数对象没有 [[Construct]] 内部方法。
+                </td>
+              </tr>
             </tbody>
           </table>
         </emu-table>
-        <p>The semantics of the essential internal methods for ordinary objects and standard exotic objects are specified in clause <emu-xref href="#sec-ordinary-and-exotic-objects-behaviours"></emu-xref>. If any specified use of an internal method of an exotic object is not supported by an implementation, that usage must throw a *TypeError* exception when attempted.</p>
+        <p>这些普通对象和标准的怪异对象的基础内部方法语义在<emu-xref href="#sec-ordinary-and-exotic-objects-behaviours"></emu-xref>指出。如果怪异对象的任何特定内部方法不被实现支持，那么在尝试使用时，必须抛出一个 *TypeError* 异常。</p>
       </emu-clause>
 
       <!-- es6num="6.1.7.3" -->
       <emu-clause id="sec-invariants-of-the-essential-internal-methods">
-        <h1>Invariants of the Essential Internal Methods</h1>
-        <p>The Internal Methods of Objects of an ECMAScript engine must conform to the list of invariants specified below. Ordinary ECMAScript Objects as well as all standard exotic objects in this specification maintain these invariants. ECMAScript Proxy objects maintain these invariants by means of runtime checks on the result of traps invoked on the [[ProxyHandler]] object.</p>
-        <p>Any implementation provided exotic objects must also maintain these invariants for those objects. Violation of these invariants may cause ECMAScript code to have unpredictable behaviour and create security issues. However, violation of these invariants must never compromise the memory safety of an implementation.</p>
-        <p>An implementation must not allow these invariants to be circumvented in any manner such as by providing alternative interfaces that implement the functionality of the essential internal methods without enforcing their invariants.</p>
-        <h2>Definitions:</h2>
+        <h1><abbr title="Invariants of the Essential Internal Methods">基本内部方法的不变量</abbr></h1>
+        <p>ECMAScript 引擎中的内部方法必须符合以下指定的不变量列表。普通 ECMAScript 对象以及该规范中的标准怪异对象应保持这些不变量。ECMAScript Proxy 对象通过运行时检查 [[ProxyHandler]] 对象的<abbr title="traps invoked">陷阱调用</abbr>结果的手段来保持这些不变量。</p>
+        <p>任何实现提供的怪异对象必须也保持这些不变量。违反这些不变量可能会导致 ECMAScript 代码出现不可预料的行为以及安全问题。然而，对于造成内存安全的违反不变量行为的实现决不能妥协。</p>
+        <p>实现不允许通过任何方式规避这些不变量。比如，通过提供替代接口来实现基本内部方法的功能而不强制执行他们的不变量。</p>
+        <h2>定义:</h2>
         <ul>
           <li>
-            The <em>target</em> of an internal method is the object upon which the internal method is called.
+            内部方法的 <em>target</em> 是调用这个内部方法的对象。
           </li>
           <li>
-            A target is <em>non-extensible</em> if it has been observed to return false from its [[IsExtensible]] internal method, or true from its [[PreventExtensions]] internal method.
+            如果 target 的 [[IsExtensible]] 内部方法返回值是 false 或者 [[PreventExtensions]] 内部方法返回值是 true，那么这个 target 是<em><abbr title="non-extensible">不可扩展的</abbr></em>
           </li>
           <li>
-            A <em>non-existent</em> property is a property that does not exist as an own property on a non-extensible target.
+            一个<em><abbr title="non-existent">不存在的</abbr></em>属性是指一个不可扩展的 target 的自身属性中不存在的属性。
           </li>
           <li>
-            All references to <em>SameValue</em> are according to the definition of the SameValue algorithm.
+            所有对 <em>SameValue</em> 的引用都是根据 SameValue 算法定义的。
           </li>
         </ul>
         <h2>[[GetPrototypeOf]] ( )</h2>
         <ul>
           <li>
-            The Type of the return value must be either Object or Null.
+            返回的类型必须是 Object 或者 Null。
           </li>
           <li>
-            If target is non-extensible, and [[GetPrototypeOf]] returns a value v, then any future calls to [[GetPrototypeOf]] should return the SameValue as v.
+            如果 target 是不可扩展的，并且 [[GetPrototypeOf]] 返回了一个值 v，那么任何将来对 [[GetPrototypeOf]] 的调用都应该返回与 v 相同的 SameValue。
           </li>
         </ul>
         <emu-note>
-          <p>An object's prototype chain should have finite length (that is, starting from any object, recursively applying the [[GetPrototypeOf]] internal method to its result should eventually lead to the value null). However, this requirement is not enforceable as an object level invariant if the prototype chain includes any exotic objects that do not use the ordinary object definition of [[GetPrototypeOf]]. Such a circular prototype chain may result in infinite loops when accessing object properties.</p>
+          <p>对象的原型链的长度应该是有限的（也就是说，从任意对象开始，递归地对结果应用 [[GetPrototypeOf]] 内置方法最终应该得到 null）。但是，如果原型链包含任何不使用 [[GetPrototypeOf]] 的普通对象定义的奇异对象，则此要求不强制作为对象级不变量。这样的环形原型链可能会在访问对象属性时产生无限循环。</p>
         </emu-note>
         <h2>[[SetPrototypeOf]] (_V_)</h2>
         <ul>
           <li>
-            The Type of the return value must be Boolean.
+            返回的类型必须是 Boolean。
           </li>
           <li>
-            If target is non-extensible, [[SetPrototypeOf]] must return false, unless V is the SameValue as the target's observed [[GetPrototypeOf]] value.
+            如果 target 是不可扩展的，[[SetPrototypeOf]] 必须返回 false，除非 V 与 target 执行 [[GetPrototypeOf]] 内置方法的 SameValue 相同。
           </li>
         </ul>
         <h2>[[IsExtensible]] ( )</h2>
         <ul>
           <li>
-            The Type of the return value must be Boolean.
+            返回的类型必须是 Boolean。
           </li>
           <li>
-            If [[IsExtensible]] returns false, all future calls to [[IsExtensible]] on the target must return false.
+            如果 [[IsExtensible]] 返回 false，所有将来对 target 的 [[IsExtensible]] 内置方法调用都必须返回 false。
           </li>
         </ul>
         <h2>[[PreventExtensions]] ( )</h2>
         <ul>
           <li>
-            The Type of the return value must be Boolean.
+            返回的类型必须是 Boolean。
           </li>
           <li>
-            If [[PreventExtensions]] returns true, all future calls to [[IsExtensible]] on the target must return false and the target is now considered non-extensible.
+            如果 [[PreventExtensions]] 返回 false，所有将来对 target 的 [[IsExtensible]] 内置方法的的调用都必须返回 false，并且此刻开始 target 被认为是不可扩展的。
           </li>
         </ul>
         <h2>[[GetOwnProperty]] (_P_)</h2>
         <ul>
           <li>
-            The Type of the return value must be either Property Descriptor or Undefined.
+            返回的类型必须是 Property Descriptor 或者 Undefined。
           </li>
           <li>
-            If the Type of the return value is Property Descriptor, the return value must be a complete property descriptor (see <emu-xref href="#sec-completepropertydescriptor"></emu-xref>).
+            如果返回的类型是 Property Descriptor，那么返回值必须是一个完整的 property descriptor (见<emu-xref href="#sec-completepropertydescriptor"></emu-xref>)。
           </li>
           <li>
-            If a property P is described as a data property with Desc.[[Value]] equal to v and Desc.[[Writable]] and Desc.[[Configurable]] are both false, then the SameValue must be returned for the Desc.[[Value]] attribute of the property on all future calls to [[GetOwnProperty]] ( P ).
+            一个属性 P 被数据属性 Desc 描述，如果 Desc.[[Value]] 等于 v，且 Desc.[[Writable]] 以及 Desc.[[Configurable]] 都为 false，那么所有将来调用 [[GetOwnProperty]](P) 内置方法时，返回的 SameValue 必须是属性的 Desc.[[Value]]。
           </li>
           <li>
-            If P's attributes other than [[Writable]] may change over time or if the property might disappear, then P's [[Configurable]] attribute must be true.
+            如果 P 属性除了 [[Writable]] 特性，其他特性在将来可能变化，或者属性可能消失，那么 P 的 [[Configurable]] 特性必须为 true。
           </li>
           <li>
-            If the [[Writable]] attribute may change from false to true, then the [[Configurable]] attribute must be true.
+            如果 P 属性的 [[Writable]] 特性可能从 false 变为 true，那么 [[Configurable]] 特性必须为 true。
           </li>
           <li>
-            If the target is non-extensible and P is non-existent, then all future calls to [[GetOwnProperty]] (P) on the target must describe P as non-existent (i.e. [[GetOwnProperty]] (P) must return undefined).
+            如果对象是不可扩展的且 P 属性不存在，那么将来所有对 target 的 [[GetOwnProperty]] (P) 内置方法的调用必须描述 P 属性不存在（即 [[GetOwnProperty]] (P) 必须返回 undefined）。
           </li>
         </ul>
         <emu-note>
-          <p>As a consequence of the third invariant, if a property is described as a data property and it may return different values over time, then either or both of the Desc.[[Writable]] and Desc.[[Configurable]] attributes must be true even if no mechanism to change the value is exposed via the other internal methods.</p>
+          <p>作为第三个不变量的推论，如果一个属性被描述为一个数据属性并且随着时间它可能返回不同的值，那么 Desc.[[Writable]] 和 Desc.[[Configurable]] 特性必须是 true，虽然没有机制通过其它内置方法去改变暴露出来的值。</p>
         </emu-note>
         <h2>[[DefineOwnProperty]] (_P_, _Desc_)</h2>
         <ul>
           <li>
-            The Type of the return value must be Boolean.
+            返回的类型必须是 Boolean。
           </li>
           <li>
-            <p>[[DefineOwnProperty]] must return false if P has previously been observed as a non-configurable own property of the target, unless either:</p>
+            <p>
+              如果 P 预先已经作为 target 的一个不可配置的自身属性被观察，那么 [[DefineOwnProperty]] 必须返回 false，除非满足一下条件之一：
+            </p>
             <ol>
               <li>
-                P is a non-configurable writable own data property. A non-configurable writable data property can be changed into a non-configurable non-writable data property.
+                P 是一个不可配置的可写数据属性。一个不可配置的可写数据属性可以被转换为一个不可配置不可写的数据属性。
               </li>
               <li>
-                All attributes in Desc are the SameValue as P's attributes.
+                Desc 中的所有特性都是作为 P 属性特性的 SameValue。
               </li>
             </ol>
           </li>
           <li>
-            [[DefineOwnProperty]] (P, Desc) must return false if target is non-extensible and P is a non-existent own property. That is, a non-extensible target object cannot be extended with new properties.
+            如果 target 是不可配置的且 P 属性不存在，那么 [[DefineOwnProperty]] (P, Desc) 必须返回 false。也就是说，一个不可配置的 target 对象不能扩展新属性。
           </li>
         </ul>
         <h2>[[HasProperty]] ( _P_ )</h2>
         <ul>
           <li>
-            The Type of the return value must be Boolean.
+            返回的类型必须是 Boolean。
           </li>
           <li>
-            If P was previously observed as a non-configurable data or accessor own property of the target, [[HasProperty]] must return true.
+            如果 target 自身属性 P 预先已经作为一个不可配置的数据属性或者访问器属性被观察，[[HasProperty]] 必须返回 true。
           </li>
         </ul>
         <h2>[[Get]] (_P_, _Receiver_)</h2>
         <ul>
           <li>
-            If P was previously observed as a non-configurable, non-writable own data property of the target with value v, then [[Get]] must return the SameValue.
+            如果 P，其值为 V，预先作为一个不可配置，不可写的 target 自身属性被观察，那么 [[GET]] 必须返回 SameValue。
           </li>
           <li>
-            If P was previously observed as a non-configurable own accessor property of the target whose [[Get]] attribute is undefined, the [[Get]] operation must return undefined.
+            如果 P，其 [[Get]] 特性为 undefined，预先作为一个不可配置的 target 自身访问器属性被观察，那么 [[Get]] 操作必须返回 undefined。
           </li>
         </ul>
         <h2>[[Set]] ( _P_, _V_, _Receiver_)</h2>
         <ul>
           <li>
-            The Type of the return value must be Boolean.
+            返回的类型必须是 Boolean。
           </li>
           <li>
-            If P was previously observed as a non-configurable, non-writable own data property of the target, then [[Set]] must return false unless V is the SameValue as P's [[Value]] attribute.
+            如果 P 预先作为一个不可配置，不可写的 target 自身数据属性被观察，那么 [[Set]] 必须返回 false。除非 V 是 P 的 [[Value]] 特性的 SameValue。
           </li>
           <li>
-            If P was previously observed as a non-configurable own accessor property of the target whose [[Set]] attribute is undefined, the [[Set]] operation must return false.
+            如果 P，其 [[Set]] 特性为 undefined，预先作为一个不可配置的 target 自身访问器属性被观察，那么 [[Set]] 操作必须返回 false。
           </li>
         </ul>
         <h2>[[Delete]] ( _P_ )</h2>
         <ul>
           <li>
-            The Type of the return value must be Boolean.
+            返回的类型必须是 Boolean。
           </li>
           <li>
-            If P was previously observed to be a non-configurable own data or accessor property of the target, [[Delete]] must return false.
+            如果 P 预先作为一个不可配置的 target 自身数据或访问器属性被观察，那么 [[Delete]] 必须返回 false。
           </li>
         </ul>
         <h2>[[OwnPropertyKeys]] ( )</h2>
         <ul>
           <li>
-            The return value must be a List.
+            返回值必须是一个 List。
           </li>
           <li>
-            The returned list must not contain any duplicate entries.
+            返回的列表不能包含任何重复的元素。
           </li>
           <li>
-            The Type of each element of the returned List is either String or Symbol.
+            返回的 List 的每个元素类型为 String 或者 Symbol。
           </li>
           <li>
-            The returned List must contain at least the keys of all non-configurable own properties that have previously been observed.
+            返回的 List 必须包含至少预先已经被观察的自身属性的所有不可配置的 key。
           </li>
           <li>
-            If the object is non-extensible, the returned List must contain only the keys of all own properties of the object that are observable using [[GetOwnProperty]].
+            如果对象是不可扩展的，那么返回的 List 必须只包含使用 [[GetOwnProperty]] 观察的对象所有属性的 key。
           </li>
         </ul>
         <h2>[[Construct]] ( )</h2>
         <ul>
           <li>
-            The Type of the return value must be Object.
+            返回值类型必须是 Object。
           </li>
         </ul>
       </emu-clause>
 
       <!-- es6num="6.1.7.4" -->
       <emu-clause id="sec-well-known-intrinsic-objects">
-        <h1>Well-Known Intrinsic Objects</h1>
-        <p>Well-known intrinsics are built-in objects that are explicitly referenced by the algorithms of this specification and which usually have realm-specific identities. Unless otherwise specified each intrinsic object actually corresponds to a set of similar objects, one per realm.</p>
-        <p>Within this specification a reference such as %name% means the intrinsic object, associated with the current realm, corresponding to the name. Determination of the current realm and its intrinsics is described in <emu-xref href="#sec-execution-contexts"></emu-xref>. The well-known intrinsics are listed in <emu-xref href="#table-7"></emu-xref>.</p>
-        <emu-table id="table-7" caption="Well-Known Intrinsic Objects">
+        <h1>总所周知的<abbr title="Intrinsic Objects">内部对象</abbr></h1>
+        <p>总所周知的内联函数是在该规范中通过算法明确引用的内置对象，这些内置对象通常有特定域的不变量。除非特别指出，每个内部对象在每个领域通常对应一系列相似对象的集合。</p>
+        <p>在本规范中像 %name% 这样的引用意味着关联到相应的 name 域的内部对象。决定当前域以及他的内联函数在<emu-xref href="#sec-execution-contexts"></emu-xref>描述。总所周知的内联函数在表<emu-xref href="#table-7"></emu-xref>列出。
+        </p>
+        <emu-table id="table-7" caption="Well-known Intrinsic Objects">
           <table>
             <tbody>
-            <tr>
-              <th>
-                Intrinsic Name
-              </th>
-              <th>
-                Global Name
-              </th>
-              <th>
-                ECMAScript Language Association
-              </th>
-            </tr>
-            <tr>
-              <td>
-                %Array%
-              </td>
-              <td>
-                `Array`
-              </td>
-              <td>
-                The `Array` constructor (<emu-xref href="#sec-array-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ArrayBuffer%
-              </td>
-              <td>
-                `ArrayBuffer`
-              </td>
-              <td>
-                The `ArrayBuffer` constructor (<emu-xref href="#sec-arraybuffer-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ArrayBufferPrototype%
-              </td>
-              <td>
-                `ArrayBuffer.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %ArrayBuffer%.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ArrayIteratorPrototype%
-              </td>
-              <td>
-              </td>
-              <td>
-                The prototype of Array iterator objects (<emu-xref href="#sec-array-iterator-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ArrayPrototype%
-              </td>
-              <td>
-                `Array.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Array% (<emu-xref href="#sec-properties-of-the-array-prototype-object"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ArrayProto_entries%
-              </td>
-              <td>
-                `Array.prototype.entries`
-              </td>
-              <td>
-                The initial value of the `entries` data property of %ArrayPrototype% (<emu-xref href="#sec-array.prototype.entries"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ArrayProto_forEach%
-              </td>
-              <td>
-                `Array.prototype.forEach`
-              </td>
-              <td>
-                The initial value of the `forEach` data property of %ArrayPrototype% (<emu-xref href="#sec-array.prototype.foreach"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ArrayProto_keys%
-              </td>
-              <td>
-                `Array.prototype.keys`
-              </td>
-              <td>
-                The initial value of the `keys` data property of %ArrayPrototype% (<emu-xref href="#sec-array.prototype.keys"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ArrayProto_values%
-              </td>
-              <td>
-                `Array.prototype.values`
-              </td>
-              <td>
-                The initial value of the `values` data property of %ArrayPrototype% (<emu-xref href="#sec-array.prototype.values"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %AsyncFunction%
-              </td>
-              <td>
-              </td>
-              <td>
-                The constructor of async function objects (<emu-xref href="#sec-async-function-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %AsyncFunctionPrototype%
-              </td>
-              <td>
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %AsyncFunction%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Atomics%
-              </td>
-              <td>
-                `Atomics`
-              </td>
-              <td>
-                The `Atomics` object (<emu-xref href="#sec-atomics-object"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Boolean%
-              </td>
-              <td>
-                `Boolean`
-              </td>
-              <td>
-                The `Boolean` constructor (<emu-xref href="#sec-boolean-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %BooleanPrototype%
-              </td>
-              <td>
-                `Boolean.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Boolean% (<emu-xref href="#sec-properties-of-the-boolean-prototype-object"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %DataView%
-              </td>
-              <td>
-                `DataView`
-              </td>
-              <td>
-                The `DataView` constructor (<emu-xref href="#sec-dataview-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %DataViewPrototype%
-              </td>
-              <td>
-                `DataView.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %DataView%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Date%
-              </td>
-              <td>
-                `Date`
-              </td>
-              <td>
-                The `Date` constructor (<emu-xref href="#sec-date-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %DatePrototype%
-              </td>
-              <td>
-                `Date.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Date%.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %decodeURI%
-              </td>
-              <td>
-                `decodeURI`
-              </td>
-              <td>
-                The `decodeURI` function (<emu-xref href="#sec-decodeuri-encodeduri"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %decodeURIComponent%
-              </td>
-              <td>
-                `decodeURIComponent`
-              </td>
-              <td>
-                The `decodeURIComponent` function (<emu-xref href="#sec-decodeuricomponent-encodeduricomponent"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %encodeURI%
-              </td>
-              <td>
-                `encodeURI`
-              </td>
-              <td>
-                The `encodeURI` function (<emu-xref href="#sec-encodeuri-uri"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %encodeURIComponent%
-              </td>
-              <td>
-                `encodeURIComponent`
-              </td>
-              <td>
-                The `encodeURIComponent` function (<emu-xref href="#sec-encodeuricomponent-uricomponent"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Error%
-              </td>
-              <td>
-                `Error`
-              </td>
-              <td>
-                The `Error` constructor (<emu-xref href="#sec-error-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ErrorPrototype%
-              </td>
-              <td>
-                `Error.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Error%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %eval%
-              </td>
-              <td>
-                `eval`
-              </td>
-              <td>
-                The `eval` function (<emu-xref href="#sec-eval-x"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %EvalError%
-              </td>
-              <td>
-                `EvalError`
-              </td>
-              <td>
-                The `EvalError` constructor (<emu-xref href="#sec-native-error-types-used-in-this-standard-evalerror"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %EvalErrorPrototype%
-              </td>
-              <td>
-                `EvalError.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %EvalError%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Float32Array%
-              </td>
-              <td>
-                `Float32Array`
-              </td>
-              <td>
-                The `Float32Array` constructor (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Float32ArrayPrototype%
-              </td>
-              <td>
-                `Float32Array.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Float32Array%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Float64Array%
-              </td>
-              <td>
-                `Float64Array`
-              </td>
-              <td>
-                The `Float64Array` constructor (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Float64ArrayPrototype%
-              </td>
-              <td>
-                `Float64Array.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Float64Array%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Function%
-              </td>
-              <td>
-                `Function`
-              </td>
-              <td>
-                The `Function` constructor (<emu-xref href="#sec-function-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %FunctionPrototype%
-              </td>
-              <td>
-                `Function.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Function%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Generator%
-              </td>
-              <td>
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %GeneratorFunction%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %GeneratorFunction%
-              </td>
-              <td>
-              </td>
-              <td>
-                The constructor of generator objects (<emu-xref href="#sec-generatorfunction-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %GeneratorPrototype%
-              </td>
-              <td>
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Generator%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Int8Array%
-              </td>
-              <td>
-                `Int8Array`
-              </td>
-              <td>
-                The `Int8Array` constructor (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Int8ArrayPrototype%
-              </td>
-              <td>
-                `Int8Array.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Int8Array%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Int16Array%
-              </td>
-              <td>
-                `Int16Array`
-              </td>
-              <td>
-                The `Int16Array` constructor (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Int16ArrayPrototype%
-              </td>
-              <td>
-                `Int16Array.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Int16Array%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Int32Array%
-              </td>
-              <td>
-                `Int32Array`
-              </td>
-              <td>
-                The `Int32Array` constructor (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Int32ArrayPrototype%
-              </td>
-              <td>
-                `Int32Array.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Int32Array%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %isFinite%
-              </td>
-              <td>
-                `isFinite`
-              </td>
-              <td>
-                The `isFinite` function (<emu-xref href="#sec-isfinite-number"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %isNaN%
-              </td>
-              <td>
-                `isNaN`
-              </td>
-              <td>
-                The `isNaN` function (<emu-xref href="#sec-isnan-number"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %IteratorPrototype%
-              </td>
-              <td>
-              </td>
-              <td>
-                An object that all standard built-in iterator objects indirectly inherit from
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %JSON%
-              </td>
-              <td>
-                `JSON`
-              </td>
-              <td>
-                The `JSON` object (<emu-xref href="#sec-json-object"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %JSONParse%
-              </td>
-              <td>
-                `JSON.parse`
-              </td>
-              <td>
-                The initial value of the `parse` data property of %JSON%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Map%
-              </td>
-              <td>
-                `Map`
-              </td>
-              <td>
-                The `Map` constructor (<emu-xref href="#sec-map-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %MapIteratorPrototype%
-              </td>
-              <td>
-              </td>
-              <td>
-                The prototype of Map iterator objects (<emu-xref href="#sec-map-iterator-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %MapPrototype%
-              </td>
-              <td>
-                `Map.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Map%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Math%
-              </td>
-              <td>
-                `Math`
-              </td>
-              <td>
-                The `Math` object (<emu-xref href="#sec-math-object"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Number%
-              </td>
-              <td>
-                `Number`
-              </td>
-              <td>
-                The `Number` constructor (<emu-xref href="#sec-number-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %NumberPrototype%
-              </td>
-              <td>
-                `Number.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Number%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Object%
-              </td>
-              <td>
-                `Object`
-              </td>
-              <td>
-                The `Object` constructor (<emu-xref href="#sec-object-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ObjectPrototype%
-              </td>
-              <td>
-                `Object.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Object% (<emu-xref href="#sec-properties-of-the-object-prototype-object"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ObjProto_toString%
-              </td>
-              <td>
-                `Object.prototype.toString`
-              </td>
-              <td>
-                The initial value of the `toString` data property of %ObjectPrototype% (<emu-xref href="#sec-object.prototype.tostring"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ObjProto_valueOf%
-              </td>
-              <td>
-                `Object.prototype.valueOf`
-              </td>
-              <td>
-                The initial value of the `valueOf` data property of %ObjectPrototype% (<emu-xref href="#sec-object.prototype.valueof"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %parseFloat%
-              </td>
-              <td>
-                `parseFloat`
-              </td>
-              <td>
-                The `parseFloat` function (<emu-xref href="#sec-parsefloat-string"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %parseInt%
-              </td>
-              <td>
-                `parseInt`
-              </td>
-              <td>
-                The `parseInt` function (<emu-xref href="#sec-parseint-string-radix"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Promise%
-              </td>
-              <td>
-                `Promise`
-              </td>
-              <td>
-                The `Promise` constructor (<emu-xref href="#sec-promise-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %PromisePrototype%
-              </td>
-              <td>
-                `Promise.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Promise%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %PromiseProto_then%
-              </td>
-              <td>
-                `Promise.prototype.then`
-              </td>
-              <td>
-                The initial value of the `then` data property of %PromisePrototype% (<emu-xref href="#sec-promise.prototype.then"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Promise_all%
-              </td>
-              <td>
-                `Promise.all`
-              </td>
-              <td>
-                The initial value of the `all` data property of %Promise% (<emu-xref href="#sec-promise.all"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Promise_reject%
-              </td>
-              <td>
-                `Promise.reject`
-              </td>
-              <td>
-                The initial value of the `reject` data property of %Promise% (<emu-xref href="#sec-promise.reject"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Promise_resolve%
-              </td>
-              <td>
-                `Promise.resolve`
-              </td>
-              <td>
-                The initial value of the `resolve` data property of %Promise% (<emu-xref href="#sec-promise.resolve"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Proxy%
-              </td>
-              <td>
-                `Proxy`
-              </td>
-              <td>
-                The `Proxy` constructor (<emu-xref href="#sec-proxy-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %RangeError%
-              </td>
-              <td>
-                `RangeError`
-              </td>
-              <td>
-                The `RangeError` constructor (<emu-xref href="#sec-native-error-types-used-in-this-standard-rangeerror"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %RangeErrorPrototype%
-              </td>
-              <td>
-                `RangeError.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %RangeError%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ReferenceError%
-              </td>
-              <td>
-                `ReferenceError`
-              </td>
-              <td>
-                The `ReferenceError` constructor (<emu-xref href="#sec-native-error-types-used-in-this-standard-referenceerror"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ReferenceErrorPrototype%
-              </td>
-              <td>
-                `ReferenceError.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %ReferenceError%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Reflect%
-              </td>
-              <td>
-                `Reflect`
-              </td>
-              <td>
-                The `Reflect` object (<emu-xref href="#sec-reflect-object"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %RegExp%
-              </td>
-              <td>
-                `RegExp`
-              </td>
-              <td>
-                The `RegExp` constructor (<emu-xref href="#sec-regexp-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %RegExpPrototype%
-              </td>
-              <td>
-                `RegExp.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %RegExp%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Set%
-              </td>
-              <td>
-                `Set`
-              </td>
-              <td>
-                The `Set` constructor (<emu-xref href="#sec-set-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %SetIteratorPrototype%
-              </td>
-              <td>
-              </td>
-              <td>
-                The prototype of Set iterator objects (<emu-xref href="#sec-set-iterator-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %SetPrototype%
-              </td>
-              <td>
-                `Set.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Set%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %SharedArrayBuffer%
-              </td>
-              <td>
-                `SharedArrayBuffer`
-              </td>
-              <td>
-                The `SharedArrayBuffer` constructor (<emu-xref href="#sec-sharedarraybuffer-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %SharedArrayBufferPrototype%
-              </td>
-              <td>
-                `SharedArrayBuffer.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %SharedArrayBuffer%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %String%
-              </td>
-              <td>
-                `String`
-              </td>
-              <td>
-                The `String` constructor (<emu-xref href="#sec-string-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %StringIteratorPrototype%
-              </td>
-              <td>
-              </td>
-              <td>
-                The prototype of String iterator objects (<emu-xref href="#sec-string-iterator-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %StringPrototype%
-              </td>
-              <td>
-                `String.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %String%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Symbol%
-              </td>
-              <td>
-                `Symbol`
-              </td>
-              <td>
-                The `Symbol` constructor (<emu-xref href="#sec-symbol-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %SymbolPrototype%
-              </td>
-              <td>
-                `Symbol.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Symbol% (<emu-xref href="#sec-properties-of-the-symbol-prototype-object"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %SyntaxError%
-              </td>
-              <td>
-                `SyntaxError`
-              </td>
-              <td>
-                The `SyntaxError` constructor (<emu-xref href="#sec-native-error-types-used-in-this-standard-syntaxerror"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %SyntaxErrorPrototype%
-              </td>
-              <td>
-                `SyntaxError.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %SyntaxError%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %ThrowTypeError%
-              </td>
-              <td>
-              </td>
-              <td>
-                A function object that unconditionally throws a new instance of %TypeError%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %TypedArray%
-              </td>
-              <td>
-              </td>
-              <td>
-                The super class of all typed Array constructors (<emu-xref href="#sec-%typedarray%-intrinsic-object"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %TypedArrayPrototype%
-              </td>
-              <td>
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %TypedArray%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %TypeError%
-              </td>
-              <td>
-                `TypeError`
-              </td>
-              <td>
-                The `TypeError` constructor (<emu-xref href="#sec-native-error-types-used-in-this-standard-typeerror"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %TypeErrorPrototype%
-              </td>
-              <td>
-                `TypeError.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %TypeError%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Uint8Array%
-              </td>
-              <td>
-                `Uint8Array`
-              </td>
-              <td>
-                The `Uint8Array` constructor (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Uint8ArrayPrototype%
-              </td>
-              <td>
-                `Uint8Array.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Uint8Array%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Uint8ClampedArray%
-              </td>
-              <td>
-                `Uint8ClampedArray`
-              </td>
-              <td>
-                The `Uint8ClampedArray` constructor (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Uint8ClampedArrayPrototype%
-              </td>
-              <td>
-                `Uint8ClampedArray.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Uint8ClampedArray%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Uint16Array%
-              </td>
-              <td>
-                `Uint16Array`
-              </td>
-              <td>
-                The `Uint16Array` constructor (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Uint16ArrayPrototype%
-              </td>
-              <td>
-                `Uint16Array.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Uint16Array%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Uint32Array%
-              </td>
-              <td>
-                `Uint32Array`
-              </td>
-              <td>
-                The `Uint32Array` constructor (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %Uint32ArrayPrototype%
-              </td>
-              <td>
-                `Uint32Array.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %Uint32Array%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %URIError%
-              </td>
-              <td>
-                `URIError`
-              </td>
-              <td>
-                The `URIError` constructor (<emu-xref href="#sec-native-error-types-used-in-this-standard-urierror"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %URIErrorPrototype%
-              </td>
-              <td>
-                `URIError.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %URIError%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %WeakMap%
-              </td>
-              <td>
-                `WeakMap`
-              </td>
-              <td>
-                The `WeakMap` constructor (<emu-xref href="#sec-weakmap-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %WeakMapPrototype%
-              </td>
-              <td>
-                `WeakMap.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %WeakMap%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %WeakSet%
-              </td>
-              <td>
-                `WeakSet`
-              </td>
-              <td>
-                The `WeakSet` constructor (<emu-xref href="#sec-weakset-constructor"></emu-xref>)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                %WeakSetPrototype%
-              </td>
-              <td>
-                `WeakSet.prototype`
-              </td>
-              <td>
-                The initial value of the `prototype` data property of %WeakSet%
-              </td>
-            </tr>
+              <tr>
+                <th>
+                  内在名称
+                </th>
+                <th>
+                  全局名称
+                </th>
+                <th>
+                  ECMAScript 语言关联
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  %Array%
+                </td>
+                <td>
+                  `Array`
+                </td>
+                <td>
+                  `Array` 构造函数 (<emu-xref href="#sec-array-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ArrayBuffer%
+                </td>
+                <td>
+                  `ArrayBuffer`
+                </td>
+                <td>
+                  `ArrayBuffer` 构造函数 (<emu-xref href="#sec-arraybuffer-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ArrayBufferPrototype%
+                </td>
+                <td>
+                  `ArrayBuffer.prototype`
+                </td>
+                <td>
+                  %ArrayBuffer% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ArrayIteratorPrototype%
+                </td>
+                <td>
+                </td>
+                <td>
+                  数组迭代器对象的原型 (<emu-xref href="#sec-array-iterator-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ArrayPrototype%
+                </td>
+                <td>
+                  `Array.prototype`
+                </td>
+                <td>
+                  %Array% `prototype` 数据属性的初始值 (<emu-xref href="#sec-properties-of-the-array-prototype-object"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ArrayProto_entries%
+                </td>
+                <td>
+                  `Array.prototype.entries`
+                </td>
+                <td>
+                  %ArrayPrototype% `entries` 数据属性的初始值 (<emu-xref href="#sec-array.prototype.entries"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ArrayProto_forEach%
+                </td>
+                <td>
+                  `Array.prototype.forEach`
+                </td>
+                <td>
+                  %ArrayPrototype% `forEach` 数据属性的初始值 (<emu-xref href="#sec-array.prototype.foreach"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ArrayProto_keys%
+                </td>
+                <td>
+                  `Array.prototype.keys`
+                </td>
+                <td>
+                  %ArrayPrototype% `keys` 数据属性的初始值 (<emu-xref href="#sec-array.prototype.keys"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ArrayProto_values%
+                </td>
+                <td>
+                  `Array.prototype.values`
+                </td>
+                <td>
+                  %ArrayPrototype% `values` 数据属性的初始值 (<emu-xref href="#sec-array.prototype.values"></emu-xref>)                  
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %AsyncFunction%
+                </td>
+                <td>
+                </td>
+                <td>
+                  async 函数对象的构造器 (<emu-xref href="#sec-async-function-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %AsyncFunctionPrototype%
+                </td>
+                <td>
+                </td>
+                <td>
+                  %AsyncFunction% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Atomics%
+                </td>
+                <td>
+                  `Atomics`
+                </td>
+                <td>
+                  `Atomics` 对象 (<emu-xref href="#sec-atomics-object"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Boolean%
+                </td>
+                <td>
+                  `Boolean`
+                </td>
+                <td>
+                  `Boolean` 构造函数 (<emu-xref href="#sec-boolean-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %BooleanPrototype%
+                </td>
+                <td>
+                  `Boolean.prototype`
+                </td>
+                <td>
+                  %Boolean% `prototype` 数据属性的初始值 (<emu-xref href="#sec-properties-of-the-boolean-prototype-object"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %DataView%
+                </td>
+                <td>
+                  `DataView`
+                </td>
+                <td>
+                  `DataView` 构造函数 (<emu-xref href="#sec-dataview-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %DataViewPrototype%
+                </td>
+                <td>
+                  `DataView.prototype`
+                </td>
+                <td>
+                  %DataView% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Date%
+                </td>
+                <td>
+                  `Date`
+                </td>
+                <td>
+                  `Date` 构造函数 (<emu-xref href="#sec-date-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %DatePrototype%
+                </td>
+                <td>
+                  `Date.prototype`
+                </td>
+                <td>
+                  %Date% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %decodeURI%
+                </td>
+                <td>
+                  `decodeURI`
+                </td>
+                <td>
+                  `decodeURI` 函数 (<emu-xref href="#sec-decodeuri-encodeduri"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %decodeURIComponent%
+                </td>
+                <td>
+                  `decodeURIComponent`
+                </td>
+                <td>
+                  `decodeURIComponent` 函数 (<emu-xref href="#sec-decodeuricomponent-encodeduricomponent"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %encodeURI%
+                </td>
+                <td>
+                  `encodeURI`
+                </td>
+                <td>
+                  `encodeURI` 函数 (<emu-xref href="#sec-encodeuri-uri"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %encodeURIComponent%
+                </td>
+                <td>
+                  `encodeURIComponent`
+                </td>
+                <td>
+                  `encodeURIComponent` 函数 (<emu-xref href="#sec-encodeuricomponent-uricomponent"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Error%
+                </td>
+                <td>
+                  `Error`
+                </td>
+                <td>
+                  `Error` 构造函数 (<emu-xref href="#sec-error-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ErrorPrototype%
+                </td>
+                <td>
+                  `Error.prototype`
+                </td>
+                <td>
+                  %Error% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %eval%
+                </td>
+                <td>
+                  `eval`
+                </td>
+                <td>
+                  `eval` 函数 (<emu-xref href="#sec-eval-x"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %EvalError%
+                </td>
+                <td>
+                  `EvalError`
+                </td>
+                <td>
+                  `EvalError` 构造函数 (<emu-xref href="#sec-native-error-types-used-in-this-standard-evalerror"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %EvalErrorPrototype%
+                </td>
+                <td>
+                  `EvalError.prototype`
+                </td>
+                <td>
+                  %EvalError% `prototype` 属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Float32Array%
+                </td>
+                <td>
+                  `Float32Array`
+                </td>
+                <td>
+                  `Float32Array` 构造函数 (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Float32ArrayPrototype%
+                </td>
+                <td>
+                  `Float32Array.prototype`
+                </td>
+                <td>
+                  %Float32Array% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Float64Array%
+                </td>
+                <td>
+                  `Float64Array`
+                </td>
+                <td>
+                  `Float64Array` 构造函数 (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Float64ArrayPrototype%
+                </td>
+                <td>
+                  `Float64Array.prototype`
+                </td>
+                <td>
+                  %Float64Array% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Function%
+                </td>
+                <td>
+                  `Function`
+                </td>
+                <td>
+                  `Function` 构造函数 (<emu-xref href="#sec-function-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %FunctionPrototype%
+                </td>
+                <td>
+                  `Function.prototype`
+                </td>
+                <td>
+                  %Function% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Generator%
+                </td>
+                <td>
+                </td>
+                <td>
+                  %GeneratorFunction% `prototype` 属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %GeneratorFunction%
+                </td>
+                <td>
+                </td>
+                <td>
+                  generator 对象的构造函数 (<emu-xref href="#sec-generatorfunction-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %GeneratorPrototype%
+                </td>
+                <td>
+                </td>
+                <td>
+                  %Generator% `prototype` 属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Int8Array%
+                </td>
+                <td>
+                  `Int8Array`
+                </td>
+                <td>
+                  `Int8Array` 构造函数 (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Int8ArrayPrototype%
+                </td>
+                <td>
+                  `Int8Array.prototype`
+                </td>
+                <td>
+                  %Int8Array% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Int16Array%
+                </td>
+                <td>
+                  `Int16Array`
+                </td>
+                <td>
+                  `Int16Array` 构造函数 (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Int16ArrayPrototype%
+                </td>
+                <td>
+                  `Int16Array.prototype`
+                </td>
+                <td>
+                  %Int16Array% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Int32Array%
+                </td>
+                <td>
+                  `Int32Array`
+                </td>
+                <td>
+                  `Int32Array` 构造函数 (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Int32ArrayPrototype%
+                </td>
+                <td>
+                  `Int32Array.prototype`
+                </td>
+                <td>
+                  %Int32Array% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %isFinite%
+                </td>
+                <td>
+                  `isFinite`
+                </td>
+                <td>
+                  `isFinite` 函数 (<emu-xref href="#sec-isfinite-number"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %isNaN%
+                </td>
+                <td>
+                  `isNaN`
+                </td>
+                <td>
+                  `isNaN` 函数 (<emu-xref href="#sec-isnan-number"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %IteratorPrototype%
+                </td>
+                <td>
+                </td>
+                <td>
+                  所有标准内置迭代对象间接继承的对象
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %JSON%
+                </td>
+                <td>
+                  `JSON`
+                </td>
+                <td>
+                  `JSON` 对象 (<emu-xref href="#sec-json-object"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %JSONParse%
+                </td>
+                <td>
+                  `JSON.parse`
+                </td>
+                <td>
+                  %JSON% `parse` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Map%
+                </td>
+                <td>
+                  `Map`
+                </td>
+                <td>
+                  `Map` 构造函数 (<emu-xref href="#sec-map-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %MapIteratorPrototype%
+                </td>
+                <td>
+                </td>
+                <td>
+                  Map 迭代器对象的原型 (<emu-xref href="#sec-map-iterator-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %MapPrototype%
+                </td>
+                <td>
+                  `Map.prototype`
+                </td>
+                <td>
+                  %Map% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Math%
+                </td>
+                <td>
+                  `Math`
+                </td>
+                <td>
+                  `Math` 对象 (<emu-xref href="#sec-math-object"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Number%
+                </td>
+                <td>
+                  `Number`
+                </td>
+                <td>
+                  `Number` 构造函数 (<emu-xref href="#sec-number-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %NumberPrototype%
+                </td>
+                <td>
+                  `Number.prototype`
+                </td>
+                <td>
+                  %Number% `prototype` 属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Object%
+                </td>
+                <td>
+                  `Object`
+                </td>
+                <td>
+                  `Object` 构造函数 (<emu-xref href="#sec-object-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ObjectPrototype%
+                </td>
+                <td>
+                  `Object.prototype`
+                </td>
+                <td>
+                  %Object%. (<emu-xref href="#sec-properties-of-the-object-prototype-object"></emu-xref>) `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ObjProto_toString%
+                </td>
+                <td>
+                  `Object.prototype.toString`
+                </td>
+                <td>
+                  %ObjectPrototype% (<emu-xref href="#sec-object.prototype.tostring"></emu-xref>) `toString` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ObjProto_valueOf%
+                </td>
+                <td>
+                  `Object.prototype.valueOf`
+                </td>
+                <td>
+                  %ObjectPrototype% (<emu-xref href="#sec-object.prototype.valueof"></emu-xref>) `valueOf` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %parseFloat%
+                </td>
+                <td>
+                  `parseFloat`
+                </td>
+                <td>
+                  `parseFloat` 函数 (<emu-xref href="#sec-parsefloat-string"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %parseInt%
+                </td>
+                <td>
+                  `parseInt`
+                </td>
+                <td>
+                  `parseInt` 函数 (<emu-xref href="#sec-parseint-string-radix"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Promise%
+                </td>
+                <td>
+                  `Promise`
+                </td>
+                <td>
+                  `Promise` 构造函数 (<emu-xref href="#sec-promise-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %PromisePrototype%
+                </td>
+                <td>
+                  `Promise.prototype`
+                </td>
+                <td>
+                  %Promise% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %PromiseProto_then%
+                </td>
+                <td>
+                  `Promise.prototype.then`
+                </td>
+                <td>
+                  The initial value of the `then` data property of %PromisePrototype% (<emu-xref href="#sec-promise.prototype.then"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Promise_all%
+                </td>
+                <td>
+                  `Promise.all`
+                </td>
+                <td>
+                  The initial value of the `all` data property of %Promise% (<emu-xref href="#sec-promise.all"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Promise_reject%
+                </td>
+                <td>
+                  `Promise.reject`
+                </td>
+                <td>
+                  The initial value of the `reject` data property of %Promise% (<emu-xref href="#sec-promise.reject"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Promise_resolve%
+                </td>
+                <td>
+                  `Promise.resolve`
+                </td>
+                <td>
+                  The initial value of the `resolve` data property of %Promise% (<emu-xref href="#sec-promise.resolve"></emu-xref>)  
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Proxy%
+                </td>
+                <td>
+                  `Proxy`
+                </td>
+                <td>
+                  `Proxy` 构造函数 (<emu-xref href="#sec-proxy-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %RangeError%
+                </td>
+                <td>
+                  `RangeError`
+                </td>
+                <td>
+                  `RangeError` 构造函数 (<emu-xref href="#sec-native-error-types-used-in-this-standard-rangeerror"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %RangeErrorPrototype%
+                </td>
+                <td>
+                  `RangeError.prototype`
+                </td>
+                <td>
+                  %RangeError% `prototype` 属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ReferenceError%
+                </td>
+                <td>
+                  `ReferenceError`
+                </td>
+                <td>
+                  `ReferenceError` 构造函数 (<emu-xref href="#sec-native-error-types-used-in-this-standard-referenceerror"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ReferenceErrorPrototype%
+                </td>
+                <td>
+                  `ReferenceError.prototype`
+                </td>
+                <td>
+                  %ReferenceError% `prototype` 属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Reflect%
+                </td>
+                <td>
+                  `Reflect`
+                </td>
+                <td>
+                  `Reflect` 对象 (<emu-xref href="#sec-reflect-object"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %RegExp%
+                </td>
+                <td>
+                  `RegExp`
+                </td>
+                <td>
+                  `RegExp` 构造函数 (<emu-xref href="#sec-regexp-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %RegExpPrototype%
+                </td>
+                <td>
+                  `RegExp.prototype`
+                </td>
+                <td>
+                  %RegExp% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Set%
+                </td>
+                <td>
+                  `Set`
+                </td>
+                <td>
+                  `Set` 构造函数 (<emu-xref href="#sec-set-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %SetIteratorPrototype%
+                </td>
+                <td>
+                </td>
+                <td>
+                  Set 迭代器对象的原型 (<emu-xref href="#sec-set-iterator-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %SetPrototype%
+                </td>
+                <td>
+                  `Set.prototype`
+                </td>
+                <td>
+                  %Set% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %SharedArrayBuffer%
+                </td>
+                <td>
+                  `SharedArrayBuffer`
+                </td>
+                <td>
+                  `SharedArrayBuffer` 构造函数 (<emu-xref href="#sec-sharedarraybuffer-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %SharedArrayBufferPrototype%
+                </td>
+                <td>
+                  `SharedArrayBuffer.prototype`
+                </td>
+                <td>
+                  %SharedArrayBuffer% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %String%
+                </td>
+                <td>
+                  `String`
+                </td>
+                <td>
+                  `String` 构造函数 (<emu-xref href="#sec-string-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %StringIteratorPrototype%
+                </td>
+                <td>
+                </td>
+                <td>
+                  String 迭代器对象的原型 (<emu-xref href="#sec-string-iterator-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %StringPrototype%
+                </td>
+                <td>
+                  `String.prototype`
+                </td>
+                <td>
+                  %String% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Symbol%
+                </td>
+                <td>
+                  `Symbol`
+                </td>
+                <td>
+                  `Symbol` 构造函数 (<emu-xref href="#sec-symbol-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %SymbolPrototype%
+                </td>
+                <td>
+                  `Symbol.prototype`
+                </td>
+                <td>
+                  %Symbol% `prototype` 数据属性的初始值 (<emu-xref href="#sec-properties-of-the-symbol-prototype-object"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %SyntaxError%
+                </td>
+                <td>
+                  `SyntaxError`
+                </td>
+                <td>
+                  `SyntaxError` 构造函数 (<emu-xref href="#sec-native-error-types-used-in-this-standard-syntaxerror"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %SyntaxErrorPrototype%
+                </td>
+                <td>
+                  `SyntaxError.prototype`
+                </td>
+                <td>
+                  %SyntaxError% `prototype` 属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %ThrowTypeError%
+                </td>
+                <td>
+                </td>
+                <td>
+                  一个函数对象，无条件的抛出一个新 %TypeError% 实例
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %TypedArray%
+                </td>
+                <td>
+                </td>
+                <td>
+                  所有数组类型构造器的超类 (<emu-xref href="#sec-%typedarray%-intrinsic-object"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %TypedArrayPrototype%
+                </td>
+                <td>
+                </td>
+                <td>
+                  %TypedArray% `prototype 属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %TypeError%
+                </td>
+                <td>
+                  `TypeError`
+                </td>
+                <td>
+                  `TypeError` 构造函数 (<emu-xref href="#sec-native-error-types-used-in-this-standard-typeerror"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %TypeErrorPrototype%
+                </td>
+                <td>
+                  `TypeError.prototype`
+                </td>
+                <td>
+                  %TypeError% `prototype` 属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Uint8Array%
+                </td>
+                <td>
+                  `Uint8Array`
+                </td>
+                <td>
+                  `Uint8Array` 构造函数 (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Uint8ArrayPrototype%
+                </td>
+                <td>
+                  `Uint8Array.prototype`
+                </td>
+                <td>
+                  %Uint8Array% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Uint8ClampedArray%
+                </td>
+                <td>
+                  `Uint8ClampedArray`
+                </td>
+                <td>
+                  `Uint8ClampedArray` 构造函数 (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Uint8ClampedArrayPrototype%
+                </td>
+                <td>
+                  `Uint8ClampedArray.prototype`
+                </td>
+                <td>
+                  %Uint8ClampedArray% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Uint16Array%
+                </td>
+                <td>
+                  `Uint16Array`
+                </td>
+                <td>
+                  `Uint16Array` 构造函数 (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Uint16ArrayPrototype%
+                </td>
+                <td>
+                  `Uint16Array.prototype`
+                </td>
+                <td>
+                  %Uint16Array% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Uint32Array%
+                </td>
+                <td>
+                  `Uint32Array`
+                </td>
+                <td>
+                  `Uint32Array` 构造函数 (<emu-xref href="#sec-typedarray-objects"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %Uint32ArrayPrototype%
+                </td>
+                <td>
+                  `Uint32Array.prototype`
+                </td>
+                <td>
+                  %Uint32Array% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %URIError%
+                </td>
+                <td>
+                  `URIError`
+                </td>
+                <td>
+                  `URIError` 构造函数 (<emu-xref href="#sec-native-error-types-used-in-this-standard-urierror"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %URIErrorPrototype%
+                </td>
+                <td>
+                  `URIError.prototype`
+                </td>
+                <td>
+                  %URIError% `prototype` 属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %WeakMap%
+                </td>
+                <td>
+                  `WeakMap`
+                </td>
+                <td>
+                  `WeakMap` 构造函数 (<emu-xref href="#sec-weakmap-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %WeakMapPrototype%
+                </td>
+                <td>
+                  `WeakMap.prototype`
+                </td>
+                <td>
+                  %WeakMap% `prototype` 数据属性的初始值
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %WeakSet%
+                </td>
+                <td>
+                  `WeakSet`
+                </td>
+                <td>
+                  `WeakSet` 构造函数 (<emu-xref href="#sec-weakset-constructor"></emu-xref>)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  %WeakSetPrototype%
+                </td>
+                <td>
+                  `WeakSet.prototype`
+                </td>
+                <td>
+                  %WeakSet% `prototype` 数据属性的初始值
+                </td>
+              </tr>
             </tbody>
           </table>
         </emu-table>

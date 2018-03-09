@@ -903,13 +903,13 @@
 <!-- es6num="6" -->
 <emu-clause id="sec-ecmascript-data-types-and-values" aoid="Type">
   <h1><abbr title="ECMAScript Data Types and Values">ECMAScript 数据类型和值</abbr></h1>
-  <p>本规范中算法操作每个具有相关类型的值。可能的值类型直接定义在本章节中。这些类型进一步分为 ECMAScript 语言类型与规范类型。</p>
-  <p>在本规范中，&ldquo;Type(_x_)&rdquo;表示法是&ldquo;the <dfn id="type">type</dfn> of _x_&rdquo;的简写， 其中&ldquo;type&rdquo;指的是在本章节中定义的 ECMAScript 语言类型与规范类型。当一个值使用术语&ldquo;empty&rdquo;命名值时，它相当于说&ldquo;没有任何类型的值(no value of any type)&rdquo;。</p>
+  <p>本规范中算法控制每个具有相关类型的值。可能的值类型直接定义在本章节中。这些类型进一步分为 ECMAScript 语言类型与规范类型。</p>
+  <p>在本规范中，&ldquo;Type(_x_)&rdquo;表示法是&ldquo;the <dfn id="type">type</dfn> of _x_&rdquo;的简写， 其中&ldquo;type&rdquo;指的是在本章节中定义的 ECMAScript 语言类型与规范类型。当一个值使用术语&ldquo;empty&rdquo;命名值时，它相当于说&ldquo;没有任何类型的值&rdquo;。</p>
   
   <!-- es6num="6.1" -->
   <emu-clause id="sec-ecmascript-language-types">
     <h1>ECMAScript 语言类型</h1>
-    <p>一个 <dfn>ECMAScript 语言类型</dfn>对应那些 ECMAScript 程序员在 ECMAScript 语言中直接使用的值。 ECMAScript 语言类型有 Undefined, Null, Boolean, String,Symbol, Number, Object。 一个<dfn>ECMAScript 语言值</dfn>是指拥有 ECMAScript 语言类型特点的值。</p>
+    <p>一个 <dfn>ECMAScript 语言类型</dfn>对应那些 ECMAScript 程序员在 ECMAScript 语言中直接使用的值。 ECMAScript 语言类型有 Undefined, Null, Boolean, String,Symbol, Number, Object。 一个<dfn>ECMAScript 语言值</dfn>是指拥有一个 ECMAScript 语言类型特点的值。</p>
 
     <!-- es6num="6.1.1" -->
     <emu-clause id="sec-ecmascript-language-types-undefined-type">
@@ -926,13 +926,13 @@
     <!-- es6num="6.1.3" -->
     <emu-clause id="sec-ecmascript-language-types-boolean-type">
       <h1>Boolean 类型</h1>
-      <p>Boolean 类型表示具有 `true` 和 `false` 两个值的逻辑实体。</p>
+      <p>Boolean 类型表示具有 `true` 和 `false` 两个值的一个逻辑实体。</p>
     </emu-clause>
 
     <!-- es6num="6.1.4" -->
     <emu-clause id="sec-ecmascript-language-types-string-type">
       <h1>String 类型</h1>
-      <p>String 类型是零个或多个 16 位无符号整数值（&ldquo;元素&rdquo;）的所有有序序列的集合，最大长度为 2<sup>53</sup>-1 个元素。字符串类型通常用于表示正在运行的 ECMAScript 程序中的文本数据，在这种情况下，String中的每个元素都被视为一个 UTF-16 <abbr title="code unit">码元</abbr>。 每个元素被认为占据该序列内的一个位置。 这些位置用非负整数索引。 第一个元素（如果有）在索引 0 处，下一个元素（如果有的话）在索引 1 处，以此类推。 String 的长度是序列中的元素个数（即 16-bit 值）。空字符串的长度为零，因此不包含元素。</p>
+      <p>String 类型是零个或多个 16 位无符号整数值（&ldquo;元素&rdquo;）的所有有序序列的集合，最大长度为 2<sup>53</sup>-1 个元素。字符串类型通常用于表示正在运行的 ECMAScript 程序中的文本数据，在这种情况下，String中的每个元素都被视为一个 UTF-16 <abbr title="code unit">码元</abbr>。 每个元素被认为占据该序列内的一个位置。 这些位置用非负整数索引。 第一个元素（如果有）在索引 0 处，下一个元素（如果有的话）在索引 1 处，以此类推。 String 的长度是序列中的元素个数（例如，十六位值）。空字符串的长度为零，因此不包含元素。</p>
       <p>ECMAScript 操作在解释字符串值时，每个元素都被认为是一个单独的 UTF-16 码元。但是，ECMAScript 对 String 值中的码元序列没有任何限制或要求，因此当按照 UTF-16 码元序列解释时， 它们可能是<abbr title="ill-formed">不正确</abbr>的。（因为）不解释字符串内容的操作将它们当做无差别的 16-bit 无符号整数序列。可以使用函数 `String.prototype.normalize` (见<emu-xref href="#sec-string.prototype.normalize"></emu-xref>)显式的把一个 String 值标准化。 `String.prototype.localeCompare`(见<emu-xref href="#sec-string.prototype.localecompare"></emu-xref>) 方法在函数内部（隐式地）标准化了 String 值，除此之外的其它方法都没有隐式地标准化字符串。 只有明确指定语言或区域敏感的操作才会产生语言敏感的结果。</p>
       <emu-note>
         <p>这种设计背后的理由是尽可能的保持 String 的实现简单和高效。 如果 ECMAScript 源文本符合 Normalized Form C，只要它们不包含任何 Unicode 转义序列，则字符串字面量保证也是标准化的。</p>
@@ -943,33 +943,33 @@
           在范围 0 到 0xD7FF 或 0xE000 到 0xFFFF 范围内的码元被解释为具有相同值的码点。
         </li>
         <li>
-          两个码元，第一个码元 _c1_ 范围为 0xD800 到 0xDBFF，第二个码元 _c2_ 范围为 0xDC00 到 0xDFFF， 这样的两个码元，被称为<attr title="surrogate pair">代理对</attr>， 被解释为一个值为 (_c1_ - 0xD800) &times; 0x400 + (_c2_ - 0xDC00) + 0x10000 的码点。
+          两个码元序列，第一个码元 _c1_ 范围为 0xD800 到 0xDBFF，第二个码元 _c2_ 范围为 0xDC00 到 0xDFFF， 这样的两个码元，被称为<attr title="surrogate pair">代理对</attr>， 被解释为一个值为 (_c1_ - 0xD800) &times; 0x400 + (_c2_ - 0xDC00) + 0x10000 的码点。(见 <emu-xref href="#sec-utf16decode"></emu-xref>)
         </li>
         <li>
           一个在 0xD800 到 0xDFFF 范围内，但不是代理对的一部分的码元被解释为具有相同值的码点。
         </li>
       </ul>
-      <p>在本规范中，短语"the string-concatenation of _A_,_B_,..."表示字符串代码单元的序列是每个参数的代码单元的连接。</p>
+      <p>在本规范中，短语"the <dfn>string-concatenation</dfn> of _A_,_B_,..."表示字符串代码单元的序列是每个参数的代码单元的连接。</p>
     </emu-clause>
 
     <!-- es6num="6.1.5" -->
     <emu-clause id="sec-ecmascript-language-types-symbol-type">
       <h1>Symbol 类型</h1>
-      <p>Symbol 类型是所有可以用于作为 Object 属性的 key 的非字符串值的集合。(<emu-xref href="#sec-object-type"></emu-xref>).</p>
+      <p>Symbol 类型是所有可以用于作为 Object 属性 key 值的非字符串值的集合。(<emu-xref href="#sec-object-type"></emu-xref>)。</p>
       <p>每个可能的 Symbol 值都是唯一的和不可变的。</p>
-      <p>每个 Symbol 值永远地保持一个与之关联的叫做 [[Description]] 的值（它要么是 undefined 要么是一个 String 值）。</p>
+      <p>每个 Symbol 值永远地保持一个与之关联的叫做 [[Description]] 的值（它要么是 *undefined* 要么是一个 String 值）。</p>
 
       <!-- es6num="6.1.5.1" -->
       <emu-clause id="sec-well-known-symbols">
-        <h1>著名 Symbol</h1>
-        <p>著名 Symbol 是那些被本规范中算法明确引用的内置 Symbol 值。它们通常被用作属性的 key，这些 key 的值为规范的算法提供了一种扩展。除非另有说明，著名 Symbol 的值被所有域(<emu-xref href="#sec-code-realms"></emu-xref>)共享。</p>
-        <p>在本规范内，一个著名 Symbol 值通过形如 form@@name 的形式被引用，这里的 &ldquo;name&rdquo; 是表 <emu-xref href="#table-1"></emu-xref> 列出的值之一。</p>
+        <h1>总所周知的 Symbol</h1>
+        <p>总所周知的 Symbol 是那些被本规范中算法明确引用的内置 Symbol 值。它们通常被用作属性的 key，这些 key 的值作为规范的算法扩展点。除非另有说明，总所周知的 Symbol 的值被所有域(<emu-xref href="#sec-code-realms"></emu-xref>)共享。</p>
+        <p>在本规范内，一个总所周知的 Symbol 值通过形如 @@name 的形式被引用，这里的 &ldquo;name&rdquo; 是表 <emu-xref href="#table-1"></emu-xref> 列出的值之一。</p>
         <emu-table id="table-1" caption="Well-known Symbols">
           <table>
             <tbody>
               <tr>
                 <th>
-                  名称
+                  规范名称
                 </th>
                 <th>
                   [[Description]]
@@ -997,7 +997,7 @@
                   `"Symbol.isConcatSpreadable"`
                 </td>
                 <td>
-                  一个Boolean值，如果为 true， 表示一个对象应该被 <emu-xref href="#sec-array.prototype.concat">`Array.prototype.concat`</emu-xref> 扁平化的加入到元素中。
+                  一个 Boolean 值，如果为 true， 表示一个对象应该被 <emu-xref href="#sec-array.prototype.concat">`Array.prototype.concat`</emu-xref> 扁平化的加入到数组元素中。
                 </td>
               </tr>
               <tr>
@@ -1041,7 +1041,7 @@
                   `"Symbol.search"`
                 </td>
                 <td>
-                  一个正则表达式方法，它返回正则表达式匹配到在字符串中的索引。 由<emu-xref href="#sec-string.prototype.search">`String.prototype.search`</emu-xref>方法调用。
+                  一个正则表达式方法，它返回正则表达式匹配到的内容在字符串中的索引。 由<emu-xref href="#sec-string.prototype.search">`String.prototype.search`</emu-xref>方法调用。
                 </td>
               </tr>
               <tr>
@@ -1085,7 +1085,7 @@
                   `"Symbol.toStringTag"`
                 </td>
                 <td>
-                  一个字符串值属性，用于表示对象在创建时的默认字符串描述。通过内置方法 <emu-xref href="#sec-object.prototype.tostring">`Object.prototype.toString`</emu-xref> 访问。
+                  用于创建对象的默认字符串描述的 String 值属性。通过内置方法 <emu-xref href="#sec-object.prototype.tostring">`Object.prototype.toString`</emu-xref> 访问。
                 </td>
               </tr>
               <tr>
@@ -1096,7 +1096,7 @@
                   `"Symbol.unscopables"`
                 </td>
                 <td>
-                  一个对象值属性，其自身和继承的属性名是从相关对象非在 `with` 环境绑定的属性名。
+                  一个对象值属性，其自身和继承的属性名是从相关对象的 with 环境绑定中排除的属性名。
                 </td>
               </tr>
             </tbody>
@@ -1108,27 +1108,27 @@
     <!-- es6num="6.1.6" -->
     <emu-clause id="sec-ecmascript-language-types-number-type">
       <h1>Number 类型</h1>
-      <p>Number 类型有 18437736874454810627 (即，<emu-eqn>2<sup>64</sup>-2<sup>53</sup>+3</emu-eqn>)个值，表示双精度 64 位格式的 IEEE 754-2008 值由 IEEE 二进制浮点数标准规定，除了 9007199254740990 (即，<emu-eqn>2<sup>53</sup>-2</emu-eqn>)这个在 IEEE 标准中独特的 &ldquo;Not-a-Number&rdquo; 值，其在 ECMAScript 中表示为一个特殊的 `NaN` 值。(注意 `NaN` 值在程序中由 `NaN` 表达式产生)在某些实现中，外部代码可能能够检测各种 Not-a-Number 值之间的差异，但这种行为依赖于实现; 对于 ECMAScript 代码，所有的 `NaN` 值彼此是不可区分。</p>
+      <p>Number 类型有 18437736874454810627 (即，<emu-eqn>2<sup>64</sup>-2<sup>53</sup>+3</emu-eqn>)个值，表示双精度 64 位格式的 IEEE 754-2008 值由 IEEE 二进制浮点数标准规定，除了 9007199254740990 (即，<emu-eqn>2<sup>53</sup>-2</emu-eqn>)这个在 IEEE 标准中独特的 &ldquo;Not-a-Number&rdquo; 值，其在 ECMAScript 中表示为一个特殊的 *NaN* 值。(注意 *NaN* 值在程序中由 *NaN* 表达式产生)在某些实现中，外部代码可能能够检测各种 Not-a-Number 值之间的差异，但这种行为依赖于实现; 对于 ECMAScript 代码，所有的 *NaN* 值彼此是不可区分。</p>
       <emu-note>
-        <p>一个可被观察的 ArrayBuffer(见<emu-xref href="#sec-arraybuffer-objects"></emu-xref>) 或 SharedArrayBuffer(见<emu-xref href="#sec-sharedarraybuffer-objects"></emu-xref>) 中存入一个Number值之后的位模式没有必要与 ECMAScript 实现内部代表的 Number 值相同。</p>
+        <p>在一个 Number 数值被存入之后，在一个 ArrayBuffer(见<emu-xref href="#sec-arraybuffer-objects"></emu-xref>) 或一个 SharedArrayBuffer(见<emu-xref href="#sec-sharedarraybuffer-objects"></emu-xref>) 中可能观察到的位模式不一定和 ECMAScript 实现所使用的那个 Number 数值的内部表示相同。</p>
       </emu-note>
-      <p>还有另外两个特殊的值，叫做<abbr title="positive Infinity">*正无穷*</abbr>和<abbr title="*negative Infinity*">*负无穷*</abbr>。 为了简洁起见，这些值分别由符号 `+&infin;` 和 `-&infin;` 表示。（请注意，这两个无限数值由程序表达式 `+Infinity`（或 `Infinity` ）和 `-Infinity` 产生。）</p>
-      <p>除了 3 个特殊值，其他 18437736874454810624（即，<emu-eqn>2<sup>64</sup>-2<sup>53</sup></emu-eqn>）个值称为有限值。 其中一半为正数，一般为负数；每个有限正数存在相同大小的对应负数。</p>
-      <p>注意其中有一个*正零*，一个*负零*。为了简洁，他们也分别用 `+0` 和 `-0` 来说明。（注意这两个不同的 0，通过程序表达式 `+0`(或 `0`) 和 `-0` 产生。）</p>
+      <p>还有另外两个特殊的值，叫做<abbr title="positive Infinity">*正无穷*</abbr>和<abbr title="*negative Infinity*">*负无穷*</abbr>。 为了简洁起见，这些值分别由符号 *+&infin;* 和 *-&infin;* 表示。（请注意，这两个无穷数值由程序表达式 *+Infinity*（或 *Infinity* ）和 *-Infinity* 产生。）</p>
+      <p>其他 18437736874454810624（即，<emu-eqn>2<sup>64</sup>-2<sup>53</sup></emu-eqn>）个值称为有限值。 其中一半为正数，一般为负数；每个有限正数存在相同大小的对应负数。</p>
+      <p>注意其中有一个*正零*，一个*负零*。为了简洁，他们也分别用 *+0* 和 *-0* 来说明。（注意这两个不同的 0，通过程序表达式 *+0*(或 *0*) 和 *-0* 产生。）</p>
       <p>18437736874454810622（即 <emu-eqn>2<sup>64</sup>-2<sup>53</sup>-2</emu-eqn>）个有限非 0 值有两种：</p>
       <p>其中 18428729675200069632 (即 <emu-eqn>2<sup>64</sup>-2<sup>54</sup></emu-eqn>) 个值是标准的, 具有如下格式</p>
       <div class="math-display">
         _s_ &times; _m_ &times; 2<sup>_e_</sup>
       </div>
-      <p>其中 _s_ 为 +1 或 -1，_m_ 是一个小于 2<sup>53</sup> 大于等于 2<sup>52</sup> 的整数，_e_ 是从 -1074 到 971 的整数。</p>
+      <p>其中 _s_ 为 +1 或 -1，_m_ 是一个小于 2<sup>53</sup> 但大于等于 2<sup>52</sup> 的整数，_e_ 是从 -1074 到 971 的整数。</p>
       <p>其余 9007199254740990 (即 <emu-eqn>2<sup>53</sup>-2</emu-eqn>) 个值是非标准的, 有如下格式</p>
       <div class="math-display">
         _s_ &times; _m_ &times; 2<sup>_e_</sup>
       </div>
       <p>其中 s 是 +1 或 -1 ，m 是小于 52 的正整数，e 是 -1074。</p>
-      <p>注意，大小不大于 2<sup>53</sup> 的所有正整数和负整数可以在数字类型中表示（实际上，整数 0 具有两个表示，`+0` 和 `-0`）。</p>
+      <p>注意，大小不大于 2<sup>53</sup> 的所有正整数和负整数可以在 Number 类型中表示（实际上，整数 0 具有两个表示，*+0* 和 *-0*）。</p>
       <p>如果一个有限的数值非零且用来表达它（上文两种形式之一）的整数 m 是奇数，则该数值有<em><abbr title="odd significand">奇数意义</abbr></em>。否则，它有<em><abbr title="even significand">偶数意义</abbr></em>。</p>
-      <p>在本规范中，当 _x_ 表示一个精确的非零实数数学量（甚至可以是无理数，比如&pi;）时，&ldquo;the Number value for _x_&rdquo; 意为，以下面的方式选择一个 Number 值。考虑 Number 类型中除了 `-0` 和两个被加入在数值类型中但不可呈现的值，2<sup>1024</sup> (<emu-eqn>+1 &times; 2<sup>53</sup> &times; 2<sup>971</sup></emu-eqn>) 以及 <emu-eqn>-2<sup>1024</sup></emu-eqn>(<emu-eqn>-1 &times; 2<sup>53</sup> &times; 2<sup>971</sup></emu-eqn>)的所有有限值的集合。选择此集合中值最接近 _x_ 的一员。若集合中的两值近似相等，那么选择有偶数意义的那个；为此，2<sup>1024</sup>和<emu-eqn>-2<sup>1024</sup></emu-eqn>这两个超额值被认为有偶数意义。最终，若选择 2<sup>1024</sup> ，用 `+&infin;` 替换它；若选择 <emu-eqn>-2<sup>1024</sup></emu-eqn>， 用 `-&infin;` 替换它；若选择 `+0`，有且只有 _x_ 小于零时，用 `-0` 替换它；其它任何被选取的值都不用改变。结果就是 _x_ 的数字值。（此过程正是IEEE 754-2008&ldquo;round to nearest, ties to even&rdquo;模式对应的行为。）</p>
+      <p>在本规范中，当 _x_ 表示一个精确的非零实数数学量（甚至可以是无理数，比如&pi;）时，&ldquo;the Number value for _x_&rdquo; 意为，以下面的方式选择一个 Number 值。考虑 Number 类型中除了 *-0* 和两个被加入在数值类型中但不可呈现的值，2<sup>1024</sup> (<emu-eqn>+1 &times; 2<sup>53</sup> &times; 2<sup>971</sup></emu-eqn>) 以及 <emu-eqn>-2<sup>1024</sup></emu-eqn>(<emu-eqn>-1 &times; 2<sup>53</sup> &times; 2<sup>971</sup></emu-eqn>)的所有有限值的集合。选择此集合中值最接近 _x_ 的一员。若集合中的两值近似相等，那么选择有偶数意义的那个；为此，2<sup>1024</sup>和<emu-eqn>-2<sup>1024</sup></emu-eqn>这两个超额值被认为有偶数意义。最终，若选择 2<sup>1024</sup> ，用 *+&infin;* 替换它；若选择 <emu-eqn>-2<sup>1024</sup></emu-eqn>， 用 *-&infin;* 替换它；若选择 *+0*，有且只有 _x_ 小于零时，用 *-0* 替换它；其它任何被选取的值都不用改变。结果就是 _x_ 的 Number 值。（此过程正是IEEE 754-2008&ldquo;round to nearest, ties to even&rdquo;模式对应的行为。）</p>
       <p>某些 ECMAScript 运算符仅处理闭区间 <emu-eqn>-2<sup>31</sup></emu-eqn> 到 <emu-eqn>2<sup>31</sup>-1</emu-eqn>，或者 0 到 <emu-eqn>2<sup>16</sup>-1</emu-eqn> 的整数。 这些操作符接收任意 Number 类型的值，首先会将它们转换成像上面提到的这些范围内的值。参考<emu-xref href="#sec-type-conversion"></emu-xref>的数字转换操作。</p>
     </emu-clause>
 
@@ -1141,7 +1141,7 @@
           <em>数据属性</em>关联 key 值和一个 ECMAScript 语言值以及一组值为 Boolean 类型的特性。
         </li>
         <li>
-          <em>访问器属性</em>关联 key 值和一个或两个访问器函数以及一组值为 Boolean 类型的特性。访问器函数用于存储或检索与属性相关联的 ECMAScript 语言值。
+          <em>访问器属性</em>关联 key 值和一个或两个访问器函数以及一组值为 Boolean 类型的特性。访问器函数用于存储或检索与该属性相关联的 ECMAScript 语言值。
         </li>
       </ul>
       <p>属性使用 key 值来标识。一个属性的 key 值是 ECMAScript String 值或 Symbol 值。所有 String 值（包括空字符串） 和 Symbol 值作为属性的 key 都是有效的。一个属性的 key 为 String 值时，<em>属性名称</em>为属性的 key 。</p>
@@ -1152,7 +1152,7 @@
       <!-- es6num="6.1.7.1" -->
       <emu-clause id="sec-property-attributes">
         <h1><abbr title="Property Attributes">属性特性</abbr></h1>
-        <p>在本规范中特性用来定义和解释对象属性的状态。数据属性关联表<emu-xref href="#table-2"></emu-xref>中列出的一个 key 值的特性。</p>
+        <p>在本规范中特性用来定义和解释对象属性的状态。数据属性 key 值与表<emu-xref href="#table-2"></emu-xref>中列出的特性关联。</p>
         <emu-table id="table-2" caption="Attributes of a Data Property">
           <table>
             <tbody>
@@ -1702,9 +1702,9 @@
 
       <!-- es6num="6.1.7.4" -->
       <emu-clause id="sec-well-known-intrinsic-objects">
-        <h1>著名<abbr title="Intrinsic Objects">内部对象</abbr></h1>
-        <p>著名内联函数是在该规范中通过算法明确引用的内置对象，这些内置对象通常有特定域的不变量。除非特别指出，每个内部对象在每个领域通常对应一系列相似对象的集合。</p>
-        <p>在本规范中像 %name% 这样的引用意味着关联到相应的 name 域的内部对象。决定当前域以及他的内联函数在<emu-xref href="#sec-execution-contexts"></emu-xref>描述。著名内联函数在表<emu-xref href="#table-7"></emu-xref>列出。</p>
+        <h1>总所周知的<abbr title="Intrinsic Objects">内部对象</abbr></h1>
+        <p>总所周知的内联函数是在该规范中通过算法明确引用的内置对象，这些内置对象通常有特定域的不变量。除非特别指出，每个内部对象在每个领域通常对应一系列相似对象的集合。</p>
+        <p>在本规范中像 %name% 这样的引用意味着关联到相应的 name 域的内部对象。决定当前域以及他的内联函数在<emu-xref href="#sec-execution-contexts"></emu-xref>描述。总所周知的内联函数在表<emu-xref href="#table-7"></emu-xref>列出。</p>
         <emu-table id="table-7" caption="Well-known Intrinsic Objects">
           <table>
             <tbody>
