@@ -16,6 +16,8 @@ Commits in pull requests should have a first line which starts with a tag, follo
   * Markup: non-visible changes to markup in the spec
   * Meta: changes to documents about this repository (e.g. readme.md or contributing.md) and other supporting documents or scripts (e.g. package.json, design documents, etc.)
 
+If changes in the upstream master branch cause your PR to have conflicts, you should rebase your branch to master and force-push it to your repo (rather than doing a merge commit).
+
 Issues and PRs in the ecma262 repository are appropriate for minor modifications to the existing specification, for example to make behavior more consistent in an edge case, match what is implemented by the large majority of actual implementations, or to clarify wording. New features use the feature request process described below.
 
 #### New feature proposals
@@ -24,7 +26,7 @@ TC39 is open to accepting new feature requests for ECMAScript, referred to as "p
 Feature requests for future versions of ECMAScript should not be made in this repository. Instead, they are developed in separate GitHub repositories, which are then merged into the main repository once they have received "Stage 4".
 
 ##### Creating a new proposal
-To make a feature request, document the problem and a sketch of the solution with others in the community, including TC39 members. One place to do this is the [es-discuss mailing list](http://esdiscuss.org); another is the IRC channel #tc39 on Freenode ([instructions](https://freenode.net/kb/answer/chat)).
+To make a feature request, document the problem and a sketch of the solution with others in the community, including TC39 members. One place to do this is the [es-discuss mailing list](https://esdiscuss.org); another is the IRC channel #tc39 on Freenode ([instructions](https://freenode.net/kb/answer/chat)).
 
 Your goal will be to convince others that your proposal is a useful addition to the language and recruit TC39 members to help turn your request into a proposal and shepherd it into the language. Once a proposal is introduced to the committee, new features are considered by the committee according to the [TC39 process document](https://tc39.github.io/process-document/).
 
@@ -47,7 +49,7 @@ To track what's going on with a particular proposal, you can look in issues and 
 #### Required legal agreements
 People associated with Ecma member organizations have a legal agreement in place with Ecma to ensure that intellectual property rights (IPR) of their contributions are appropriately licensed to be available to all ECMAScript programmers and implementers. For non-members to contribute, you are required to make these rights available by signing a Contributor License Agreement (CLA) for non-trivial contributions.
 
-If you wish to submit a proposal or make a significant PR, and you are not a representative of a TC39 member, please [register as a TC39 contributor](https://www.ecma-international.org/memento/register_TC39_Royalty_Free_Task_Group.php) (it is not necessary to submit the contribution as attachment to the form).
+If you wish to submit a proposal or make a significant PR, and you are not a representative of a TC39 member, please [register as a TC39 RFTG contributor](https://tc39.github.io/agreements/contributor/).
 
 Ecma TC39 accepts contributions from non-member individuals who have accepted the TC39 copyright and patent policies. Currently all ECMAScript related technical work is done by the TC39 RF TG (Royalty Free Task Group), for which the following IPR policies apply:
 

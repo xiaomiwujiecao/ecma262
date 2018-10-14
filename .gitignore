@@ -4,3 +4,8 @@ test*.js
 .DS_Store
 /deploy_key
 /deploy_key.pub
+
+# Only apps should have lockfiles
+npm-shrinkwrap.json
+package-lock.json
+yarn.lock
